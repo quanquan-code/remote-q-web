@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, SlidersHorizontal, Sparkles } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
@@ -19,9 +19,18 @@ const Home = () => {
     navigate('/search');
   };
 
-  const filteredProjects = activeFilter === '全部' 
-    ? projects 
-    : projects.filter(p => p.company_tags.includes(activeFilter) || p.position.includes(activeFilter));
+  const filteredProjects = useMemo(() => {
+    const filtered = activeFilter === '全部' 
+      ? projects 
+      : projects.filter(p => p.company_tags.includes(activeFilter) || p.position.includes(activeFilter));
+    
+    // 按创建日期从近到远排序
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.created_at + '-01');
+      const dateB = new Date(b.created_at + '-01');
+      return dateB - dateA;
+    });
+  }, [activeFilter]);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
