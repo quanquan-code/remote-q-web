@@ -7,26 +7,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 主色调 - 温暖的珊瑚橙，活泼但不刺眼
-        primary: '#FF6B6B',
-        'primary-light': '#FFE5E5',
-        'primary-dark': '#E85D5D',
-        // 辅助色 - 清新的青绿色
-        secondary: '#4ECDC4',
-        'secondary-light': '#E5F7F6',
-        // 强调色 - 明亮的黄色（用于紧急、高亮）
-        accent: '#FFE66D',
-        // 中性色 - Notion 风格的高级灰
-        'gray-50': '#FAFAFA',
-        'gray-100': '#F5F5F5',
-        'gray-200': '#E5E5E5',
-        'gray-300': '#D4D4D4',
-        'gray-400': '#A3A3A3',
-        'gray-500': '#737373',
-        'gray-600': '#525252',
-        'gray-700': '#404040',
-        'gray-800': '#262626',
-        'gray-900': '#171717',
+        // 主色调 - 深蓝灰，专业沉稳
+        primary: '#1E3A5F',
+        'primary-light': '#E8EEF4',
+        'primary-dark': '#152942',
+        // 辅助色 - 森林绿，用于成功/可用状态
+        secondary: '#059669',
+        'secondary-light': '#ECFDF5',
+        // 强调色 - 琥珀色，用于紧急/高亮
+        accent: '#D97706',
+        'accent-light': '#FEF3C7',
+        // 中性色 - 更柔和的灰度
+        'gray-50': '#F8FAFC',
+        'gray-100': '#F1F5F9',
+        'gray-200': '#E2E8F0',
+        'gray-300': '#CBD5E1',
+        'gray-400': '#94A3B8',
+        'gray-500': '#64748B',
+        'gray-600': '#475569',
+        'gray-700': '#334155',
+        'gray-800': '#1E293B',
+        'gray-900': '#0F172A',
       },
       boxShadow: {
         'soft': '0 2px 8px rgba(0, 0, 0, 0.04)',
