@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, Banknote } from 'lucide-react';
+import { MapPin, Clock } from 'lucide-react';
 
 // 将日期转换为相对时间
 const getRelativeTime = (dateStr) => {
@@ -41,27 +41,23 @@ const ProjectCard = ({ project, onClick }) => {
       )}
       
       <div className={project.is_urgent ? 'pl-2' : ''}>
-        {/* 顶部：职位标题 + 薪资 */}
-        <div className="flex items-start justify-between gap-3 mb-2">
-          <h3 className="text-[15px] font-semibold text-gray-900 leading-snug flex-1">
+        {/* 顶部：职位标题（两行）+ 时间 */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="text-[15px] font-semibold text-gray-900 leading-snug flex-1 line-clamp-2">
             {project.position}
           </h3>
-          <span className="text-[13px] font-semibold text-primary whitespace-nowrap">
-            {project.salary}
+          <span className={`text-[11px] whitespace-nowrap mt-0.5 ${getTimeColor(relativeTime)}`}>
+            {relativeTime}
           </span>
         </div>
         
-        {/* 公司名 + 时间 */}
-        <div className="flex items-center gap-2 mb-3">
-          <p className="text-[13px] text-gray-500">{project.company_name}</p>
-          <span className="text-[11px] text-gray-300">·</span>
-          <span className={`text-[12px] ${getTimeColor(relativeTime)}`}>
-            {relativeTime}
-          </span>
-          {project.is_urgent && (
-            <span className="w-1.5 h-1.5 bg-accent rounded-full ml-1"></span>
-          )}
-        </div>
+        {/* 公司名 */}
+        <p className="text-[13px] text-gray-500 mb-2">{project.company_name}</p>
+        
+        {/* 介绍（两行） */}
+        <p className="text-[13px] text-gray-600 line-clamp-2 mb-3 leading-relaxed">
+          {project.description}
+        </p>
         
         {/* 标签 */}
         <div className="flex flex-wrap gap-1.5">
@@ -73,6 +69,11 @@ const ProjectCard = ({ project, onClick }) => {
               {tag}
             </span>
           ))}
+          {project.is_urgent && (
+            <span className="px-2 py-0.5 bg-accent-light text-accent text-[11px] rounded">
+              急招
+            </span>
+          )}
         </div>
       </div>
     </div>
