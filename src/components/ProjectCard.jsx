@@ -1,21 +1,30 @@
 import React from 'react';
 
-// 将日期转换为简写时间
+// 将日期转换为中文时间显示
 const getShortTime = (dateStr) => {
-  const date = new Date(dateStr + '-01');
+  // dateStr 格式可能是 "2025-07" 或 "2025-07-15"
+  const date = new Date(dateStr + (dateStr.length <= 7 ? '-01' : ''));
   const now = new Date();
-  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+  
+  // 重置时间部分，只比较日期
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const diffDays = Math.floor((today - targetDate) / (1000 * 60 * 60 * 24));
   
   if (diffDays < 0 || diffDays === 0) return '今天';
-  if (diffDays === 1) return '1D';
-  if (diffDays < 7) return `${diffDays}D`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)}W`;
-  return `${Math.floor(diffDays / 30)}M`;
+  if (diffDays === 1) return '昨天';
+  if (diffDays < 7) return '本周';
+  
+  // 超过本周显示月和日
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${month}月${day}日`;
 };
 
 // 时间颜色
 const getTimeColor = (timeStr) => {
-  if (timeStr === '今天' || timeStr === '1D') return 'text-secondary font-medium';
+  if (timeStr === '今天' || timeStr === '昨天') return 'text-secondary font-medium';
+  if (timeStr === '本周') return 'text-gray-500';
   return 'text-gray-400';
 };
 
