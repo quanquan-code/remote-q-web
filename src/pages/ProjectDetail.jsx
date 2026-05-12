@@ -142,7 +142,7 @@ const ProjectDetail = () => {
           <div className="bg-white rounded-xl p-4">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-medium text-gray-900">公司评价</h3>
-              <span className="text-sm text-primary">查看全部 ></span>
+              <span className="text-sm text-primary">查看全部 {'>'}</span>
             </div>
             
             <div className="flex items-center gap-2 mb-2">
