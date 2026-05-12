@@ -1,0 +1,121 @@
+[
+  {
+    "id": "45",
+    "title": "北京坐班英语/韩语翻译",
+    "company": "某知名企业",
+    "type": ["兼职", "线下"],
+    "location": "北京",
+    "salary": "700元/天",
+    "languagePair": "中英/中韩",
+    "gameType": null,
+    "description": "高层报告、政府报告类翻译，要求CATTI二级证书，至少3年翻译经验。",
+    "requirements": [
+      "翻译或语言学硕士学历",
+      "持有CATTI二级证书",
+      "至少3年翻译经验"
+    ],
+    "postedAt": "2026-04-01"
+  },
+  {
+    "id": "46",
+    "title": "英韩翻译 + 韩英听译",
+    "company": "某科技公司",
+    "type": ["兼职", "线上"],
+    "location": "远程",
+    "salary": "90 USD/60分钟",
+    "languagePair": "英↔韩",
+    "gameType": null,
+    "description": "生命科学相关内容的听译与翻译，需2个工作日内交付，适合长期合作。",
+    "requirements": [
+      "能稳定配合长期项目",
+      "2个工作日内交付",
+      "生命科学背景优先"
+    ],
+    "postedAt": "2026-04-05"
+  },
+  {
+    "id": "47",
+    "title": "韩语口译员（CISCE 2026）",
+    "company": "某翻译公司",
+    "type": ["兼职", "线下"],
+    "location": "北京",
+    "salary": "4000元/整天",
+    "languagePair": "韩→中",
+    "gameType": null,
+    "description": "中国国际供应链博览会现场口译，韩译中交替传译，超时按小时计费。",
+    "requirements": [
+      "韩译中交传能力",
+      "懂英文更佳",
+      "能接受现场工作"
+    ],
+    "postedAt": "2026-04-10"
+  },
+  {
+    "id": "48",
+    "title": "金融/财报类翻译",
+    "company": "优质客户",
+    "type": ["兼职", "线上"],
+    "location": "远程",
+    "salary": "千字不低于150",
+    "languagePair": "中↔英",
+    "gameType": null,
+    "description": "擅长市场、金融、财经类翻译，语言表达清晰流畅，长期有稿。",
+    "requirements": [
+      "金融/财经背景优先",
+      "语言表达清晰流畅",
+      "能长期稳定合作"
+    ],
+    "postedAt": "2026-04-12"
+  },
+  {
+    "id": "49",
+    "title": "游戏本地化西语、葡语译员",
+    "company": "某本地化团队",
+    "type": ["兼职", "线上"],
+    "location": "远程",
+    "salary": "面议",
+    "languagePair": "中→西/葡",
+    "gameType": "造景贴纸游戏",
+    "description": "2万字左右AIPE+LQA项目，大四及以上优先，热爱游戏。",
+    "requirements": [
+      "有游戏/漫画翻译经验优先",
+      "热爱游戏",
+      "大四及以上"
+    ],
+    "postedAt": "2026-04-15"
+  },
+  {
+    "id": "50",
+    "title": "兼职游戏LQA测试专员",
+    "company": "知名本地化公司",
+    "type": ["兼职", "线下"],
+    "location": "东京/成都/苏州",
+    "salary": "60-100元/小时",
+    "languagePair": "简中→英/日/韩",
+    "gameType": "RPG/社交/模拟经营/开放世界",
+    "description": "In-game LQA测试，识别游戏中的语言、文化和表达问题。",
+    "requirements": [
+      "精通英语及对应目标语言",
+      "有游戏本地化相关经验优先",
+      "能提交清晰Bug报告"
+    ],
+    "postedAt": "2026-05-01"
+  },
+  {
+    "id": "51",
+    "title": "English Translator & Content Specialist",
+    "company": "国际知名游戏公司",
+    "type": ["外包", "全职"],
+    "location": "上海",
+    "salary": "14.5K/月",
+    "languagePair": "中↔英",
+    "gameType": null,
+    "description": "游戏文档翻译与本地化、口译支持、公众号及官网内容运营。",
+    "requirements": [
+      "至少1年相关工作经验",
+      "优秀的中英文书面及口头表达",
+      "有数字内容平台运营经验"
+    ],
+    "postedAt": "2026-05-05"
+  }
+]

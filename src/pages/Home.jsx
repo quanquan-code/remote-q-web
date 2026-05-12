@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, SlidersHorizontal, Search, User, Plus } from 'lucide-react';
+import { Bell, SlidersHorizontal, Search, User, Plus, Briefcase, ChevronRight } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import BottomNav from '../components/BottomNav';
 import { projects, filters } from '../data/mockData';
@@ -79,6 +79,21 @@ const Home = () => {
           </div>
           <button className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
             <SlidersHorizontal className="w-4 h-4 text-gray-600" />
+          </button>
+        </div>
+
+        {/* 帮招广场入口 */}
+        <div className="mt-3">
+          <button
+            onClick={() => navigate('/jobs')}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-center gap-2">
+              <Briefcase className="w-5 h-5" />
+              <span className="text-sm font-medium">帮招广场</span>
+              <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">50+ 岗位</span>
+            </div>
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>

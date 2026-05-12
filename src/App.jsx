@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import ProjectDetail from './pages/ProjectDetail';
 import CompanyDetail from './pages/CompanyDetail';
+import Jobs from './pages/Jobs';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/company/:id" element={<CompanyDetail />} />
+        <Route path="/jobs" element={<Jobs />} />
       </Routes>
     </div>
   );
