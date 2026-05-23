@@ -5,7 +5,7 @@ import jobsData from '../data/jobs.json';
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
-  const [selectedNav, setSelectedNav] = useState('全部职位');
+  const [selectedNav, setSelectedNav] = useState('全部工作');
   const [selectedLocation, setSelectedLocation] = useState('全部');
   const [selectedType, setSelectedType] = useState('全部');
   const [selectedStatus, setSelectedStatus] = useState('全部');
@@ -104,7 +104,7 @@ const Jobs = () => {
 
   // 左侧导航
   const navItems = [
-    { key: '全部职位', label: '全部职位', count: jobsData.length },
+    { key: '全部工作', label: '全部工作', count: jobsData.length },
     { key: '远程工作', label: '远程工作', count: jobsData.filter(j => j.location?.includes('远程') || j.type?.some(t => t.includes('线上'))).length },
   ];
 
@@ -156,33 +156,27 @@ const Jobs = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+            <div className="flex items-center gap-2 ml-auto">
+              <button 
+                onClick={() => setShowQrModal(true)}
+                className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+              >
+                加入社群
+              </button>
+              <a 
+                href="https://my.feishu.cn/share/base/form/shrcnYRafbYwZdamWrbs3Tf1cfzCjngh" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                人才帮招
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* CTA 按钮区域 */}
-      <div className="max-w-7xl mx-auto px-4 pt-6">
-        <div className="flex gap-3 mb-6">
-          <button 
-            onClick={() => setShowQrModal(true)}
-            className="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-          >
-            <span>加入找工互助群</span>
-            <span className="text-lg">🤝</span>
-          </button>
-          <a 
-            href="https://my.feishu.cn/share/base/form/shrcnYRafbYwZdamWrbs3Tf1cfzCjngh" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-          >
-            <span>岗位帮招（提交需求）</span>
-            <span className="text-gray-400">→</span>
-          </a>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 pb-6">
+      <div className="max-w-7xl mx-auto px-4 pb-6 pt-6">
         <div className="flex gap-6">
           {/* 左侧导航 */}
           <div className="w-64 shrink-0">
