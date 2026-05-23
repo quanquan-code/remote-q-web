@@ -257,7 +257,10 @@ function processRecord(record, index) {
   const descField = getFieldArray(fields, '岗位要求Job Description');
   const channelField = getFieldArray(fields, '希望发布渠道 Where to post your job?');
   const internalOnly = isInternalOnly(channelField);
-  const anonymizedCompany = anonymizeCompany(company, getFieldText(fields, '岗位要求Job Description'));
+  // 全渠道发布显示真实公司名，仅内部发布走匿名化
+  const finalCompany = internalOnly 
+    ? anonymizeCompany(company, getFieldText(fields, '岗位要求Job Description')) 
+    : company;
   const formField = getFieldArray(fields, '岗位形式（兼职/外包/全职/线上/线下）Recruitment Positions (Part-time/Outsourced/Full-time/Remote/On-site)');
   const jobType = extractType(title, formField);
   const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'));
@@ -271,7 +274,7 @@ function processRecord(record, index) {
   const job = {
     id: String(record.record_id || index + 1),
     title,
-    company: anonymizedCompany,
+    company: finalCompany,
     type: jobType,
     location,
     salary,
