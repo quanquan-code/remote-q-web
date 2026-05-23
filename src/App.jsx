@@ -9,7 +9,7 @@ import Showcase from './pages/Showcase';
 
 function App() {
   return (
-    <div className="max-w-md mx-auto bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-white">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
