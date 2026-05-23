@@ -82,7 +82,7 @@ const JobDetail = () => {
                 <span className="text-gray-300">·</span>
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5" />
-                  {job.location}
+                  {job.location || '地点待定'}
                 </span>
               </div>
               <div className="flex flex-wrap gap-1.5 mt-3">

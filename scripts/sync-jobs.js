@@ -225,13 +225,19 @@ function extractRequirements(description) {
 }
 
 function extractPostChannel(channelField) {
-  if (!channelField || !channelField.length) return '社群内部';
-  return channelField.map(c => typeof c === 'string' ? c : c?.text || '').join(' ').trim() || '社群内部';
+  if (!channelField || !channelField.length) return '';
+  return channelField.map(c => typeof c === 'string' ? c : c?.text || '').join(' ').trim();
 }
 
 function isInternalOnly(channelField) {
   const channel = extractPostChannel(channelField).toLowerCase();
-  return channel.includes('社群内部') || channel.includes('internal community');
+  // 空字段默认全渠道（保守原则：不匿名化）
+  if (!channel) return false;
+  // 包含"以上全部渠道" → 全渠道
+  if (channel.includes('以上全部渠道') || channel.includes('all the channels')) return false;
+  // 仅包含"社群内部" → 内部
+  if (channel.includes('社群内部') || channel.includes('internal community')) return true;
+  return false;
 }
 
 function extractDescription(description) {
@@ -242,26 +248,73 @@ function extractDescription(description) {
   return fullText.slice(0, 150) + '...';
 }
 
+const JOB_KEYWORDS = ['译员', '翻译', '本地化', 'LQA', '审校', '校对', '文案', '编辑', '运营', '销售', '开发', '测试', '项目经理', '产品经理', '助理', '专员', '主管', '总监', '实习生', '辅导', '老师', '专家', '策划', '经理', '顾问', '口译', '笔译'];
+const FORM_TAGS = ['线上', '线下', '全职', '兼职', '外包', '远程', '正编', '实习', 'outsource', 'outsourced', 'freelance', 'part-time', 'full-time'];
+
+function hasJobKeyword(text) {
+  return JOB_KEYWORDS.some(kw => text.includes(kw));
+}
+
+function isPureFormTag(text) {
+  const t = text.toLowerCase().replace(/[\/\s\-，,]+/g, ' ').trim();
+  const words = t.split(' ').filter(w => w.length > 0);
+  if (words.length === 0) return true;
+  // 如果所有词都是形式标签，认为是纯形式标签
+  return words.every(w => FORM_TAGS.some(tag => w.includes(tag.toLowerCase())));
+}
+
 function cleanTitle(jobNameField) {
-  // 先从 jobNameField 提取原始 title
-  let raw = '';
+  // 收集所有候选文本
+  const candidates = [];
   if (jobNameField && jobNameField.length) {
     for (const n of jobNameField) {
       const text = (typeof n === 'string' ? n : n?.text || '').trim();
-      if (text && text.length > 2 && !/^(线上|线下|全职|兼职|外包|远程)$/.test(text)) {
-        raw = text;
-        break;
+      if (text && text.length > 2) {
+        // 多行文本拆分成单独的行
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 2);
+        candidates.push(...lines);
       }
     }
   }
-  if (!raw) return '翻译/本地化岗位';
+  
+  if (!candidates.length) return '翻译/本地化岗位';
 
+  // 第一优先：找包含岗位关键词且不是纯形式标签的行
+  for (const line of candidates) {
+    if (hasJobKeyword(line) && !isPureFormTag(line)) {
+      return finalizeTitle(line);
+    }
+  }
+  
+  // 第二优先：找包含岗位关键词的行（即使看起来像形式标签）
+  for (const line of candidates) {
+    if (hasJobKeyword(line)) {
+      return finalizeTitle(line);
+    }
+  }
+  
+  // 第三优先：找不是纯形式标签的行
+  for (const line of candidates) {
+    if (!isPureFormTag(line)) {
+      return finalizeTitle(line);
+    }
+  }
+  
+  // 兜底：取第一行
+  return finalizeTitle(candidates[0]);
+}
+
+function finalizeTitle(raw) {
   let cleaned = raw.trim();
-  // 1. 去掉换行符及之后的内容（只保留第一行）
-  cleaned = cleaned.split('\n')[0].trim();
-  // 2. 去掉括号及里面的内容（中文括号和英文括号）
+  
+  // 去掉常见前缀
+  cleaned = cleaned.replace(/^(岗位|需求|职位|招聘)[:：]\s*/i, '');
+  cleaned = cleaned.replace(/^\d+[、.\s]+/, '');
+  
+  // 去掉括号及里面的内容
   cleaned = cleaned.replace(/（.*?）/g, '').replace(/\(.*?\)/g, '').trim();
-  // 3. 去掉常见薪资/地点混入的关键词及之后的内容
+  
+  // 去掉常见薪资/地点混入的关键词及之后的内容
   const salaryKeywords = ['k/', '/月', '/小时', '元/', '元/天', '元/千字', '薪资', '月薪', '时薪', '日薪', '元每月', 'k每月'];
   for (const kw of salaryKeywords) {
     const idx = cleaned.toLowerCase().indexOf(kw.toLowerCase());
@@ -270,8 +323,20 @@ function cleanTitle(jobNameField) {
       break;
     }
   }
-  // 4. 去掉地点混入（末尾的冒号/横线）
-  cleaned = cleaned.replace(/[：:-]$/, '').trim();
+  
+  // 去掉末尾常见干扰词
+  cleaned = cleaned.replace(/(岗位|招募|招聘|需求|急招)[，,]*$/i, '');
+  cleaned = cleaned.replace(/[：:\-]$/, '').trim();
+  
+  // 截断：中文超过 15 字截断，英文超过 40 字符截断
+  const isMostlyChinese = /[\u4e00-\u9fff]/.test(cleaned);
+  const maxLen = isMostlyChinese ? 15 : 40;
+  if (cleaned.length > maxLen) {
+    cleaned = cleaned.slice(0, maxLen) + '...';
+  }
+  
+  return cleaned || '翻译/本地化岗位';
+}
   // 5. 截断：中文超过 15 字截断，英文超过 40 字符截断
   const isMostlyChinese = /[\u4e00-\u9fff]/.test(cleaned);
   const maxLen = isMostlyChinese ? 15 : 40;
