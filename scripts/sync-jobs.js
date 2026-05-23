@@ -121,30 +121,57 @@ function anonymizeCompany(company, desc) {
 
 function extractType(jobName, formField) {
   const types = [];
-  const text = `${jobName || ''} ${JSON.stringify(formField || [])}`.toLowerCase();
-  if (text.includes('全职') || text.includes('正编')) types.push('全职');
-  if (text.includes('兼职') || text.includes('part-time')) types.push('兼职');
-  if (text.includes('外包') || text.includes('outsourced') || text.includes('freelance')) types.push('外包');
-  if (text.includes('线上') || text.includes('远程') || text.includes('remote')) types.push('线上');
-  if (text.includes('线下') || text.includes('坐班') || text.includes('现场') || text.includes('on-site')) types.push('线下');
-  if (text.includes('实习生') || text.includes('实习')) types.push('实习');
+  const formTexts = (formField || []).map(f => typeof f === 'string' ? f.toLowerCase() : JSON.stringify(f).toLowerCase());
+  const formText = formTexts.join(' ');
+
+  // 优先从飞书「岗位形式」字段读取
+  if (formText.includes('全职') || formText.includes('正编')) types.push('全职');
+  if (formText.includes('兼职')) types.push('兼职');
+  if (formText.includes('外包')) types.push('外包');
+  if (formText.includes('线上') || formText.includes('远程')) types.push('线上');
+  if (formText.includes('线下')) types.push('线下');
+  if (formText.includes('实习')) types.push('实习');
+
+  if (types.length > 0) return [...new Set(types)];
+
+  // fallback：从岗位名称中推断
+  const nameText = (jobName || '').toLowerCase();
+  if (nameText.includes('全职') || nameText.includes('正编')) types.push('全职');
+  if (nameText.includes('兼职') || nameText.includes('part-time')) types.push('兼职');
+  if (nameText.includes('外包') || nameText.includes('outsourced') || nameText.includes('freelance')) types.push('外包');
+  if (nameText.includes('线上') || nameText.includes('远程') || nameText.includes('remote')) types.push('线上');
+  if (nameText.includes('线下') || nameText.includes('坐班') || nameText.includes('现场') || nameText.includes('on-site')) types.push('线下');
+  if (nameText.includes('实习生') || nameText.includes('实习')) types.push('实习');
+
   if (types.length === 0) {
-    if (text.includes('翻译') || text.includes('lqa')) types.push('兼职', '线上');
+    if (nameText.includes('翻译') || nameText.includes('lqa')) types.push('兼职', '线上');
     else types.push('兼职');
   }
   return [...new Set(types)];
 }
 
-function extractLocation(jobName, comments) {
+function extractLocation(jobName, comments, formField) {
+  // 优先读取飞书「岗位形式」字段中的线上/线下信息
+  const formText = JSON.stringify(formField || []).toLowerCase();
+  if (formText.includes('线上') || formText.includes('远程')) return '远程';
+  if (formText.includes('线下')) {
+    // 从岗位名称和备注中提取城市名
+    const text = `${jobName || ''} ${comments || ''}`;
+    const cities = ['上海', '北京', '广州', '深圳', '杭州', '成都', '苏州', '珠海', '长沙', '厦门', '汕头', '南京', '武汉', '郑州', '东京'];
+    const locations = cities.filter(city => text.includes(city));
+    if (locations.length > 0) return locations.join('/');
+    return '线下（具体待定）';
+  }
+
+  // 从岗位名称和备注中提取城市名和远程关键词
   const text = `${jobName || ''} ${comments || ''}`;
   const cities = ['上海', '北京', '广州', '深圳', '杭州', '成都', '苏州', '珠海', '长沙', '厦门', '汕头', '南京', '武汉', '郑州', '东京'];
   const locations = cities.filter(city => text.includes(city));
   if (text.includes('远程') || text.includes('线上')) locations.push('远程');
-  if (locations.length === 0) {
-    if (text.includes('线下') || text.includes('坐班')) return '线下（具体待定）';
-    return '远程';
-  }
-  return locations.join('/');
+  if (locations.length > 0) return locations.join('/');
+
+  // 不明确时不展示，返回空字符串
+  return '';
 }
 
 function extractLanguagePair(description) {
@@ -268,7 +295,7 @@ function processRecord(record, index) {
     : company;
   const formField = getFieldArray(fields, '岗位形式（兼职/外包/全职/线上/线下）Recruitment Positions (Part-time/Outsourced/Full-time/Remote/On-site)');
   const jobType = extractType(title, formField);
-  const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'));
+  const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'), formField);
   const salary = extractSalary(getFieldArray(fields, '薪资区间（请标注按原文/译文千字/时薪/天/月等）Salary Bands (per word count/hour/day/month/project etc.)'));
   const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);

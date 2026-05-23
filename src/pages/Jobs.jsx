@@ -316,11 +316,15 @@ const Jobs = () => {
                           
                           <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                             <span>{job.company}</span>
-                            <span className="text-gray-300">·</span>
-                            <span className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {job.location}
-                            </span>
+                            {job.location && (
+                              <>
+                                <span className="text-gray-300">·</span>
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
+                                  {job.location}
+                                </span>
+                              </>
+                            )}
                           </div>
                           
                           <div className="flex flex-wrap gap-1.5 mt-2">
