@@ -215,20 +215,45 @@ function extractDescription(description) {
   return fullText.slice(0, 150) + '...';
 }
 
-function extractJobName(jobNameField) {
-  if (!jobNameField || !jobNameField.length) return '翻译/本地化岗位';
-  for (const n of jobNameField) {
-    const text = (typeof n === 'string' ? n : n?.text || '').trim();
-    if (text && text.length > 2 && !/^(线上|线下|全职|兼职|外包|远程)$/.test(text)) return text.slice(0, 50);
+function cleanTitle(title) {
+  if (!title) return '翻译/本地化岗位';
+  
+  let cleaned = title.trim();
+  
+  // 1. 去掉换行符及之后的内容（只保留第一行）
+  cleaned = cleaned.split('\n')[0].trim();
+  
+  // 2. 去掉括号及里面的内容（中文括号和英文括号）
+  cleaned = cleaned.replace(/（.*?）/g, '').replace(/\(.*?\)/g, '').trim();
+  
+  // 3. 去掉常见薪资/地点混入的关键词及之后的内容
+  const salaryKeywords = ['k/', '/月', '/小时', '元/', '元/天', '元/千字', '薪资', '月薪', '时薪', '日薪', '元每月', 'k每月'];
+  for (const kw of salaryKeywords) {
+    const idx = cleaned.toLowerCase().indexOf(kw.toLowerCase());
+    if (idx !== -1) {
+      cleaned = cleaned.slice(0, idx).trim();
+      break;
+    }
   }
-  return '翻译/本地化岗位';
+  
+  // 4. 去掉地点混入（常见城市名后跟冒号/括号/横线的情况已在上面处理，这里去掉末尾的冒号/横线）
+  cleaned = cleaned.replace(/[：:-]$/, '').trim();
+  
+  // 5. 截断：中文超过 15 字截断，英文超过 40 字符截断
+  const isMostlyChinese = /[\u4e00-\u9fff]/.test(cleaned);
+  const maxLen = isMostlyChinese ? 15 : 40;
+  if (cleaned.length > maxLen) {
+    cleaned = cleaned.slice(0, maxLen) + '...';
+  }
+  
+  return cleaned || '翻译/本地化岗位';
 }
 
 function processRecord(record, index) {
   const fields = record.fields || {};
   const company = getFieldText(fields, '公司/个人 Company/Individual Name');
   const jobNameField = getFieldArray(fields, '招募岗位名称');
-  const title = extractJobName(jobNameField);
+  const title = cleanTitle(extractJobName(jobNameField));
   const descField = getFieldArray(fields, '岗位要求Job Description');
   const channelField = getFieldArray(fields, '希望发布渠道 Where to post your job?');
   const internalOnly = isInternalOnly(channelField);
