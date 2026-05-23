@@ -5,9 +5,11 @@ import jobsData from '../data/jobs.json';
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedNav, setSelectedNav] = useState('全部职位');
   const [selectedLocation, setSelectedLocation] = useState('全部');
   const [selectedType, setSelectedType] = useState('全部');
   const [selectedStatus, setSelectedStatus] = useState('全部');
+  const [showQrModal, setShowQrModal] = useState(false);
 
   // 筛选选项
   const locationFilters = ['全部', '远程', '线下'];
@@ -32,6 +34,13 @@ const Jobs = () => {
 
   const filteredJobs = useMemo(() => {
     let jobs = jobsData;
+    
+    // 左侧导航筛选
+    if (selectedNav === '远程工作') {
+      jobs = jobs.filter(job => 
+        job.location?.includes('远程') || job.type?.some(t => t.includes('线上'))
+      );
+    }
     
     // 搜索
     if (searchQuery) {
@@ -80,7 +89,7 @@ const Jobs = () => {
     }
     
     return jobs;
-  }, [searchQuery, selectedCompany, selectedLocation, selectedType, selectedStatus]);
+  }, [searchQuery, selectedCompany, selectedNav, selectedLocation, selectedType, selectedStatus]);
 
   // 岗位形式标签颜色
   const typeColorMap = {
@@ -93,9 +102,46 @@ const Jobs = () => {
     '正编': 'bg-indigo-50 text-indigo-600'
   };
 
+  // 左侧导航
+  const navItems = [
+    { key: '全部职位', label: '全部职位', count: jobsData.length },
+    { key: '远程工作', label: '远程工作', count: jobsData.filter(j => j.location?.includes('远程') || j.type?.some(t => t.includes('线上'))).length },
+  ];
+
+  // 处理导航切换
+  const handleNavClick = (key) => {
+    setSelectedNav(key);
+    setSelectedCompany(null);
+  };
+
+  // 处理公司点击
+  const handleCompanyClick = (companyName) => {
+    setSelectedCompany(companyName);
+    setSelectedNav('公司');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 顶部搜索栏 */}
+      {/* 二维码弹窗 */}
+      {showQrModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">加入找工互助群</h3>
+            <p className="text-sm text-gray-500 mb-4">扫码添加圈圈微信，拉你进找工互助群</p>
+            <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center text-gray-400 text-sm">
+              [二维码占位]
+            </div>
+            <button 
+              onClick={() => setShowQrModal(false)}
+              className="mt-4 w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
+            >
+              关闭
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 顶部栏 */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
@@ -114,34 +160,60 @@ const Jobs = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      {/* CTA 按钮区域 */}
+      <div className="max-w-7xl mx-auto px-4 pt-6">
+        <div className="flex gap-3 mb-6">
+          <button 
+            onClick={() => setShowQrModal(true)}
+            className="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            <span>加入找工互助群</span>
+            <span className="text-lg">🤝</span>
+          </button>
+          <a 
+            href="https://my.feishu.cn/share/base/form/shrcnYRafbYwZdamWrbs3Tf1cfzCjngh" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+          >
+            <span>岗位帮招（提交需求）</span>
+            <span className="text-gray-400">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 pb-6">
         <div className="flex gap-6">
-          {/* 左侧公司列表 */}
+          {/* 左侧导航 */}
           <div className="w-64 shrink-0">
             <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-100">
-                <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  公司列表
-                </h2>
-                <p className="text-xs text-gray-500 mt-1">共 {companies.length} 家公司</p>
-              </div>
-              <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+              {/* 导航项 */}
+              {navItems.map(item => (
                 <button
-                  onClick={() => setSelectedCompany(null)}
-                  className={`w-full px-4 py-3 text-left text-sm transition-colors border-b border-gray-50 ${
-                    selectedCompany === null ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
+                  key={item.key}
+                  onClick={() => handleNavClick(item.key)}
+                  className={`w-full px-4 py-3 text-left text-sm transition-colors border-b border-gray-50 flex items-center justify-between ${
+                    selectedNav === item.key ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
-                  全部公司
-                  <span className="ml-2 text-xs text-gray-400">({jobsData.length})</span>
+                  <span>{item.label}</span>
+                  <span className="text-xs text-gray-400">{item.count}</span>
                 </button>
+              ))}
+              
+              {/* 公司列表标题 */}
+              <div className="px-4 py-2 border-b border-gray-50 bg-gray-50/50">
+                <span className="text-xs font-medium text-gray-400">公司列表</span>
+              </div>
+              
+              {/* 公司项 */}
+              <div className="max-h-[calc(100vh-380px)] overflow-y-auto">
                 {companies.map(company => (
                   <button
                     key={company.name}
-                    onClick={() => setSelectedCompany(company.name)}
-                    className={`w-full px-4 py-3 text-left text-sm transition-colors border-b border-gray-50 ${
-                      selectedCompany === company.name ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
+                    onClick={() => handleCompanyClick(company.name)}
+                    className={`w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-50 ${
+                      selectedCompany === company.name && selectedNav === '公司' ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -223,7 +295,7 @@ const Jobs = () => {
               <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                 <h2 className="font-semibold text-gray-900 flex items-center gap-2">
                   <Briefcase className="w-4 h-4" />
-                  在招职位
+                  {selectedNav === '公司' ? selectedCompany : selectedNav}
                 </h2>
                 <span className="text-sm text-gray-500">共 {filteredJobs.length} 个岗位</span>
               </div>
