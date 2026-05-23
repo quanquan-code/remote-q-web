@@ -253,27 +253,6 @@ function cleanTitle(jobNameField) {
   }
   return cleaned || '翻译/本地化岗位';
 }
-  const salaryKeywords = ['k/', '/月', '/小时', '元/', '元/天', '元/千字', '薪资', '月薪', '时薪', '日薪', '元每月', 'k每月'];
-  for (const kw of salaryKeywords) {
-    const idx = cleaned.toLowerCase().indexOf(kw.toLowerCase());
-    if (idx !== -1) {
-      cleaned = cleaned.slice(0, idx).trim();
-      break;
-    }
-  }
-  
-  // 4. 去掉地点混入（常见城市名后跟冒号/括号/横线的情况已在上面处理，这里去掉末尾的冒号/横线）
-  cleaned = cleaned.replace(/[：:-]$/, '').trim();
-  
-  // 5. 截断：中文超过 15 字截断，英文超过 40 字符截断
-  const isMostlyChinese = /[\u4e00-\u9fff]/.test(cleaned);
-  const maxLen = isMostlyChinese ? 15 : 40;
-  if (cleaned.length > maxLen) {
-    cleaned = cleaned.slice(0, maxLen) + '...';
-  }
-  
-  return cleaned || '翻译/本地化岗位';
-}
 
 function processRecord(record, index) {
   const fields = record.fields || {};
