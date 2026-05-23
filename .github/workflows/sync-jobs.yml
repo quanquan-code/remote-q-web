@@ -2,10 +2,9 @@ name: Sync Jobs from Feishu
 
 on:
   schedule:
-    # 每天凌晨 3:00 UTC+8 运行 (即前一天 19:00 UTC)
+    # 每天凌晨 3:00 UTC+8 运行
     - cron: '0 19 * * *'
   workflow_dispatch:
-    # 允许手动触发
 
 permissions:
   contents: write
@@ -24,10 +23,11 @@ jobs:
 
       - name: Sync data from Feishu
         env:
-          FEISHU_PERSONAL_ACCESS_TOKEN: ${{ secrets.FEISHU_PERSONAL_ACCESS_TOKEN }}
+          FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           FEISHU_APP_TOKEN: ${{ secrets.FEISHU_APP_TOKEN || 'YRafbYwZdamWrbs3Tf1cfzCjngh' }}
           FEISHU_TABLE_ID: ${{ secrets.FEISHU_TABLE_ID || 'tblwTldArcyMpOOP' }}
-        run: node scripts/github-sync.js
+        run: node scripts/sync-jobs.js
 
       - name: Commit and push if changed
         run: |
