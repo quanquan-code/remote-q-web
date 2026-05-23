@@ -272,7 +272,10 @@ function processRecord(record, index) {
   const salary = extractSalary(getFieldArray(fields, '薪资区间（请标注按原文/译文千字/时薪/天/月等）Salary Bands (per word count/hour/day/month/project etc.)'));
   const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);
+  const fullDescription = getFieldText(fields, '岗位要求Job Description');
   const requirements = extractRequirements(descField);
+  const deadline = getFieldText(fields, '截止日期 End Date');
+  const comments = getFieldText(fields, '其他补充说明 Other comments');
   const submitTime = fields['提交时间'];
   const postedAt = submitTime ? new Date(submitTime).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
 
@@ -286,7 +289,10 @@ function processRecord(record, index) {
     languagePair,
     gameType: null,
     description,
+    fullDescription,
     requirements,
+    deadline,
+    comments,
     postedAt,
     internalOnly: false,
   };

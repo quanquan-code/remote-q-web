@@ -5,6 +5,7 @@ import Search from './pages/Search';
 import ProjectDetail from './pages/ProjectDetail';
 import CompanyDetail from './pages/CompanyDetail';
 import Jobs from './pages/Jobs';
+import JobDetail from './pages/JobDetail';
 import Showcase from './pages/Showcase';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/company/:id" element={<CompanyDetail />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/job/:id" element={<JobDetail />} />
         <Route path="/showcase" element={<Showcase />} />
       </Routes>
     </div>

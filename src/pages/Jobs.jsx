@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, MapPin, Clock, Globe, Building2, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import jobsData from '../data/jobs.json';
 
 const Jobs = () => {
@@ -308,7 +309,9 @@ const Jobs = () => {
                         
                         <div className="min-w-0 flex-1">
                           <h3 className="text-base font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
-                            {job.title}
+                            <Link to={`/job/${job.id}`} className="hover:underline">
+                              {job.title}
+                            </Link>
                           </h3>
                           
                           <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
