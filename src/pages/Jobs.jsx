@@ -128,8 +128,8 @@ const Jobs = () => {
           <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">加入找工互助群</h3>
             <p className="text-sm text-gray-500 mb-4">扫码添加圈圈微信，拉你进找工互助群</p>
-            <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center text-gray-400 text-sm">
-              [二维码占位]
+            <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
+              <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
             </div>
             <button 
               onClick={() => setShowQrModal(false)}
