@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Jobs />} />
         <Route path="/search" element={<Search />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/company/:id" element={<CompanyDetail />} />
@@ -22,4 +22,4 @@ function App() {
   );
 }
 
-export default App;// trigger redeploy 1779519768
+export default App;// trigger redeploy 1779519769
