@@ -337,14 +337,6 @@ function finalizeTitle(raw) {
   
   return cleaned || '翻译/本地化岗位';
 }
-  // 5. 截断：中文超过 15 字截断，英文超过 40 字符截断
-  const isMostlyChinese = /[\u4e00-\u9fff]/.test(cleaned);
-  const maxLen = isMostlyChinese ? 15 : 40;
-  if (cleaned.length > maxLen) {
-    cleaned = cleaned.slice(0, maxLen) + '...';
-  }
-  return cleaned || '翻译/本地化岗位';
-}
 
 function processRecord(record, index) {
   const fields = record.fields || {};
