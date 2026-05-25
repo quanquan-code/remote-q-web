@@ -276,7 +276,7 @@ const Jobs = () => {
               <div className="mt-4 space-y-3">
                 <button
                   onClick={() => setShowQrModal(true)}
-                  className="w-full flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+                  className="w-full flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors"
                 >
                   <Users className="w-4 h-4" />
                   <span>圈圈翻译与本地化社群</span>
@@ -286,7 +286,7 @@ const Jobs = () => {
                   href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center gap-2 px-4 py-3 border-2 border-gray-900 text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 text-gray-900 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   <span>人才帮招</span>
