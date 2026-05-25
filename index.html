@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Remote Q - 翻译公司点评</title>
+    <script>
+      // 防御性跳转：如果落在根域名，强制回到 www
+      if (window.location.hostname === 'remoteq.xyz') {
+        window.location.replace('https://www.remoteq.xyz' + window.location.pathname + window.location.search + window.location.hash);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
