@@ -53,14 +53,14 @@ const JobDetail = () => {
   const isFullTime = job.type?.some(t => t.includes('全职')) || job.type?.some(t => t.includes('正编'));
 
   const typeColorMap = {
-    '全职': 'bg-blue-50 text-blue-600',
-    '兼职': 'bg-green-50 text-green-600',
-    '外包': 'bg-orange-50 text-orange-600',
-    '线上': 'bg-purple-50 text-purple-600',
-    '线下': 'bg-red-50 text-red-600',
-    '实习': 'bg-gray-50 text-gray-600',
-    '正编': 'bg-indigo-50 text-indigo-600',
-    '内部': 'bg-pink-50 text-pink-600'
+    '全职': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '兼职': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '外包': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '远程': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
+    '内部': 'border border-pink-200 bg-pink-50 text-pink-600'
   };
 
   return (
