@@ -133,10 +133,12 @@ const JobDetail = () => {
           </div>
 
           <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-2 gap-4">
-            <div>
-              <span className="text-xs text-gray-400">薪资</span>
-              <p className="text-base font-semibold text-gray-900 mt-1">{job.salary}</p>
-            </div>
+            {job.salary && (
+              <div>
+                <span className="text-xs text-gray-400">薪资</span>
+                <p className="text-base font-semibold text-gray-900 mt-1">{job.salary}</p>
+              </div>
+            )}
             <div>
               <span className="text-xs text-gray-400">发布日期</span>
               <p className="text-sm text-gray-900 mt-1 flex items-center gap-1">

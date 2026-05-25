@@ -422,9 +422,11 @@ const Jobs = () => {
                       </div>
 
                       <div className="text-right shrink-0 ml-4">
-                        <div className="text-base font-semibold text-gray-900">
-                          {job.salary}
-                        </div>
+                        {job.salary && (
+                          <div className="text-base font-semibold text-gray-900">
+                            {job.salary}
+                          </div>
+                        )}
                         <div className="flex items-center justify-end gap-1 mt-1 text-xs text-gray-400">
                           <Clock className="w-3 h-3" />
                           {job.postedAt}
