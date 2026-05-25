@@ -191,13 +191,79 @@ function extractLanguagePair(description) {
   return null;
 }
 
-function extractSalary(salaryField) {
-  if (!salaryField || !salaryField.length) return '薪资面议';
+function extractSalary(salaryField, jobType, title, fullDesc) {
+  if (!salaryField || !salaryField.length) return { salary: '薪资面议', benefits: '' };
   const texts = salaryField.map(s => typeof s === 'string' ? s : s?.text || '').filter(Boolean);
-  if (!texts.length) return '薪资面议';
-  const salary = texts[0];
-  if (salary.includes('私聊') || salary.includes('面议') || salary.includes('详谈')) return '薪资面议';
-  return salary;
+  if (!texts.length) return { salary: '薪资面议', benefits: '' };
+  const raw = texts.join(' ').replace(/\s+/g, ' ').trim();
+  if (raw.includes('私聊') || raw.includes('面议') || raw.includes('详谈')) return { salary: '薪资面议', benefits: '' };
+
+  const isFullTime = (jobType || []).some(t => t.includes('全职') || t.includes('正编'));
+  const isPartTime = (jobType || []).some(t => t.includes('兼职') || t.includes('外包'));
+
+  // ========== 全职：XXK*XX薪 ==========
+  if (isFullTime) {
+    // 匹配月薪范围，如 15-20k, 15k-20k, 15k~20k, 15-20K/月, 15000-20000/月
+    const monthlyMatch = raw.match(/(\d+\s*[\-~～至到]\s*\d+|\d+)[\s\/]*[kK千]?(?:\/月|每月|每月 salary)?/);
+    const salaryPart = monthlyMatch ? monthlyMatch[0] : raw;
+
+    // 提取数字并转为 K 格式
+    const nums = salaryPart.match(/\d+/g);
+    let kRange = '';
+    if (nums) {
+      const kNums = nums.map(n => {
+        const v = parseInt(n);
+        if (v >= 1000) return (v / 1000).toFixed(0); // 15000 → 15
+        return v.toString(); // 15 → 15
+      });
+      if (kNums.length === 1) kRange = `${kNums[0]}K`;
+      else kRange = `${kNums[0]}-${kNums[kNums.length - 1]}K`;
+    }
+
+    // 提取薪数（13薪/14薪/16薪/12薪）
+    const monthMatch = raw.match(/(\d+)[\s]*薪/);
+    const monthBonus = monthMatch ? `*${monthMatch[1]}薪` : '';
+
+    // 提取福利关键词
+    const benefitKeywords = ['五险一金', '六险一金', '七险一金', '补充医疗', '商业保险', '公积金', '社保',
+      '饭补', '餐补', '交通补', '通讯补', '住房补贴', '租房补贴', '安家费', '节日福利',
+      '带薪年假', '弹性工作', '远程办公', '双休', '加班费', '绩效奖金', '年终奖',
+      '股票', '期权', '股权', '团建', '旅游', '体检', '健身房', '零食'];
+    const foundBenefits = [];
+    for (const kw of benefitKeywords) {
+      if (raw.includes(kw)) foundBenefits.push(kw);
+    }
+    const benefits = foundBenefits.join('，');
+
+    const salary = kRange + (monthBonus || '') || raw;
+    return { salary, benefits };
+  }
+
+  // ========== 兼职/外包：XXX元/千字 ==========
+  if (isPartTime || !isFullTime) {
+    // 匹配 150-200元/千字, $0.05-0.08/word, 200元/千字原文, etc.
+    const unitMatch = raw.match(/[\d\.\s\-~～至到]+(?:元|人民币|RMB|美元|\$|美金|USD)?\s*[\/\-]\s*(?:千字|千字原文|千字译文|千字源文|千字目标文|word|小时|时|天|日|月|个项目|case|单)/i);
+    let salary = '';
+    if (unitMatch) {
+      salary = unitMatch[0].replace(/\s+/g, '').replace(/[\-~～至到]/g, '-');
+      // 标准化货币前缀
+      salary = salary.replace(/^(\d)/, '¥$1'); // 默认加人民币符号
+      salary = salary.replace(/USD\s*|\$\s*/i, '$');
+    }
+
+    // 提取额外福利/说明
+    const extraKeywords = ['长期合作', '量大', '稳定', '急招', '测试通过', '试译通过', '月结', '周结', '日结',
+      '预付', '定金', '尾款', '含税', '税后', '净价'];
+    const foundExtras = [];
+    for (const kw of extraKeywords) {
+      if (raw.includes(kw)) foundExtras.push(kw);
+    }
+    const benefits = foundExtras.join('，');
+
+    return { salary: salary || raw, benefits };
+  }
+
+  return { salary: raw, benefits: '' };
 }
 
 function extractRequirements(description) {
@@ -347,14 +413,24 @@ function processRecord(record, index) {
     : company;
   const formField = getFieldArray(fields, '岗位形式（兼职/外包/全职/线上/线下）Recruitment Positions (Part-time/Outsourced/Full-time/Remote/On-site)');
   const jobType = extractType(title, formField);
+  const salaryResult = extractSalary(
+    getFieldArray(fields, '薪资区间（请标注按原文/译文千字/时薪/天/月等）Salary Bands (per word count/hour/day/month/project etc.)'),
+    jobType,
+    title,
+    getFieldText(fields, '岗位要求Job Description')
+  );
   const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'), formField);
-  const salary = extractSalary(getFieldArray(fields, '薪资区间（请标注按原文/译文千字/时薪/天/月等）Salary Bands (per word count/hour/day/month/project etc.)'));
+  const salary = salaryResult.salary;
+  let comments = getFieldText(fields, '其他补充说明 Other comments');
+  // 把薪资中提取的福利信息追加到备注
+  if (salaryResult.benefits) {
+    comments = comments ? `${comments}\n\n【待遇】${salaryResult.benefits}` : `【待遇】${salaryResult.benefits}`;
+  }
   const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);
   const fullDescription = getFieldText(fields, '岗位要求Job Description');
   const requirements = extractRequirements(descField);
   const deadline = getFieldText(fields, '截止日期 End Date');
-  const comments = getFieldText(fields, '其他补充说明 Other comments');
   const submitTime = fields['提交时间'];
   const postedAt = submitTime ? new Date(submitTime).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
 
