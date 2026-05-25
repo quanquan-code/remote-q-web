@@ -124,8 +124,9 @@ function extractType(jobName, formField) {
   const formTexts = (formField || []).map(f => typeof f === 'string' ? f.toLowerCase() : JSON.stringify(f).toLowerCase());
   const formText = formTexts.join(' ');
 
-  // 优先从飞书「岗位形式」字段读取
-  if (formText.includes('全职') || formText.includes('正编')) types.push('全职');
+  // 优先从飞书「岗位形式」字段读取（每个类型独立判断，允许多选）
+  if (formText.includes('全职')) types.push('全职');
+  if (formText.includes('正编')) types.push('正编');
   if (formText.includes('兼职')) types.push('兼职');
   if (formText.includes('外包')) types.push('外包');
   if (formText.includes('线上') || formText.includes('远程')) types.push('远程');
@@ -136,7 +137,8 @@ function extractType(jobName, formField) {
 
   // fallback：从岗位名称中推断
   const nameText = (jobName || '').toLowerCase();
-  if (nameText.includes('全职') || nameText.includes('正编')) types.push('全职');
+  if (nameText.includes('全职')) types.push('全职');
+  if (nameText.includes('正编')) types.push('正编');
   if (nameText.includes('兼职') || nameText.includes('part-time')) types.push('兼职');
   if (nameText.includes('外包') || nameText.includes('outsourced') || nameText.includes('freelance')) types.push('外包');
   if (nameText.includes('线上') || nameText.includes('远程') || nameText.includes('remote')) types.push('远程');
