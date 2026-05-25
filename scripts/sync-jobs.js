@@ -453,15 +453,9 @@ function processRecord(record, index) {
   };
 
   if (internalOnly) {
-    const descTexts = descField.map(d => typeof d === 'string' ? d : d?.text || '').join(' ').toLowerCase();
     return {
       ...job,
-      title: descTexts.includes('游戏') || descTexts.includes('lqa') || descTexts.includes('localization') ? '游戏本地化岗位' : '翻译/本地化岗位',
       company: '社群内部需求',
-      description: descTexts.includes('游戏') ? '游戏本地化相关岗位，适合有游戏翻译经验的译者。' : '翻译/本地化相关岗位，具体要求请联系社群管理员了解。',
-      requirements: [],
-      location: job.location.includes('远程') ? '远程' : '主要城市',
-      salary: job.salary && !job.salary.includes('面议') && /\d{4,}/.test(job.salary) ? '具有竞争力的薪资' : job.salary,
       type: [...new Set([...job.type, '内部'])],
       internalOnly: true,
     };
