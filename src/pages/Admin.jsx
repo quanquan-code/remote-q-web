@@ -24,6 +24,7 @@ function exportJobsJson(overrides) {
       ...(ov.title !== undefined && { title: ov.title }),
       ...(ov.company !== undefined && { company: ov.company }),
       ...(ov.salary !== undefined && { salary: ov.salary }),
+      ...(ov.salaryNote !== undefined && { salaryNote: ov.salaryNote }),
       ...(ov.deadline !== undefined && { deadline: ov.deadline }),
       ...(ov.location !== undefined && { location: ov.location }),
       ...(ov.type !== undefined && { type: ov.type }),

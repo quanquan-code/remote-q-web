@@ -20,6 +20,7 @@ function applyOverrides(jobs) {
       ...(o.title !== undefined && { title: o.title }),
       ...(o.company !== undefined && { company: o.company }),
       ...(o.salary !== undefined && { salary: o.salary }),
+      ...(o.salaryNote !== undefined && { salaryNote: o.salaryNote }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.location !== undefined && { location: o.location }),
       ...(o.type !== undefined && { type: o.type }),
@@ -133,10 +134,10 @@ const JobDetail = () => {
           </div>
 
           <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-2 gap-4">
-            {job.salary && (
+            {(job.salary || job.salaryNote) && (
               <div>
                 <span className="text-xs text-gray-400">薪资</span>
-                <p className="text-base font-semibold text-gray-900 mt-1">{job.salary}</p>
+                <p className="text-base font-semibold text-gray-900 mt-1 whitespace-pre-wrap">{job.salary || job.salaryNote}</p>
               </div>
             )}
             <div>

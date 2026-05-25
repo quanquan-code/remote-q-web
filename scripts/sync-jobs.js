@@ -197,16 +197,16 @@ function extractLanguagePair(description) {
 }
 
 function extractSalary(salaryField, jobType, title, fullDesc) {
-  if (!salaryField || !salaryField.length) return { salary: '', benefits: '' };
+  if (!salaryField || !salaryField.length) return { salary: '', benefits: '', salaryNote: '' };
   const texts = salaryField.map(s => typeof s === 'string' ? s : s?.text || '').filter(Boolean);
-  if (!texts.length) return { salary: '', benefits: '' };
+  if (!texts.length) return { salary: '', benefits: '', salaryNote: '' };
   const raw = texts.join(' ').replace(/\s+/g, ' ').trim();
-  if (raw.includes('私聊') || raw.includes('面议') || raw.includes('详谈')) return { salary: '', benefits: '' };
+  if (raw.includes('私聊') || raw.includes('面议') || raw.includes('详谈')) return { salary: '', benefits: '', salaryNote: raw };
 
   // 如果文本不含明显薪资关键词且过长，视为说明文字而非薪资
   const salaryKeywords = ['元', '¥', '$', 'usd', 'k/', '/月', '/小时', '/天', '/千字', '千字', '时薪', '日薪', '月薪', '底薪', '提成', '佣金', '薪', '元/', '块', 'rmb'];
   const hasSalaryKeyword = salaryKeywords.some(kw => raw.toLowerCase().includes(kw));
-  if (!hasSalaryKeyword && raw.length > 30) return { salary: '', benefits: '' };
+  if (!hasSalaryKeyword && raw.length > 30) return { salary: '', benefits: '', salaryNote: raw };
 
   const isFullTime = (jobType || []).some(t => t.includes('全职') || t.includes('正编'));
   const isPartTime = (jobType || []).some(t => t.includes('兼职') || t.includes('外包'));
@@ -246,7 +246,7 @@ function extractSalary(salaryField, jobType, title, fullDesc) {
     const benefits = foundBenefits.join('，');
 
     const salary = kRange + (monthBonus || '') || raw;
-    return { salary, benefits };
+    return { salary, benefits, salaryNote: '' };
   }
 
   // ========== 兼职/外包：XXX元/千字 ==========
@@ -270,10 +270,10 @@ function extractSalary(salaryField, jobType, title, fullDesc) {
     }
     const benefits = foundExtras.join('，');
 
-    return { salary: salary || raw, benefits };
+    return { salary: salary || raw, benefits, salaryNote: salary ? '' : raw };
   }
 
-  return { salary: raw, benefits: '' };
+  return { salary: raw, benefits: '', salaryNote: '' };
 }
 
 function extractRequirements(description) {
@@ -537,6 +537,7 @@ function processRecord(record, index) {
   const locationSupplement = getFieldText(fields, '岗位形式（兼职/外包/全职/线上/线下）Recruitment Positions (Part-time/Outsourced/Full-time/Remote/On-site)-线下（请补充地点）-补充内容');
   const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'), formField, locationSupplement);
   const salary = salaryResult.salary;
+  const salaryNote = salaryResult.salaryNote;
   let comments = getFieldText(fields, '其他补充说明 Other comments');
   // 把薪资中提取的福利信息追加到备注
   if (salaryResult.benefits) {
@@ -561,6 +562,7 @@ function processRecord(record, index) {
     type: jobType,
     location,
     salary,
+    salaryNote,
     languagePair,
     gameType: null,
     description,

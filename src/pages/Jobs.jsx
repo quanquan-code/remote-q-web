@@ -20,6 +20,7 @@ function applyOverrides(jobs) {
       ...(o.title !== undefined && { title: o.title }),
       ...(o.company !== undefined && { company: o.company }),
       ...(o.salary !== undefined && { salary: o.salary }),
+      ...(o.salaryNote !== undefined && { salaryNote: o.salaryNote }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.location !== undefined && { location: o.location }),
       ...(o.type !== undefined && { type: o.type }),
