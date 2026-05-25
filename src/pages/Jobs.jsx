@@ -256,14 +256,14 @@ const Jobs = () => {
       <div className="max-w-7xl mx-auto px-4 pb-6 pt-6">
         <div className="flex gap-6">
           {/* 左侧导航 */}
-          <div className="w-64 shrink-0">
+          <div className="w-64 shrink-0 space-y-4">
+            {/* 导航卡片 */}
             <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-              {/* 导航项 */}
               {navItems.map(item => (
                 <button
                   key={item.key}
                   onClick={() => handleNavClick(item.key)}
-                  className={`w-full px-4 py-3 text-left text-sm transition-colors border-b border-gray-50 flex items-center justify-between ${
+                  className={`w-full px-4 py-3 text-left text-sm transition-colors border-b border-gray-50 last:border-b-0 flex items-center justify-between ${
                     selectedNav === item.key ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
@@ -271,28 +271,28 @@ const Jobs = () => {
                   <span className="text-xs text-gray-400">{item.count}</span>
                 </button>
               ))}
+            </div>
 
-              {/* CTA 区域 */}
-              <div className="mt-4 space-y-3">
-                <button
-                  onClick={() => setShowQrModal(true)}
-                  className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-                >
-                  <Users className="w-4 h-4" />
-                  <span>圈圈翻译与本地化社群</span>
-                  <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">1,300+ 人</span>
-                </button>
-                <a
-                  href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 text-gray-900 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>人才帮招</span>
-                  <span className="ml-auto text-xs text-gray-400">我也要发布</span>
-                </a>
-              </div>
+            {/* CTA 卡片 */}
+            <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
+              <button
+                onClick={() => setShowQrModal(true)}
+                className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+              >
+                <Users className="w-4 h-4" />
+                <span>圈圈翻译与本地化社群</span>
+                <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">1,300+ 人</span>
+              </button>
+              <a
+                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 text-gray-900 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>人才帮招</span>
+                <span className="ml-auto text-xs text-gray-400">我也要发布</span>
+              </a>
             </div>
           </div>
 
