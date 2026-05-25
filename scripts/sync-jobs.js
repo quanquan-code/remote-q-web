@@ -343,31 +343,43 @@ function cleanTitle(jobNameField) {
     }
   }
   
-  if (!candidates.length) return '翻译/本地化岗位';
+  if (!candidates.length) return { title: '翻译/本地化岗位', overflow: '' };
 
+  let result;
   // 第一优先：找包含岗位关键词且不是纯形式标签的行
   for (const line of candidates) {
     if (hasJobKeyword(line) && !isPureFormTag(line)) {
-      return finalizeTitle(line);
+      result = finalizeTitle(line);
+      break;
     }
   }
   
   // 第二优先：找包含岗位关键词的行（即使看起来像形式标签）
-  for (const line of candidates) {
-    if (hasJobKeyword(line)) {
-      return finalizeTitle(line);
+  if (!result) {
+    for (const line of candidates) {
+      if (hasJobKeyword(line)) {
+        result = finalizeTitle(line);
+        break;
+      }
     }
   }
   
   // 第三优先：找不是纯形式标签的行
-  for (const line of candidates) {
-    if (!isPureFormTag(line)) {
-      return finalizeTitle(line);
+  if (!result) {
+    for (const line of candidates) {
+      if (!isPureFormTag(line)) {
+        result = finalizeTitle(line);
+        break;
+      }
     }
   }
   
   // 兜底：取第一行
-  return finalizeTitle(candidates[0]);
+  if (!result) {
+    result = finalizeTitle(candidates[0]);
+  }
+  
+  return result || { title: '翻译/本地化岗位', overflow: '' };
 }
 
 function finalizeTitle(raw) {
@@ -394,16 +406,35 @@ function finalizeTitle(raw) {
   cleaned = cleaned.replace(/(岗位|招募|招聘|需求|急招)[，,]*$/i, '');
   cleaned = cleaned.replace(/[：:\-]$/, '').trim();
   
-  // 保留完整标题，不做截断（前端根据场景自行控制展示长度）
+  // 截断超长标题（中文超过25字，英文超过50字符），多余内容返回
+  const isChinese = /[\u4e00-\u9fa5]/.test(cleaned);
+  const maxLen = isChinese ? 25 : 50;
+  if (cleaned.length > maxLen) {
+    // 尝试在标点处优雅截断
+    let cutIndex = maxLen;
+    const delimiters = isChinese ? ['。', '，', '；', '、', ' '] : ['.', ',', ';', ' '];
+    for (const d of delimiters) {
+      const idx = cleaned.lastIndexOf(d, maxLen);
+      if (idx > maxLen * 0.5) {
+        cutIndex = idx + 1;
+        break;
+      }
+    }
+    const overflow = cleaned.slice(cutIndex).trim();
+    cleaned = cleaned.slice(0, cutIndex).trim();
+    return { title: cleaned || '翻译/本地化岗位', overflow };
+  }
   
-  return cleaned || '翻译/本地化岗位';
+  return { title: cleaned || '翻译/本地化岗位', overflow: '' };
 }
 
 function processRecord(record, index) {
   const fields = record.fields || {};
   const company = getFieldText(fields, '公司/个人 Company/Individual Name');
   const jobNameField = getFieldArray(fields, '招募岗位名称');
-  const title = cleanTitle(jobNameField);
+  const titleResult = cleanTitle(jobNameField);
+  const title = titleResult.title;
+  const titleOverflow = titleResult.overflow;
   const descField = getFieldArray(fields, '岗位要求Job Description');
   const channelField = getFieldArray(fields, '希望发布渠道 Where to post your job?');
   const internalOnly = isInternalOnly(channelField);
@@ -426,9 +457,13 @@ function processRecord(record, index) {
   if (salaryResult.benefits) {
     comments = comments ? `${comments}\n\n【待遇】${salaryResult.benefits}` : `【待遇】${salaryResult.benefits}`;
   }
+  // 把标题截断的溢出内容追加到 fullDescription 开头
+  let fullDescription = getFieldText(fields, '岗位要求Job Description');
+  if (titleOverflow) {
+    fullDescription = titleOverflow + (fullDescription ? '\n\n' + fullDescription : '');
+  }
   const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);
-  const fullDescription = getFieldText(fields, '岗位要求Job Description');
   const requirements = extractRequirements(descField);
   const deadline = getFieldText(fields, '截止日期 End Date');
   const submitTime = fields['提交时间'];
