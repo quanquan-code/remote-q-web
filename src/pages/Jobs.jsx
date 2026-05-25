@@ -521,20 +521,4 @@ const Jobs = () => {
   );
 };
 
-export default Jobs;        </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Jobs;</div>
-      </div>
-    </div>
-  );
-};
-
 export default Jobs;
