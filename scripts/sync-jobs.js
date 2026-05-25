@@ -203,6 +203,11 @@ function extractSalary(salaryField, jobType, title, fullDesc) {
   const raw = texts.join(' ').replace(/\s+/g, ' ').trim();
   if (raw.includes('私聊') || raw.includes('面议') || raw.includes('详谈')) return { salary: '薪资面议', benefits: '' };
 
+  // 如果文本不含明显薪资关键词且过长，视为说明文字而非薪资
+  const salaryKeywords = ['元', '¥', '$', 'usd', 'k/', '/月', '/小时', '/天', '/千字', '千字', '时薪', '日薪', '月薪', '底薪', '提成', '佣金', '薪', '元/', '块', 'rmb'];
+  const hasSalaryKeyword = salaryKeywords.some(kw => raw.toLowerCase().includes(kw));
+  if (!hasSalaryKeyword && raw.length > 30) return { salary: '薪资面议', benefits: '' };
+
   const isFullTime = (jobType || []).some(t => t.includes('全职') || t.includes('正编'));
   const isPartTime = (jobType || []).some(t => t.includes('兼职') || t.includes('外包'));
 
