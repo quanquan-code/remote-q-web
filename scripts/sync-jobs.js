@@ -150,8 +150,13 @@ function extractType(jobName, formField) {
   return [...new Set(types)];
 }
 
-function extractLocation(jobName, comments, formField) {
-  // 优先读取飞书「岗位形式」字段中的线上/线下信息
+function extractLocation(jobName, comments, formField, locationSupplement) {
+  // 优先使用飞书表格里「线下（请补充地点）-补充内容」字段
+  if (locationSupplement && locationSupplement.trim()) {
+    return locationSupplement.trim();
+  }
+
+  // 其次读取飞书「岗位形式」字段中的线上/线下信息
   const formText = JSON.stringify(formField || []).toLowerCase();
   if (formText.includes('线上') || formText.includes('远程')) return '远程';
   if (formText.includes('线下')) {
@@ -314,6 +319,56 @@ function extractRequirements(description) {
   return requirements;
 }
 
+function splitJobDescription(description) {
+  if (!description || !description.length) return { duties: '', requirements: [] };
+  const texts = description.map(d => typeof d === 'string' ? d : d?.text || '').filter(Boolean);
+  const fullText = texts.join('\n');
+
+  const dutyMarkers = ['【岗位职责】', '岗位职责', '工作职责', '【工作职责】', 'Job Responsibilities', 'Responsibilities'];
+  const reqMarkers = ['【岗位要求】', '【任职要求】', '岗位要求', '任职要求', '职位要求', '【职位要求】', 'Requirements', 'Qualifications'];
+
+  // 找职责和要求的起始位置
+  let dutyStart = 0;
+  let reqStart = -1;
+  for (const marker of reqMarkers) {
+    const idx = fullText.indexOf(marker);
+    if (idx !== -1) { reqStart = idx; break; }
+  }
+
+  // 提取岗位职责：从 dutyStart 到 reqStart 之前
+  let duties = reqStart !== -1 ? fullText.slice(dutyStart, reqStart).trim() : fullText.trim();
+  // 去掉开头的职责标记
+  for (const marker of dutyMarkers) {
+    if (duties.startsWith(marker)) {
+      duties = duties.slice(marker.length).trim();
+      break;
+    }
+  }
+
+  // 提取岗位要求
+  const requirements = [];
+  if (reqStart !== -1) {
+    let reqSection = fullText.slice(reqStart).trim();
+    // 去掉开头的要求标记
+    for (const marker of reqMarkers) {
+      if (reqSection.startsWith(marker)) {
+        reqSection = reqSection.slice(marker.length).trim();
+        break;
+      }
+    }
+    const lines = reqSection.split('\n').map(l => l.trim()).filter(l => l.length > 5);
+    for (const line of lines) {
+      const clean = line.replace(/^(\d+[.、]\s*|[-•·*\s]+)/, '').trim();
+      if (clean && clean.length > 5 && clean.length < 120 && !clean.includes('：')) {
+        requirements.push(clean);
+      }
+      if (requirements.length >= 8) break;
+    }
+  }
+
+  return { duties, requirements };
+}
+
 function extractPostChannel(channelField) {
   if (!channelField || !channelField.length) return '';
   return channelField.map(c => typeof c === 'string' ? c : c?.text || '').join(' ').trim();
@@ -474,21 +529,22 @@ function processRecord(record, index) {
     title,
     getFieldText(fields, '岗位要求Job Description')
   );
-  const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'), formField);
+  const locationSupplement = getFieldText(fields, '岗位形式（兼职/外包/全职/线上/线下）Recruitment Positions (Part-time/Outsourced/Full-time/Remote/On-site)-线下（请补充地点）-补充内容');
+  const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'), formField, locationSupplement);
   const salary = salaryResult.salary;
   let comments = getFieldText(fields, '其他补充说明 Other comments');
   // 把薪资中提取的福利信息追加到备注
   if (salaryResult.benefits) {
     comments = comments ? `${comments}\n\n【待遇】${salaryResult.benefits}` : `【待遇】${salaryResult.benefits}`;
   }
-  // 把标题截断的溢出内容追加到 fullDescription 开头
-  let fullDescription = getFieldText(fields, '岗位要求Job Description');
+  // 分离岗位职责和岗位要求，避免详情页重复
+  const { duties, requirements } = splitJobDescription(descField);
+  let fullDescription = duties;
   if (titleOverflow) {
     fullDescription = titleOverflow + (fullDescription ? '\n\n' + fullDescription : '');
   }
   const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);
-  const requirements = extractRequirements(descField);
   const deadline = getFieldText(fields, '截止日期 End Date');
   const submitTime = fields['提交时间'];
   const postedAt = submitTime ? new Date(submitTime).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
