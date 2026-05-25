@@ -1,7 +1,31 @@
 import React, { useState, useMemo } from 'react';
 import { Search, MapPin, Clock, Globe, Building2, Briefcase } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import jobsData from '../data/jobs.json';
+import rawJobsData from '../data/jobs.json';
+
+// ===== localStorage 覆盖（管理后台写入） =====
+const STORAGE_KEY = 'remote_q_admin_overrides';
+function getOverrides() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
+}
+function applyOverrides(jobs) {
+  const ov = getOverrides();
+  return jobs.map(job => {
+    const o = ov[job.id];
+    if (!o) return job;
+    return {
+      ...job,
+      ...(o.hidden !== undefined && { hidden: o.hidden }),
+      ...(o.title !== undefined && { title: o.title }),
+      ...(o.company !== undefined && { company: o.company }),
+      ...(o.salary !== undefined && { salary: o.salary }),
+      ...(o.deadline !== undefined && { deadline: o.deadline }),
+      ...(o.location !== undefined && { location: o.location }),
+      ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
+    };
+  });
+}
 
 // 解析截止日期状态
 function parseDeadline(deadline) {
@@ -66,6 +90,8 @@ function getDeadlineStatus(deadline) {
   return 'open';
 }
 
+const jobsData = applyOverrides(rawJobsData);
+
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -98,6 +124,9 @@ const Jobs = () => {
 
   const filteredJobs = useMemo(() => {
     let jobs = jobsData;
+    
+    // 过滤已隐藏岗位
+    jobs = jobs.filter(job => !job.hidden);
     
     // 左侧导航筛选
     if (selectedNav === '远程工作') {

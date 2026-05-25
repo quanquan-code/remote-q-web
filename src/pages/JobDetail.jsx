@@ -1,7 +1,33 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle } from 'lucide-react';
-import jobsData from '../data/jobs.json';
+import rawJobsData from '../data/jobs.json';
+
+// ===== localStorage 覆盖（管理后台写入） =====
+const STORAGE_KEY = 'remote_q_admin_overrides';
+function getOverrides() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
+}
+function applyOverrides(jobs) {
+  const ov = getOverrides();
+  return jobs.map(job => {
+    const o = ov[job.id];
+    if (!o) return job;
+    return {
+      ...job,
+      ...(o.hidden !== undefined && { hidden: o.hidden }),
+      ...(o.title !== undefined && { title: o.title }),
+      ...(o.company !== undefined && { company: o.company }),
+      ...(o.salary !== undefined && { salary: o.salary }),
+      ...(o.deadline !== undefined && { deadline: o.deadline }),
+      ...(o.location !== undefined && { location: o.location }),
+      ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
+    };
+  });
+}
+
+const jobsData = applyOverrides(rawJobsData);
 
 const JobDetail = () => {
   const { id } = useParams();

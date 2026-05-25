@@ -7,6 +7,7 @@ import CompanyDetail from './pages/CompanyDetail';
 import Jobs from './pages/Jobs';
 import JobDetail from './pages/JobDetail';
 import Showcase from './pages/Showcase';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/job/:id" element={<JobDetail />} />
         <Route path="/showcase" element={<Showcase />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </div>
   );
