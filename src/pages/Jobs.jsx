@@ -3,6 +3,69 @@ import { Search, MapPin, Clock, Globe, Building2, Briefcase } from 'lucide-react
 import { Link } from 'react-router-dom';
 import jobsData from '../data/jobs.json';
 
+// 解析截止日期状态
+function parseDeadline(deadline) {
+  if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
+  const dl = deadline.toLowerCase();
+
+  // 长期类
+  if (['长期', 'long term', 'longterm', 'no time limitation', 'until we hired'].some(k => dl.includes(k))) {
+    return { type: 'longterm' };
+  }
+
+  // 尽快/招到即止（无明确截止日期，算开放）
+  if (['尽快', '招到即止', '招到为止', '找到合适的即止', 'asap', '不定', '待定'].some(k => dl.includes(k))) {
+    return { type: 'open' };
+  }
+
+  // 未提供/空
+  if (['未提供', '未明确', '无', 'undefined', 'n/a'].some(k => dl.includes(k))) {
+    return { type: 'open' };
+  }
+
+  // 尝试提取日期
+  let m;
+  // YYYY-MM-DD / YYYY/MM/DD
+  m = deadline.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  // YYYY.MM.DD
+  m = deadline.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  // YYYY年M月D日
+  m = deadline.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  // M月D日（今年）
+  m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
+  if (m) {
+    const year = new Date().getFullYear();
+    return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+  }
+
+  // M/D
+  m = deadline.match(/(\d{1,2})\/(\d{1,2})/);
+  if (m) {
+    const year = new Date().getFullYear();
+    return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+  }
+
+  return { type: 'unknown' };
+}
+
+function getDeadlineStatus(deadline) {
+  const p = parseDeadline(deadline);
+  if (p.type === 'longterm') return 'longterm';
+  if (p.type === 'date') {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    if (p.date < today) return 'expired';
+    return 'open';
+  }
+  return 'open';
+}
+
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -88,6 +151,15 @@ const Jobs = () => {
     if (selectedStatus === '在招') {
       jobs = jobs.filter(job => !job.internalOnly);
     }
+    
+    // 过期岗位自动沉底，其余按发布日期从新到旧
+    jobs.sort((a, b) => {
+      const sa = getDeadlineStatus(a.deadline);
+      const sb = getDeadlineStatus(b.deadline);
+      if (sa === 'expired' && sb !== 'expired') return 1;
+      if (sa !== 'expired' && sb === 'expired') return -1;
+      return b.postedAt.localeCompare(a.postedAt);
+    });
     
     return jobs;
   }, [searchQuery, selectedCompany, selectedNav, selectedLocation, selectedType, selectedStatus]);
@@ -355,6 +427,26 @@ const Jobs = () => {
                           <Clock className="w-3 h-3" />
                           {job.postedAt}
                         </div>
+                        {(() => {
+                          const status = getDeadlineStatus(job.deadline);
+                          if (status === 'expired') {
+                            return (
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
+                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span className="text-red-500">已截止</span>
+                              </div>
+                            );
+                          }
+                          if (status === 'longterm') {
+                            return (
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
+                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                <span className="text-green-600">长期</span>
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
                       </div>
                     </div>
                   ))}
