@@ -389,8 +389,8 @@ const Jobs = () => {
                             </Link>
                           </h3>
                           
-                          <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                            <span>{job.company}</span>
+                          <div className="flex items-center gap-2 mt-1 text-sm text-gray-500 min-w-0">
+                            <span className="truncate max-w-[200px]">{job.company}</span>
                             {job.location && (
                               <>
                                 <span className="text-gray-300">·</span>
