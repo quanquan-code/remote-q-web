@@ -328,12 +328,7 @@ function finalizeTitle(raw) {
   cleaned = cleaned.replace(/(岗位|招募|招聘|需求|急招)[，,]*$/i, '');
   cleaned = cleaned.replace(/[：:\-]$/, '').trim();
   
-  // 截断：中文超过 15 字截断，英文超过 40 字符截断
-  const isMostlyChinese = /[\u4e00-\u9fff]/.test(cleaned);
-  const maxLen = isMostlyChinese ? 15 : 40;
-  if (cleaned.length > maxLen) {
-    cleaned = cleaned.slice(0, maxLen) + '...';
-  }
+  // 保留完整标题，不做截断（前端根据场景自行控制展示长度）
   
   return cleaned || '翻译/本地化岗位';
 }
