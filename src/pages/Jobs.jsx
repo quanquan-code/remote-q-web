@@ -165,7 +165,7 @@ const Jobs = () => {
                 加入社群
               </button>
               <a 
-                href="https://my.feishu.cn/base/YRafbYwZdamWrbs3Tf1cfzCjngh" 
+                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"

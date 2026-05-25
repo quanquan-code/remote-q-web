@@ -20,7 +20,7 @@ const Home = () => {
 
   const handlePublish = () => {
     // 跳转到飞书社群帮招问卷
-    window.open('https://my.feishu.cn/base/YRafbYwZdamWrbs3Tf1cfzCjngh', '_blank');
+    window.open('https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg', '_blank');
   };
 
   const handleProfile = () => {
