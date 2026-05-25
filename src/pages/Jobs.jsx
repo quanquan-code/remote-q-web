@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Clock, Globe, Building2, Briefcase } from 'lucide-react';
+import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import rawJobsData from '../data/jobs.json';
 
@@ -268,6 +268,28 @@ const Jobs = () => {
                   <span className="text-xs text-gray-400">{item.count}</span>
                 </button>
               ))}
+
+              {/* CTA 区域 */}
+              <div className="mt-4 space-y-3">
+                <button
+                  onClick={() => setShowQrModal(true)}
+                  className="w-full flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>加入社群</span>
+                  <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">1,300+ 人</span>
+                </button>
+                <a
+                  href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center gap-2 px-4 py-3 border-2 border-gray-900 text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>人才帮招</span>
+                  <span className="ml-auto text-xs text-gray-400">我也要发布</span>
+                </a>
+              </div>
             </div>
           </div>
 
