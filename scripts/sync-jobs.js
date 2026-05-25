@@ -270,24 +270,48 @@ function extractRequirements(description) {
   if (!description || !description.length) return [];
   const texts = description.map(d => typeof d === 'string' ? d : d?.text || '').filter(Boolean);
   const fullText = texts.join('\n');
-  const lines = fullText.split('\n').map(l => l.trim()).filter(l => l);
+
+  // 策略：先找"岗位要求/任职要求/Requirements"标记，只提取该部分的内容
+  const requirementMarkers = ['岗位要求', '任职要求', '【岗位要求】', '【任职要求】', '职位要求', '【职位要求】', 'Requirements', 'Qualifications'];
+  const dutyMarkers = ['岗位职责', '【岗位职责】', '工作职责', '【工作职责】', 'Job Responsibilities', 'Responsibilities'];
+
+  let startIdx = -1;
+  let endIdx = fullText.length;
+
+  // 找 requirements 部分的起始位置
+  for (const marker of requirementMarkers) {
+    const idx = fullText.indexOf(marker);
+    if (idx !== -1) {
+      startIdx = idx + marker.length;
+      break;
+    }
+  }
+
+  // 如果没找到 requirements 标记，返回空（避免把岗位职责混进去）
+  if (startIdx === -1) return [];
+
+  // 找结束位置（下一个部分的开头）
+  for (const marker of [...dutyMarkers, ...requirementMarkers]) {
+    const idx = fullText.indexOf(marker, startIdx);
+    if (idx !== -1 && idx > startIdx) {
+      endIdx = Math.min(endIdx, idx);
+    }
+  }
+
+  const requirementSection = fullText.slice(startIdx, endIdx);
+  const lines = requirementSection.split('\n').map(l => l.trim()).filter(l => l.length > 5);
+
   const requirements = [];
   for (const line of lines) {
-    if (/^(\d+[.、]|[-•·*]|【要求】|【任职要求】|Requirements|Qualifications)/i.test(line)) {
-      const clean = line.replace(/^(\d+[.、]|[-•·*]|\s)+/, '').trim();
-      if (clean && clean.length > 5 && clean.length < 100) requirements.push(clean);
+    // 去掉编号前缀
+    const clean = line.replace(/^(\d+[.、]\s*|[-•·*\s]+)/, '').trim();
+    if (clean && clean.length > 5 && clean.length < 120 && !clean.includes('：')) {
+      requirements.push(clean);
     }
-    if (requirements.length >= 5) break;
+    if (requirements.length >= 8) break;
   }
-  if (!requirements.length) {
-    for (const line of lines) {
-      if (['经验', '证书', '学历', '能力', '优先', '负责', '要求', '熟悉', '精通'].some(kw => line.includes(kw))) {
-        if (line.length > 5 && line.length < 100) requirements.push(line);
-      }
-      if (requirements.length >= 3) break;
-    }
-  }
-  return requirements.slice(0, 5);
+
+  return requirements;
 }
 
 function extractPostChannel(channelField) {
