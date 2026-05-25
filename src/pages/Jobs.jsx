@@ -251,6 +251,16 @@ const Jobs = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 pb-6 pt-6">
+        {/* Hero 区域 */}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900">
+            Remote Q @圈圈翻译与本地化社群
+          </h2>
+          <p className="text-sm text-gray-500 mt-2 max-w-xl mx-auto">
+            运营5年+，汇聚5700+语言服务行业同仁，推动外语人兼职实习就业找出路！
+          </p>
+        </div>
+
         <div className="flex gap-6">
           {/* 左侧导航 */}
           <div className="w-64 shrink-0 space-y-4">
