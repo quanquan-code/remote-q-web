@@ -22,6 +22,7 @@ function applyOverrides(jobs) {
       ...(o.salary !== undefined && { salary: o.salary }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.location !== undefined && { location: o.location }),
+      ...(o.type !== undefined && { type: o.type }),
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
     };
   });

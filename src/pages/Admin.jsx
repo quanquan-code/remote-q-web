@@ -202,7 +202,7 @@ const Admin = () => {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   <div>
                     <label className="text-xs text-gray-400 block mb-1">岗位名称</label>
                     <input
@@ -219,6 +219,26 @@ const Admin = () => {
                       value={overrides[job.id]?.company ?? job.company ?? ''}
                       onChange={e => updateField(job.id, 'company', e.target.value)}
                       className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-400 block mb-1">类型（逗号分隔）</label>
+                    <input
+                      type="text"
+                      value={overrides[job.id]?.type ? overrides[job.id].type.join(',') : (job.type?.join(',') ?? '')}
+                      onChange={e => updateField(job.id, 'type', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
+                      className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
+                      placeholder="如：全职,外包,线下"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-400 block mb-1">地点</label>
+                    <input
+                      type="text"
+                      value={overrides[job.id]?.location ?? job.location ?? ''}
+                      onChange={e => updateField(job.id, 'location', e.target.value)}
+                      className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
+                      placeholder="如：上海 / 远程"
                     />
                   </div>
                   <div>
