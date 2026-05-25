@@ -34,6 +34,11 @@ function parseDeadline(deadline) {
   if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
   const dl = deadline.toLowerCase();
 
+  // 急招类（最高优先级）
+  if (['急招', '急聘', '紧急招聘', 'urgent hiring'].some(k => dl.includes(k))) {
+    return { type: 'urgent' };
+  }
+
   // 长期类
   if (['长期', 'long term', 'longterm', 'no time limitation', 'until we hired'].some(k => dl.includes(k))) {
     return { type: 'longterm' };
@@ -82,6 +87,7 @@ function parseDeadline(deadline) {
 
 function getDeadlineStatus(deadline) {
   const p = parseDeadline(deadline);
+  if (p.type === 'urgent') return 'urgent';
   if (p.type === 'longterm') return 'longterm';
   if (p.type === 'date') {
     const today = new Date();
@@ -90,6 +96,11 @@ function getDeadlineStatus(deadline) {
     return 'open';
   }
   return 'open';
+}
+
+// 格式化日期
+function formatDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 }
 
 const jobsData = applyOverrides(rawJobsData);
@@ -439,16 +450,42 @@ const Jobs = () => {
                           {job.postedAt}
                         </div>
                         {(() => {
-                          const status = getDeadlineStatus(job.deadline);
-                          if (status === 'expired') {
+                          const p = parseDeadline(job.deadline);
+                          const today = new Date();
+                          today.setHours(0,0,0,0);
+
+                          // 急招：火焰图标
+                          if (p.type === 'urgent') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                                <span className="text-red-500">已截止</span>
+                                <span>🔥</span>
+                                <span className="text-orange-600 font-medium">急招</span>
                               </div>
                             );
                           }
-                          if (status === 'longterm') {
+
+                          // 有明确日期且已过期：红点 + 已过期
+                          if (p.type === 'date' && p.date < today) {
+                            return (
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
+                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span className="text-red-500">已过期</span>
+                              </div>
+                            );
+                          }
+
+                          // 有明确日期且未过期：绿点 + 日期
+                          if (p.type === 'date' && p.date >= today) {
+                            return (
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
+                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                <span className="text-green-600">{formatDate(p.date)}</span>
+                              </div>
+                            );
+                          }
+
+                          // 长期：绿点 + 长期
+                          if (p.type === 'longterm') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
                                 <span className="w-2 h-2 rounded-full bg-green-500"></span>
@@ -456,7 +493,14 @@ const Jobs = () => {
                               </div>
                             );
                           }
-                          return null;
+
+                          // 无截止日期/招到即止/尽快/open/unknown：绿点 + 在招
+                          return (
+                            <div className="mt-1 flex items-center justify-end gap-1 text-xs">
+                              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                              <span className="text-green-600">在招</span>
+                            </div>
+                          );
                         })()}
                       </div>
                     </div>
