@@ -128,7 +128,7 @@ function extractType(jobName, formField) {
   if (formText.includes('全职') || formText.includes('正编')) types.push('全职');
   if (formText.includes('兼职')) types.push('兼职');
   if (formText.includes('外包')) types.push('外包');
-  if (formText.includes('线上') || formText.includes('远程')) types.push('线上');
+  if (formText.includes('线上') || formText.includes('远程')) types.push('远程');
   if (formText.includes('线下')) types.push('线下');
   if (formText.includes('实习')) types.push('实习');
 
@@ -139,12 +139,12 @@ function extractType(jobName, formField) {
   if (nameText.includes('全职') || nameText.includes('正编')) types.push('全职');
   if (nameText.includes('兼职') || nameText.includes('part-time')) types.push('兼职');
   if (nameText.includes('外包') || nameText.includes('outsourced') || nameText.includes('freelance')) types.push('外包');
-  if (nameText.includes('线上') || nameText.includes('远程') || nameText.includes('remote')) types.push('线上');
+  if (nameText.includes('线上') || nameText.includes('远程') || nameText.includes('remote')) types.push('远程');
   if (nameText.includes('线下') || nameText.includes('坐班') || nameText.includes('现场') || nameText.includes('on-site')) types.push('线下');
   if (nameText.includes('实习生') || nameText.includes('实习')) types.push('实习');
 
   if (types.length === 0) {
-    if (nameText.includes('翻译') || nameText.includes('lqa')) types.push('兼职', '线上');
+    if (nameText.includes('翻译') || nameText.includes('lqa')) types.push('兼职', '远程');
     else types.push('兼职');
   }
   return [...new Set(types)];

@@ -32,7 +32,7 @@
       "全职",
       "外包"
     ],
-    "location": "",
+    "location": "上海",
     "salary": "14K*14薪",
     "languagePair": "中↔英",
     "gameType": null,
@@ -59,7 +59,7 @@
     "type": [
       "全职"
     ],
-    "location": "",
+    "location": "杭州滨江",
     "salary": "20-40K*15薪",
     "languagePair": "中↔英",
     "gameType": null,
@@ -159,7 +159,7 @@
     "company": "GameSpark",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "线下"
     ],
     "location": "远程",
@@ -179,7 +179,7 @@
     "title": "GRE辅导老师",
     "company": "社群内部需求",
     "type": [
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "远程",
@@ -242,7 +242,7 @@
     "company": "江苏省舜禹信息技术有限公司（舜禹环球通）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "130-150元/原文千字，根据测试结果再具体商议",
@@ -262,7 +262,7 @@
     "company": "江苏省舜禹信息技术有限公司（舜禹环球通）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "按时计费，各语种价格预算不一，可带小时价格投递",
@@ -282,7 +282,7 @@
     "company": "中电金信语言服务部门（联系人：熊芳祺 Funky，资源经理）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "未明确，需发送简历时附带报价（翻译/审校/小时任务）",
@@ -302,9 +302,9 @@
     "company": "个人（未提供姓名）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "1-3万RMB（看匹配度）",
     "languagePair": null,
     "gameType": null,
@@ -322,7 +322,7 @@
     "company": "统一翻译",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥150-200元/千字",
@@ -342,7 +342,7 @@
     "company": "江苏省舜禹信息技术有限公司（舜禹环球通）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "按时计费，次月结算（各语种预算不一，需带价格投递）",
@@ -362,7 +362,7 @@
     "company": "LangLink Localization",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥30/小时",
@@ -419,7 +419,7 @@
     "company": "北京悠仕科技公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥100-160元/千字",
@@ -439,7 +439,7 @@
     "company": "广州市天河区菁英翻译服务部",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "MTPE和翻译均为 120-150 元/千词",
@@ -459,7 +459,7 @@
     "company": "邱天烨，个人成立的本地化团队https://www.notion.so/meowcalizationstudio/Meowcalization-Studio-2da2b6e319888049a76ec26955446054?source=copy_link\n译员全员本硕博985&211及QS前50高校，已交付16款游戏翻译文本",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥75元/千字",
@@ -479,7 +479,7 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "远程",
@@ -520,7 +520,7 @@
     "title": "1位：英韩翻译/Eng-Kor",
     "company": "社群内部需求",
     "type": [
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "远程",
@@ -562,7 +562,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "根据试译评估结果而定，在千字150-250这个区间，本地化水平优秀者可再协商",
     "languagePair": null,
     "gameType": null,
@@ -608,7 +608,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "译员可自行报价翻译、校对与MTPE的每字费率。",
     "languagePair": "中↔韩",
     "gameType": null,
@@ -626,7 +626,7 @@
     "company": "个人",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥200RMB/小时",
@@ -646,10 +646,10 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "具体洽谈",
     "languagePair": "中↔英",
     "gameType": null,
@@ -667,10 +667,10 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "¥280元/千字",
     "languagePair": "中↔日",
     "gameType": null,
@@ -688,7 +688,7 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "远程",
@@ -711,7 +711,7 @@
       "兼职",
       "内部"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "参考招聘平台",
     "languagePair": null,
     "gameType": null,
@@ -730,7 +730,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "月工资一万",
     "languagePair": null,
     "gameType": null,
@@ -753,7 +753,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "15-18k/月， 五险一金，包食宿，带薪年假，生日福利等等～",
     "languagePair": null,
     "gameType": null,
@@ -771,7 +771,7 @@
     "company": "珠海金山数字网络科技有限公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥150-500元/千字",
@@ -793,7 +793,7 @@
     "company": "上海创凌翻译有限公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "千字中文130元至180元",
@@ -842,7 +842,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "报价将根据试译质量有所波动，实际薪资可根据译员能力协调 英语翻译千字120-220 英语审校价格为翻译价格的一半，最低不低于千字80 英语LQA译员可自带报价 德语翻译及LQA译员可自带报价",
     "languagePair": null,
     "gameType": null,
@@ -867,10 +867,10 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "50元/分钟",
     "languagePair": "中↔日",
     "gameType": null,
@@ -888,7 +888,7 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "成都/远程",
@@ -929,7 +929,7 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "上海/深圳",
@@ -952,7 +952,7 @@
       "兼职",
       "内部"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "500元",
     "languagePair": "中↔英",
     "gameType": null,
@@ -970,7 +970,7 @@
     "company": "珠海金山数字网络科技有限公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "可自行报价，只接受团队",
@@ -990,7 +990,7 @@
     "company": "亮语翻译沈阳有限公司",
     "type": [
       "全职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "5-7K",
@@ -1010,9 +1010,9 @@
     "company": "叠纸游戏",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "行业标准",
     "languagePair": null,
     "gameType": null,
@@ -1030,7 +1030,7 @@
     "company": "汕头市稻谷娱加文化有限公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "300块一部短剧，大约45-70分钟。",
@@ -1069,7 +1069,7 @@
     "company": "珠海金山数字网络科技有限公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "LQA时薪：90RMB 日语本地化月薪：14000-18000RMB",
@@ -1129,7 +1129,7 @@
       "兼职",
       "线下"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "日结800-1000一天，符合条件优秀者可谈",
     "languagePair": null,
     "gameType": null,
@@ -1167,7 +1167,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "¥100/天",
     "languagePair": null,
     "gameType": null,
@@ -1185,9 +1185,9 @@
     "company": "个人翻译需求",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "中翻英，千字200-300左右，需要有医疗器械/生物医药翻译相关翻译经验，或为医学医药方向在读研究生",
     "languagePair": null,
     "gameType": null,
@@ -1205,7 +1205,7 @@
     "company": "江苏舜禹信息技术有限公司（舜禹环球通）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥40元/小时",
@@ -1225,7 +1225,7 @@
     "company": "亮语翻译（沈阳）有限公司",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "无责底薪3000加每条客户线索10元",
@@ -1245,9 +1245,9 @@
     "company": "上海莉莉丝游戏",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "25-40RMB/h 具体看语种和测试结果",
     "languagePair": "中↔英",
     "gameType": null,
@@ -1270,7 +1270,7 @@
     "company": "OneSky Technology and Service (China) Limited",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "申请的时候携带上费率告知即可 （因为这边也想看看译员对自己实力的自信，同时涉及语对比较多，所以这边希望是招募启事中不公开费率，一般在线内我们都会给译员提供预期费率）",
@@ -1360,7 +1360,7 @@
     "company": "江苏省舜禹信息技术有限公司（舜禹环球通）",
     "type": [
       "兼职",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "¥40元/小时",
@@ -1408,7 +1408,7 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
     "location": "远程",
@@ -1429,10 +1429,10 @@
     "company": "社群内部需求",
     "type": [
       "兼职",
-      "线上",
+      "远程",
       "内部"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "¥90/千字",
     "languagePair": "中↔英",
     "gameType": null,
@@ -1470,7 +1470,7 @@
     "type": [
       "兼职",
       "外包",
-      "线上"
+      "远程"
     ],
     "location": "远程",
     "salary": "千字/400",
