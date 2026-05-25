@@ -222,7 +222,7 @@ const Jobs = () => {
       <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
-            <h1 className="text-xl font-bold text-gray-900 shrink-0">Remote Q</h1>
+            <h1 className="text-xl font-bold text-[#fd8e2a] shrink-0">Remote Q</h1>
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -236,7 +236,7 @@ const Jobs = () => {
             <div className="flex items-center gap-2 ml-auto">
               <button 
                 onClick={() => setShowQrModal(true)}
-                className="px-4 py-2 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors"
+                className="px-4 py-2 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 圈圈翻译与本地化社群
               </button>
@@ -276,7 +276,7 @@ const Jobs = () => {
               <div className="mt-4 space-y-3">
                 <button
                   onClick={() => setShowQrModal(true)}
-                  className="w-full flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors"
+                  className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
                 >
                   <Users className="w-4 h-4" />
                   <span>圈圈翻译与本地化社群</span>
