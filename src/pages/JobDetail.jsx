@@ -73,7 +73,7 @@ const JobDetail = () => {
             <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
               <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
             </div>
-            <button 
+            <button
               onClick={() => setShowQrModal(false)}
               className="mt-4 w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
             >
@@ -115,8 +115,8 @@ const JobDetail = () => {
               </div>
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {job.type?.map((t, i) => (
-                  <span 
-                    key={i} 
+                  <span
+                    key={i}
                     className={`px-2.5 py-1 rounded-full text-xs font-medium ${typeColorMap[t] || 'bg-gray-100 text-gray-600'}`}
                   >
                     {t}
@@ -187,7 +187,7 @@ const JobDetail = () => {
           {isFullTime ? (
             <div className="text-center">
               <p className="text-sm text-gray-500 mb-4">全职岗位支持内推，添加圈圈微信发送简历</p>
-              <button 
+              <button
                 onClick={() => setShowQrModal(true)}
                 className="w-full py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
               >
@@ -196,19 +196,19 @@ const JobDetail = () => {
             </div>
           ) : (
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-4">感兴趣？加入找工互助群了解更多</p>
-              <button 
+              <p className="text-sm text-gray-500 mb-4">感兴趣？加入圈圈社群了解更多</p>
+              <button
                 onClick={() => setShowQrModal(true)}
                 className="w-full py-3 border border-gray-200 text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
               >
-                加入找工互助群
+                加入圈圈社群
               </button>
             </div>
           )}
           <div className="mt-4 text-center">
-            <a 
-              href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
-              target="_blank" 
+            <a
+              href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-gray-400 hover:text-gray-600 underline"
             >
