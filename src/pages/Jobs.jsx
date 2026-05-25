@@ -174,7 +174,7 @@ const Jobs = () => {
     '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
     '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
     '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '内部': 'border border-pink-200 bg-pink-50 text-pink-600'
+    '内部': 'border border-orange-200 bg-orange-50 text-orange-600'
   };
 
   // 左侧导航
