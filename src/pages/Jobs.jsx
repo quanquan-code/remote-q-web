@@ -218,7 +218,7 @@ const Jobs = () => {
       )}
 
       {/* 顶部栏 */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold text-gray-900 shrink-0">Remote Q</h1>
@@ -227,7 +227,7 @@ const Jobs = () => {
               <input
                 type="text"
                 placeholder="搜索公司、职位、语种..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-gray-400"
+                className="w-full pl-10 pr-4 py-2 border border-gray-100 rounded-xl text-sm outline-none focus:border-gray-300 transition-colors"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -235,7 +235,7 @@ const Jobs = () => {
             <div className="flex items-center gap-2 ml-auto">
               <button 
                 onClick={() => setShowQrModal(true)}
-                className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+                className="px-4 py-2 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors"
               >
                 圈圈翻译与本地化社群
               </button>
@@ -243,7 +243,7 @@ const Jobs = () => {
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-gray-100 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 人才帮招
               </a>
@@ -256,7 +256,7 @@ const Jobs = () => {
         <div className="flex gap-6">
           {/* 左侧导航 */}
           <div className="w-64 shrink-0">
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
               {/* 导航项 */}
               {navItems.map(item => (
                 <button
@@ -298,7 +298,7 @@ const Jobs = () => {
           {/* 右侧职位列表 */}
           <div className="flex-1">
             {/* 筛选标签 */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+            <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-400 font-medium">工作方式</span>
@@ -307,10 +307,10 @@ const Jobs = () => {
                       <button
                         key={filter}
                         onClick={() => setSelectedLocation(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                           selectedLocation === filter 
-                            ? 'bg-gray-900 text-white' 
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-gray-900 text-white border-gray-900' 
+                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
                         }`}
                       >
                         {filter}
@@ -326,10 +326,10 @@ const Jobs = () => {
                       <button
                         key={filter}
                         onClick={() => setSelectedType(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                           selectedType === filter 
-                            ? 'bg-gray-900 text-white' 
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-gray-900 text-white border-gray-900' 
+                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
                         }`}
                       >
                         {filter}
@@ -345,10 +345,10 @@ const Jobs = () => {
                       <button
                         key={filter}
                         onClick={() => setSelectedStatus(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                           selectedStatus === filter 
-                            ? 'bg-gray-900 text-white' 
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-gray-900 text-white border-gray-900' 
+                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
                         }`}
                       >
                         {filter}
@@ -360,7 +360,7 @@ const Jobs = () => {
             </div>
 
             {/* 职位列表 */}
-            <div className="bg-white rounded-lg border border-gray-200">
+            <div className="bg-white rounded-xl border border-gray-100">
               <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                 <h2 className="font-semibold text-gray-900 flex items-center gap-2">
                   <Briefcase className="w-4 h-4" />
