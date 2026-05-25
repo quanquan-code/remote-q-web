@@ -132,22 +132,13 @@ const Jobs = () => {
       );
     }
     
-    // 远程/线下筛选
+    // 地点筛选（远程/线下通过 location 字段区分，不再通过 type）
     if (selectedLocation !== '全部') {
       if (selectedLocation === '远程') {
-        jobs = jobs.filter(job => 
-          job.location?.includes('远程') || job.type?.some(t => t.includes('线上'))
-        );
+        jobs = jobs.filter(job => job.location?.includes('远程'));
       } else if (selectedLocation === '线下') {
         jobs = jobs.filter(job => 
-          job.location?.includes('北京') || job.location?.includes('上海') || 
-          job.location?.includes('广州') || job.location?.includes('深圳') ||
-          job.location?.includes('杭州') || job.location?.includes('成都') ||
-          job.location?.includes('苏州') || job.location?.includes('珠海') ||
-          job.location?.includes('长沙') || job.location?.includes('厦门') ||
-          job.location?.includes('汕头') || job.location?.includes('南京') ||
-          job.location?.includes('武汉') || job.location?.includes('郑州') ||
-          job.location?.includes('东京') || job.type?.some(t => t.includes('线下'))
+          job.location && !job.location.includes('远程') && job.location.length > 0
         );
       }
     }
@@ -302,7 +293,7 @@ const Jobs = () => {
             <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">工作方式</span>
+                  <span className="text-xs text-gray-400 font-medium">地点</span>
                   <div className="flex gap-1">
                     {locationFilters.map(filter => (
                       <button
