@@ -199,7 +199,7 @@ const JobDetail = () => {
           )}
           <div className="mt-4 text-center">
             <a 
-              href="https://my.feishu.cn/share/base/form/shrcnYRafbYwZdamWrbs3Tf1cfzCjngh" 
+              href="https://my.feishu.cn/base/YRafbYwZdamWrbs3Tf1cfzCjngh" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-xs text-gray-400 hover:text-gray-600 underline"
