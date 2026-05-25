@@ -1,16 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Eye, EyeOff, Download, Save } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Download, Save, Upload } from 'lucide-react';
 import jobsData from '../data/jobs.json';
 
 const STORAGE_KEY = 'remote_q_admin_overrides';
+const TOKEN_KEY = 'remote_q_github_token';
 
 function loadOverrides() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
 }
 
 function saveOverrides(overrides) {
@@ -28,18 +26,65 @@ function exportJobsJson(overrides) {
       ...(ov.salary !== undefined && { salary: ov.salary }),
       ...(ov.deadline !== undefined && { deadline: ov.deadline }),
       ...(ov.location !== undefined && { location: ov.location }),
+      ...(ov.type !== undefined && { type: ov.type }),
       ...(ov.fullDescription !== undefined && { fullDescription: ov.fullDescription }),
+      ...(ov.requirements !== undefined && { requirements: ov.requirements }),
     };
   });
   return JSON.stringify(merged, null, 2);
+}
+
+function getToken() {
+  try { return localStorage.getItem(TOKEN_KEY) || ''; }
+  catch { return ''; }
+}
+
+function saveToken(token) {
+  try { localStorage.setItem(TOKEN_KEY, token); }
+  catch { }
+}
+
+async function publishToGitHub(token, contentJson) {
+  const repo = 'quanquan-code/remote-q-web';
+  const path = 'src/data/jobs.json';
+  const apiBase = 'https://api.github.com';
+
+  const getRes = await fetch(`${apiBase}/repos/${repo}/contents/${path}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!getRes.ok) throw new Error('获取文件信息失败，请检查 Token 权限');
+  const fileInfo = await getRes.json();
+
+  const putRes = await fetch(`${apiBase}/repos/${repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      message: `admin: update jobs.json via dashboard`,
+      content: btoa(unescape(encodeURIComponent(contentJson))),
+      sha: fileInfo.sha,
+    }),
+  });
+
+  if (!putRes.ok) {
+    const err = await putRes.text();
+    throw new Error(`发布失败: ${err}`);
+  }
+  return await putRes.json();
 }
 
 const Admin = () => {
   const [overrides, setOverrides] = useState(loadOverrides);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('postedAt');
-  const [filterHidden, setFilterHidden] = useState('all'); // all | visible | hidden
-  const [savedId, setSavedId] = useState(null); // 显示保存提示
+  const [filterHidden, setFilterHidden] = useState('all');
+  const [savedId, setSavedId] = useState(null);
+  const [token, setTokenState] = useState(getToken);
+  const [showTokenInput, setShowTokenInput] = useState(!getToken());
+  const [publishing, setPublishing] = useState(false);
+  const [publishMsg, setPublishMsg] = useState(null);
 
   const updateField = (id, field, value) => {
     setOverrides(prev => {
@@ -97,29 +142,102 @@ const Admin = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handlePublish = async () => {
+    if (!token) { setPublishMsg({ type: 'error', text: '请先输入 GitHub Token' }); return; }
+    setPublishing(true);
+    setPublishMsg(null);
+    try {
+      const json = exportJobsJson(overrides);
+      await publishToGitHub(token, json);
+      setPublishMsg({ type: 'success', text: '发布成功！Vercel 正在自动部署，约 1-2 分钟后生效' });
+    } catch (err) {
+      setPublishMsg({ type: 'error', text: err.message });
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  const handleSaveToken = (val) => {
+    setTokenState(val);
+    saveToken(val);
+    if (val) setShowTokenInput(false);
+  };
+
+  const reqText = (jobId) => {
+    const ov = overrides[jobId]?.requirements;
+    if (ov !== undefined) return ov.join('\n');
+    return (jobsData.find(j => j.id === jobId)?.requirements || []).join('\n');
+  };
+
+  const setReqText = (jobId, text) => {
+    const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+    updateField(jobId, 'requirements', lines);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 顶部栏 */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
           <Link to="/" className="text-sm text-gray-500 hover:text-gray-900 flex items-center gap-1">
             <ArrowLeft className="w-4 h-4" />
             返回前台
           </Link>
           <h1 className="text-lg font-bold text-gray-900">管理后台</h1>
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-3 flex-wrap">
             <span className="text-xs text-gray-400">
               显示 {visibleCount} / 隐藏 {hiddenCount} / 共 {jobsData.length}
             </span>
+            {showTokenInput ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="password"
+                  placeholder="GitHub Personal Access Token"
+                  value={token}
+                  onChange={e => handleSaveToken(e.target.value)}
+                  className="px-2 py-1.5 border border-gray-200 rounded text-sm w-48 outline-none focus:border-gray-400"
+                />
+                <button
+                  onClick={() => setShowTokenInput(false)}
+                  className="text-xs text-gray-500 hover:text-gray-900"
+                >
+                  收起
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowTokenInput(true)}
+                className="text-xs text-gray-500 hover:text-gray-900 underline"
+              >
+                {token ? '已设置 Token' : '设置 Token'}
+              </button>
+            )}
             <button
               onClick={handleExport}
               className="flex items-center gap-1 px-3 py-1.5 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800"
             >
               <Download className="w-4 h-4" />
-              导出 jobs.json
+              导出 JSON
+            </button>
+            <button
+              onClick={handlePublish}
+              disabled={publishing}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-white ${
+                publishing ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'
+              }`}
+            >
+              <Upload className="w-4 h-4" />
+              {publishing ? '发布中...' : '发布到网站'}
             </button>
           </div>
         </div>
+        {publishMsg && (
+          <div className={`max-w-7xl mx-auto px-4 py-2 text-xs ${
+            publishMsg.type === 'success' ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'
+          }`}>
+            {publishMsg.text}
+          </div>
+        )}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-4">
@@ -263,12 +381,23 @@ const Admin = () => {
                 </div>
 
                 <div className="mt-3">
-                  <label className="text-xs text-gray-400 block mb-1">岗位描述（岗位要求）</label>
+                  <label className="text-xs text-gray-400 block mb-1">岗位描述（岗位职责）</label>
                   <textarea
                     value={overrides[job.id]?.fullDescription ?? job.fullDescription ?? ''}
                     onChange={e => updateField(job.id, 'fullDescription', e.target.value)}
                     rows={4}
                     className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 font-mono"
+                  />
+                </div>
+
+                <div className="mt-3">
+                  <label className="text-xs text-gray-400 block mb-1">岗位要求（每行一条）</label>
+                  <textarea
+                    value={reqText(job.id)}
+                    onChange={e => setReqText(job.id, e.target.value)}
+                    rows={3}
+                    className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 font-mono"
+                    placeholder="TEM-8&#10;3-5年游戏本地化经验&#10;有MOBA经验优先"
                   />
                 </div>
 
