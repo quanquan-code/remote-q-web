@@ -39,6 +39,7 @@ const Admin = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('postedAt');
   const [filterHidden, setFilterHidden] = useState('all'); // all | visible | hidden
+  const [savedId, setSavedId] = useState(null); // 显示保存提示
 
   const updateField = (id, field, value) => {
     setOverrides(prev => {
@@ -47,6 +48,8 @@ const Admin = () => {
         [id]: { ...prev[id], [field]: value }
       };
       saveOverrides(next);
+      setSavedId(id + field);
+      setTimeout(() => setSavedId(s => s === id + field ? null : s), 800);
       return next;
     });
   };
@@ -194,6 +197,9 @@ const Admin = () => {
                       )}
                     </div>
                   </div>
+                  {savedId && savedId.startsWith(job.id) && (
+                    <span className="text-xs text-green-600 font-medium animate-pulse">已保存</span>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
