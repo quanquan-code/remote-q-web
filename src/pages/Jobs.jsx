@@ -100,7 +100,8 @@ const Jobs = () => {
     '线上': 'bg-purple-50 text-purple-600',
     '线下': 'bg-red-50 text-red-600',
     '实习': 'bg-gray-50 text-gray-600',
-    '正编': 'bg-indigo-50 text-indigo-600'
+    '正编': 'bg-indigo-50 text-indigo-600',
+    '内部': 'bg-pink-50 text-pink-600'
   };
 
   // 左侧导航

@@ -116,7 +116,7 @@ function anonymizeCompany(company, desc) {
   if (d.includes('翻译')) return '某翻译需求方';
   if (d.includes('教育') || d.includes('老师')) return '某教育机构';
   if (d.includes('科技') || d.includes('互联网')) return '某科技公司';
-  return '某优质企业';
+  return '社群内部需求';
 }
 
 function extractType(jobName, formField) {
@@ -381,11 +381,12 @@ function processRecord(record, index) {
     return {
       ...job,
       title: descTexts.includes('游戏') || descTexts.includes('lqa') || descTexts.includes('localization') ? '游戏本地化岗位' : '翻译/本地化岗位',
-      company: '某优质客户',
+      company: '社群内部需求',
       description: descTexts.includes('游戏') ? '游戏本地化相关岗位，适合有游戏翻译经验的译者。' : '翻译/本地化相关岗位，具体要求请联系社群管理员了解。',
       requirements: [],
       location: job.location.includes('远程') ? '远程' : '主要城市',
       salary: job.salary && !job.salary.includes('面议') && /\d{4,}/.test(job.salary) ? '具有竞争力的薪资' : job.salary,
+      type: [...new Set([...job.type, '内部'])],
       internalOnly: true,
     };
   }
