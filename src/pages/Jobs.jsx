@@ -271,8 +271,7 @@ const Jobs = () => {
                 className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 <Users className="w-4 h-4" />
-                <span>圈圈翻译与本地化社群</span>
-                <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">1,300+ 人</span>
+                <span>社群简介</span>
               </button>
               <a
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
@@ -453,6 +452,16 @@ const Jobs = () => {
                   <p className="text-gray-400">暂无匹配岗位</p>
                   <p className="text-sm text-gray-400 mt-1">试试调整筛选条件</p>
                 </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Jobs;        </div>
               )}
             </div>
           </div>
