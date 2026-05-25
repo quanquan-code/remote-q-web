@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import rawJobsData from '../data/jobs.json';
 
 // ===== localStorage 覆盖（管理后台写入） =====
@@ -94,6 +94,7 @@ function getDeadlineStatus(deadline) {
 const jobsData = applyOverrides(rawJobsData);
 
 const Jobs = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNav, setSelectedNav] = useState('全部工作');
   const [selectedLocation, setSelectedLocation] = useState('全部');
@@ -371,8 +372,9 @@ const Jobs = () => {
               {filteredJobs.length > 0 ? (
                 <div className="divide-y divide-gray-100">
                   {filteredJobs.map(job => (
-                    <div 
-                      key={job.id} 
+                    <div
+                      key={job.id}
+                      onClick={() => navigate(`/job/${job.id}`)}
                       className="px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                       <div className="flex items-start gap-4 flex-1 min-w-0">
