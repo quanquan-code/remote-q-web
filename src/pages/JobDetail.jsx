@@ -156,36 +156,16 @@ const JobDetail = () => {
           </div>
         </div>
 
-        {/* 岗位职责 */}
-        {(job.fullDescription || job.description) && (
+        {/* 岗位详情 - 直接展示飞书「岗位要求Job Description」完整内容 */}
+        {job.fullDescription && (
           <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4">
             <h2 className="text-base font-semibold text-gray-900 flex items-center gap-2 mb-4">
               <Briefcase className="w-4 h-4" />
-              岗位职责
+              岗位详情
             </h2>
             <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-              {job.fullDescription || job.description}
+              {job.fullDescription}
             </div>
-          </div>
-        )}
-
-        {/* 职位要求 */}
-        {job.requirements && job.requirements.length > 0 && (
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4">
-            <h2 className="text-base font-semibold text-gray-900 flex items-center gap-2 mb-4">
-              <MessageCircle className="w-4 h-4" />
-              职位要求
-            </h2>
-            <ul className="space-y-3">
-              {job.requirements.map((req, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                  <span className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center shrink-0 text-xs font-medium text-gray-500 mt-0.5">
-                    {i + 1}
-                  </span>
-                  <span className="leading-relaxed">{req}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         )}
 
