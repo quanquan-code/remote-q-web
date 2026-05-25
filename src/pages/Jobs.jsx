@@ -237,7 +237,7 @@ const Jobs = () => {
                 onClick={() => setShowQrModal(true)}
                 className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
               >
-                加入社群
+                圈圈翻译与本地化社群
               </button>
               <a 
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
@@ -278,7 +278,7 @@ const Jobs = () => {
                   className="w-full flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
                 >
                   <Users className="w-4 h-4" />
-                  <span>加入社群</span>
+                  <span>圈圈翻译与本地化社群</span>
                   <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">1,300+ 人</span>
                 </button>
                 <a
