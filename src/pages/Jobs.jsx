@@ -94,7 +94,6 @@ const jobsData = applyOverrides(rawJobsData);
 
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedNav, setSelectedNav] = useState('全部工作');
   const [selectedLocation, setSelectedLocation] = useState('全部');
   const [selectedType, setSelectedType] = useState('全部');
@@ -105,22 +104,6 @@ const Jobs = () => {
   const locationFilters = ['全部', '远程', '线下'];
   const typeFilters = ['全部', '兼职', '全职', '外包', '正编'];
   const statusFilters = ['全部', '在招'];
-
-  // 提取所有公司
-  const companies = useMemo(() => {
-    const companyMap = new Map();
-    jobsData.forEach(job => {
-      if (!companyMap.has(job.company)) {
-        companyMap.set(job.company, {
-          name: job.company,
-          jobs: [],
-          location: job.location
-        });
-      }
-      companyMap.get(job.company).jobs.push(job);
-    });
-    return Array.from(companyMap.values());
-  }, []);
 
   const filteredJobs = useMemo(() => {
     let jobs = jobsData;
@@ -144,11 +127,6 @@ const Jobs = () => {
         job.description?.toLowerCase().includes(query) ||
         job.languagePair?.toLowerCase().includes(query)
       );
-    }
-    
-    // 公司筛选
-    if (selectedCompany) {
-      jobs = jobs.filter(job => job.company === selectedCompany);
     }
     
     // 远程/线下筛选
@@ -191,7 +169,7 @@ const Jobs = () => {
     });
     
     return jobs;
-  }, [searchQuery, selectedCompany, selectedNav, selectedLocation, selectedType, selectedStatus]);
+  }, [searchQuery, selectedNav, selectedLocation, selectedType, selectedStatus]);
 
   // 岗位形式标签颜色
   const typeColorMap = {
@@ -214,13 +192,6 @@ const Jobs = () => {
   // 处理导航切换
   const handleNavClick = (key) => {
     setSelectedNav(key);
-    setSelectedCompany(null);
-  };
-
-  // 处理公司点击
-  const handleCompanyClick = (companyName) => {
-    setSelectedCompany(companyName);
-    setSelectedNav('公司');
   };
 
   return (
@@ -297,29 +268,6 @@ const Jobs = () => {
                   <span className="text-xs text-gray-400">{item.count}</span>
                 </button>
               ))}
-              
-              {/* 公司列表标题 */}
-              <div className="px-4 py-2 border-b border-gray-50 bg-gray-50/50">
-                <span className="text-xs font-medium text-gray-400">公司列表</span>
-              </div>
-              
-              {/* 公司项 */}
-              <div className="max-h-[calc(100vh-380px)] overflow-y-auto">
-                {companies.map(company => (
-                  <button
-                    key={company.name}
-                    onClick={() => handleCompanyClick(company.name)}
-                    className={`w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-50 ${
-                      selectedCompany === company.name && selectedNav === '公司' ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="truncate">{company.name}</span>
-                      <span className="text-xs text-gray-400 shrink-0 ml-2">{company.jobs.length}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
 
@@ -392,7 +340,7 @@ const Jobs = () => {
               <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                 <h2 className="font-semibold text-gray-900 flex items-center gap-2">
                   <Briefcase className="w-4 h-4" />
-                  {selectedNav === '公司' ? selectedCompany : selectedNav}
+                  {selectedNav}
                 </h2>
                 <span className="text-sm text-gray-500">共 {filteredJobs.length} 个岗位</span>
               </div>
