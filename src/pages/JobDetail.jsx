@@ -224,7 +224,7 @@ const JobDetail = () => {
             <BookOpen className="w-4 h-4" />
             推荐阅读
           </h2>
-          <p className="text-sm text-gray-500 mb-4">社群成员成功应聘案例</p>
+          <p className="text-sm text-gray-500 mb-4">社群小伙伴成功应聘案例</p>
           <div className="space-y-3">
             {relatedCases.map((c, i) => (
               <a key={i} href={c.url} target="_blank" rel="noopener noreferrer" className="block p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors">
