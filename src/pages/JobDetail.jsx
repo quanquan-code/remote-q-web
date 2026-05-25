@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
 import rawJobsData from '../data/jobs.json';
 
 // ===== localStorage 覆盖（管理后台写入） =====
@@ -185,14 +185,34 @@ const JobDetail = () => {
           </div>
         )}
 
+        {/* 推荐阅读 */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <BookOpen className="w-4 h-4" />
+            推荐阅读
+          </h2>
+          <p className="text-sm text-gray-500 mb-4">社群成员成功应聘案例</p>
+          <div className="space-y-3">
+            {/* TODO: 后续接入真实案例数据 */}
+            <a href="#" className="block p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors">
+              <p className="text-sm font-medium text-gray-900">如何从自由译员逆袭成为头部大厂本地化项目经理</p>
+              <p className="text-xs text-gray-400 mt-1">Lucian · 3年走完全程</p>
+            </a>
+            <a href="#" className="block p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors">
+              <p className="text-sm font-medium text-gray-900">英专生毕业三年年薪35万：游戏运营转海外广告投放</p>
+              <p className="text-xs text-gray-400 mt-1">Roxy · 00后 · 投递500+简历方法论</p>
+            </a>
+          </div>
+        </div>
+
         {/* 底部 CTA */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
           {isFullTime ? (
             <div className="text-center">
               <p className="text-sm text-gray-500 mb-4">全职岗位支持内推，添加圈圈微信发送简历</p>
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+                className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 添加圈圈微信，投递简历
               </button>
@@ -202,7 +222,7 @@ const JobDetail = () => {
               <p className="text-sm text-gray-500 mb-4">感兴趣？加入圈圈社群了解更多</p>
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full py-3 border border-gray-200 text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 加入圈圈社群
               </button>
