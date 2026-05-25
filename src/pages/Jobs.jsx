@@ -132,11 +132,11 @@ const Jobs = () => {
       );
     }
     
-    // 地点筛选（远程/线下通过 location 字段区分，不再通过 type）
-    if (selectedLocation !== '全部') {
-      if (selectedLocation === '远程') {
+    // 远程/线下筛选
+    if (selectedWorkMode !== '全部') {
+      if (selectedWorkMode === '远程') {
         jobs = jobs.filter(job => job.location?.includes('远程'));
-      } else if (selectedLocation === '线下') {
+      } else if (selectedWorkMode === '线下') {
         jobs = jobs.filter(job => 
           job.location && !job.location.includes('远程') && job.location.length > 0
         );
@@ -163,7 +163,7 @@ const Jobs = () => {
     });
     
     return jobs;
-  }, [searchQuery, selectedNav, selectedLocation, selectedType, selectedStatus]);
+  }, [searchQuery, selectedNav, selectedWorkMode, selectedType, selectedStatus]);
 
   // 岗位形式标签颜色
   const typeColorMap = {
@@ -186,6 +186,12 @@ const Jobs = () => {
   // 处理导航切换
   const handleNavClick = (key) => {
     setSelectedNav(key);
+    if (key === '远程工作') {
+      setSelectedWorkMode('远程');
+    } else if (selectedWorkMode !== '全部') {
+      // 切回"全部工作"时，如果工作方式不是"全部"，重置为"全部"
+      setSelectedWorkMode('全部');
+    }
   };
 
   return (
@@ -292,14 +298,14 @@ const Jobs = () => {
             <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">地点</span>
+                  <span className="text-xs text-gray-400 font-medium">工作方式</span>
                   <div className="flex gap-1">
-                    {locationFilters.map(filter => (
+                    {workModeFilters.map(filter => (
                       <button
                         key={filter}
-                        onClick={() => setSelectedLocation(filter)}
+                        onClick={() => setSelectedWorkMode(filter)}
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                          selectedLocation === filter 
+                          selectedWorkMode === filter 
                             ? 'bg-gray-900 text-white border-gray-900' 
                             : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
                         }`}
@@ -466,6 +472,12 @@ export default Jobs;        </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+export default Jobs;</div>
       </div>
     </div>
   );
