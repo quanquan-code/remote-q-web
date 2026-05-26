@@ -30,7 +30,7 @@ function applyOverrides(jobs) {
 }
 
 // 解析截止日期状态
-function parseDeadline(deadline) {
+function parseDeadline(deadline, postedAt) {
   if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
   const dl = deadline.toLowerCase();
 
@@ -68,25 +68,29 @@ function parseDeadline(deadline) {
   m = deadline.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
   if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
 
-  // M月D日（今年）
+  // M月D日 — 根据发布年份推断（去年发布的默认去年截止）
   m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
   if (m) {
-    const year = new Date().getFullYear();
+    const postedYear = postedAt ? parseInt(postedAt.slice(0, 4)) : null;
+    const currentYear = new Date().getFullYear();
+    const year = (postedYear && postedYear < currentYear) ? postedYear : currentYear;
     return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
   }
 
-  // M/D
+  // M/D — 同上
   m = deadline.match(/(\d{1,2})\/(\d{1,2})/);
   if (m) {
-    const year = new Date().getFullYear();
+    const postedYear = postedAt ? parseInt(postedAt.slice(0, 4)) : null;
+    const currentYear = new Date().getFullYear();
+    const year = (postedYear && postedYear < currentYear) ? postedYear : currentYear;
     return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
   }
 
   return { type: 'unknown' };
 }
 
-function getDeadlineStatus(deadline) {
-  const p = parseDeadline(deadline);
+function getDeadlineStatus(deadline, postedAt) {
+  const p = parseDeadline(deadline, postedAt);
   if (p.type === 'urgent') return 'urgent';
   if (p.type === 'longterm') return 'longterm';
   if (p.type === 'date') {
@@ -168,8 +172,8 @@ const Jobs = () => {
     
     // 过期岗位自动沉底，其余按发布日期从新到旧
     jobs.sort((a, b) => {
-      const sa = getDeadlineStatus(a.deadline);
-      const sb = getDeadlineStatus(b.deadline);
+      const sa = getDeadlineStatus(a.deadline, a.postedAt);
+      const sb = getDeadlineStatus(b.deadline, b.postedAt);
       if (sa === 'expired' && sb !== 'expired') return 1;
       if (sa !== 'expired' && sb === 'expired') return -1;
       return b.postedAt.localeCompare(a.postedAt);
@@ -477,7 +481,7 @@ const Jobs = () => {
                           {job.postedAt}
                         </div>
                         {(() => {
-                          const p = parseDeadline(job.deadline);
+                          const p = parseDeadline(job.deadline, job.postedAt);
                           const today = new Date();
                           today.setHours(0,0,0,0);
 
