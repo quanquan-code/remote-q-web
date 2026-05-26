@@ -40,7 +40,7 @@ function parseDeadline(deadline, postedAt) {
   }
 
   // 长期类
-  if (['长期', 'long term', 'longterm', 'no time limitation', 'until we hired'].some(k => dl.includes(k))) {
+  if (['长期', 'long term', 'longterm', 'no time limitation', 'until we hired', 'n/a'].some(k => dl.includes(k))) {
     return { type: 'longterm' };
   }
 
@@ -50,7 +50,7 @@ function parseDeadline(deadline, postedAt) {
   }
 
   // 未提供/空
-  if (['未提供', '未明确', '无', 'undefined', 'n/a'].some(k => dl.includes(k))) {
+  if (['未提供', '未明确', '无', 'undefined'].some(k => dl.includes(k))) {
     return { type: 'open' };
   }
 
