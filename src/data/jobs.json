@@ -661,12 +661,12 @@
     "title": "本地化项目经理",
     "company": "社群内部需求",
     "type": [
-      "兼职",
+      "全职",
       "内部"
     ],
-    "location": "",
+    "location": "上海",
     "salary": "具体洽谈",
-    "salaryNote": "具体洽谈",
+    "salaryNote": "",
     "languagePair": "中↔英",
     "gameType": null,
     "description": "岗位职责 1）负责游戏全链路的本地化项目管理工作，包括协助需求方梳理并细化项目需求、确认目标以及制定详细的项目计划； 2）积极发现并推动项目中存在的本地化流程、质量、进度等风险问题，提出相应的解决方案，并及时调整方案以确保产出内容符合预期； 3）了解供应商的工作模式，能够与供应商进行独立业务沟通，参...",
@@ -1308,7 +1308,7 @@
   },
   {
     "id": "recndijG45",
-    "title": "测试执行:根据项目测试计划,协助开展对应语言LQA测试,确保内容质量达标,符合文化适配要求。",
+    "title": "多语种LQA",
     "company": "上海莉莉丝游戏",
     "type": [
       "兼职",
@@ -1419,12 +1419,13 @@
   },
   {
     "id": "recTvrNbwY",
-    "title": "兼职，线上",
+    "title": "翻译质检",
     "company": "江苏省舜禹信息技术有限公司（舜禹环球通）",
     "type": [
-      "兼职"
+      "兼职",
+      "远程"
     ],
-    "location": "远程",
+    "location": "",
     "salary": "¥40元/小时",
     "salaryNote": "",
     "languagePair": "中↔日",
@@ -1464,13 +1465,13 @@
   },
   {
     "id": "rec9VQL5Lj",
-    "title": "线上兼职",
+    "title": "泰语教学",
     "company": "社群内部需求",
     "type": [
       "兼职",
       "内部"
     ],
-    "location": "远程",
+    "location": "",
     "salary": "",
     "salaryNote": "私聊",
     "languagePair": null,
@@ -1487,7 +1488,7 @@
   },
   {
     "id": "recQqeHHDr",
-    "title": "医学临床类翻译审校，语言包含英到中，中到英，需要医学翻译经验丰富的老师",
+    "title": "医学临床类翻译审校",
     "company": "社群内部需求",
     "type": [
       "兼职",
@@ -1533,13 +1534,13 @@
   },
   {
     "id": "rec1hc1yqe",
-    "title": "兼职/外包/线上",
+    "title": "博物馆翻译",
     "company": "杭州天屹数字科技有限公司",
     "type": [
       "兼职",
-      "外包"
+      "远程"
     ],
-    "location": "远程",
+    "location": "",
     "salary": "千字/400",
     "salaryNote": "千字/400",
     "languagePair": null,
