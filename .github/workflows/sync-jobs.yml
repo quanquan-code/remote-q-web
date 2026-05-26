@@ -2,7 +2,6 @@ name: Sync Jobs from Feishu
 
 on:
   schedule:
-    # 每天凌晨 3:00 UTC+8 运行
     - cron: '0 19 * * *'
   workflow_dispatch:
 
@@ -17,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,6 +33,7 @@ jobs:
 
       - name: Commit and push if changed
         run: |
+          set -x
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
@@ -41,7 +42,17 @@ jobs:
             exit 0
           fi
           
+          echo "📝 检测到数据变化，准备提交..."
           git add src/data/jobs.json
+          git status
           git commit -m "chore: auto-sync jobs from Feishu ($(date +%Y-%m-%d))"
+          
+          echo "🔄 拉取最新远程分支..."
+          git pull origin main --rebase || {
+            echo "❌ 拉取远程更新失败"
+            exit 1
+          }
+          
+          echo "🚀 推送到 main 分支..."
           git push
-          echo "🚀 已推送更新，Vercel 将自动部署"
+          echo "✅ 已推送更新，Vercel 将自动部署"    
