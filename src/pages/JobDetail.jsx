@@ -119,8 +119,17 @@ const JobDetail = () => {
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
           <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">添加圈圈微信</h3>
-            <p className="text-sm text-gray-500 mb-4">扫码添加圈圈，发送简历即可内推</p>
+            {isFullTime ? (
+              <>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">添加圈圈微信</h3>
+                <p className="text-sm text-gray-500 mb-4">扫码添加圈圈，发送简历即可内推</p>
+              </>
+            ) : (
+              <>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">欢迎加入圈圈社群</h3>
+                <p className="text-sm text-gray-500 mb-4">欢迎加入圈圈翻译与本地化社群，获取更多行业信息与合作机会</p>
+              </>
+            )}
             <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
               <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
             </div>
