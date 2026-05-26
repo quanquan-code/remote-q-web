@@ -17,13 +17,15 @@
     "requirements": [],
     "deadline": "长期",
     "comments": "三年合同，试用期六个月；上班时间9:30-18:30，午休2h，弹性上下班打卡；需要做测试题，测试题+简历一起发给业务筛选",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-25",
     "internalOnly": false
   },
   {
     "id": "recvkk1MvCQ8Yv",
     "title": "Korean Translator & Project Assistant / 韩语翻译 & 项目助理",
-    "company": "EA",
+    "company": "EA/美国艺电",
     "type": [
       "全职",
       "外包"
@@ -38,6 +40,8 @@
     "requirements": [],
     "deadline": "未提供",
     "comments": "韩语口笔译各占一半，外包形式但全额缴纳社保，含补充商业保险+年假+带薪病假+圣诞节假期。全球团队协作，游戏开发环境。\n\n【待遇】商业保险，社保",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-22",
     "internalOnly": false
   },
@@ -58,6 +62,8 @@
     "requirements": [],
     "deadline": "尽快",
     "comments": "相比外籍母语更倾向资深中文母语老师，更主要看试稿成绩。项目快三测，三测完数据好可能再有俩月就上线，前期加班较多（早10晚9），版本冲刺前一两个月可能单休，加班额外福利业内不错。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-17",
     "internalOnly": false
   },
@@ -79,6 +85,8 @@
     "requirements": [],
     "deadline": "尽快",
     "comments": "项目快三测，三测完数据好可能再有俩月就上线，前期加班较多（早10晚9），版本冲刺前一两个月可能单休，加班额外福利业内不错。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-17",
     "internalOnly": false
   },
@@ -101,17 +109,18 @@
     "requirements": [],
     "deadline": "",
     "comments": "限群里入驻的本地化团队",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-13",
     "internalOnly": true
   },
   {
     "id": "recvjtoaBKkj8H",
     "title": "English Translator & Content Specialist 翻译&内容专员",
-    "company": "社群内部需求",
+    "company": "EA/美国艺电",
     "type": [
       "全职",
-      "外包",
-      "内部"
+      "外包"
     ],
     "location": "上海",
     "salary": "14K",
@@ -123,8 +132,10 @@
     "requirements": [],
     "deadline": "尽快",
     "comments": "#内部招募，base上海，六险一金全额缴纳，不加班，9:30-18:30，年假10天，带薪病假5天，圣诞节放假一周",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-13",
-    "internalOnly": true
+    "internalOnly": false
   },
   {
     "id": "recvjtoibk4hRj",
@@ -144,6 +155,8 @@
     "requirements": [],
     "deadline": "",
     "comments": "#内部招募，长期持续性项目，可到东京/成都/苏州办公室现场办公者优先",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-13",
     "internalOnly": true
   },
@@ -164,6 +177,8 @@
     "requirements": [],
     "deadline": "5月22日（周五）",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-13",
     "internalOnly": false
   },
@@ -185,17 +200,18 @@
     "requirements": [],
     "deadline": "尽快",
     "comments": "学生目标320+，课后自行练题",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-13",
     "internalOnly": true
   },
   {
     "id": "recvjjB9iUs2PH",
     "title": "English Translator & Content Specialist / 翻译&内容专员",
-    "company": "社群内部需求",
+    "company": "EA/美国艺电",
     "type": [
       "全职",
-      "外包",
-      "内部"
+      "外包"
     ],
     "location": "上海",
     "salary": "14K",
@@ -207,8 +223,10 @@
     "requirements": [],
     "deadline": "",
     "comments": "base上海，六险一金（五险一金全额缴纳），不加班，工作时间9:30-18:30，一年年假10天，带薪病假5天，圣诞节放假一周，法定节假日调休补班正常带薪放假",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-11",
-    "internalOnly": true
+    "internalOnly": false
   },
   {
     "id": "recvjcpDTYMPl0",
@@ -227,6 +245,8 @@
     "requirements": [],
     "deadline": "长期项目，持续进行中",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -247,6 +267,8 @@
     "requirements": [],
     "deadline": "项目进行中（4月下旬-6月底）",
     "comments": "欢迎转发或推荐（推荐成功有偿）",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -267,6 +289,8 @@
     "requirements": [],
     "deadline": "预计4月中旬-5月中旬（项目周期）",
     "comments": "平台为译员客户系统（提供简单指南，上手快）。需丰富手机UI/APP本地化经验者优先。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -288,6 +312,8 @@
     "requirements": [],
     "deadline": "2026/04/12（本周日）",
     "comments": "非常急招，今天签NDA，明天开始读材料",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -308,6 +334,8 @@
     "requirements": [],
     "deadline": "长期招募",
     "comments": "必须玩过暴雪暗黑&魔兽，且现在还在玩",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -328,6 +356,8 @@
     "requirements": [],
     "deadline": "4月初-5月中旬",
     "comments": "欢迎转发或推荐，推荐成功有偿。\n\n【待遇】月结",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -348,6 +378,8 @@
     "requirements": [],
     "deadline": "未明确",
     "comments": "AI数据服务领域，技术要求较高（MQM/LQA、CAT工具、AI训练经验优先）",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
@@ -368,15 +400,18 @@
     "requirements": [],
     "deadline": "未明确",
     "comments": "签订正式劳动合同，每年享有国家规定的带薪年假",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
     "internalOnly": false
   },
   {
     "id": "recvjcygBFJWuk",
     "title": "中译德",
-    "company": "北京悠仕科技公司",
+    "company": "社群内部需求",
     "type": [
-      "兼职"
+      "兼职",
+      "内部"
     ],
     "location": "远程",
     "salary": "¥100-160元/千字",
@@ -388,15 +423,18 @@
     "requirements": [],
     "deadline": "长期",
     "comments": "该项目需提供试译",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
-    "internalOnly": false
+    "internalOnly": true
   },
   {
     "id": "recvjcynr8pVl7",
     "title": "英译中译员",
-    "company": "广州市天河区菁英翻译服务部",
+    "company": "社群内部需求",
     "type": [
-      "兼职"
+      "兼职",
+      "内部"
     ],
     "location": "远程",
     "salary": "MTPE和翻译均为 120-150 元/千词",
@@ -408,8 +446,10 @@
     "requirements": [],
     "deadline": "长期",
     "comments": "需先完成300词试译。长期合作。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-10",
-    "internalOnly": false
+    "internalOnly": true
   },
   {
     "id": "rec27l4QQBHBsK",
@@ -428,6 +468,8 @@
     "requirements": [],
     "deadline": "5月10日",
     "comments": "另外储备英日韩德法译者，欢迎投递简历～",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-05-05",
     "internalOnly": false
   },
@@ -449,6 +491,8 @@
     "requirements": [],
     "deadline": "N/A",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-04-29",
     "internalOnly": true
   },
@@ -470,6 +514,8 @@
     "requirements": [],
     "deadline": "招聘截止日期：2026年4月30日",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-04-23",
     "internalOnly": true
   },
@@ -492,6 +538,8 @@
     "requirements": [],
     "deadline": "No time limitation, until we hired the most suitable candidate.",
     "comments": "（匿名招募，请在公开招募信息中隐藏公司名称）",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-03-31",
     "internalOnly": true
   },
@@ -514,6 +562,8 @@
     "requirements": [],
     "deadline": "2026.3.25",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-03-18",
     "internalOnly": true
   },
@@ -534,6 +584,8 @@
     "requirements": [],
     "deadline": "长期有效",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-03-09",
     "internalOnly": false
   },
@@ -554,6 +606,8 @@
     "requirements": [],
     "deadline": "招到即止",
     "comments": "招到即止。群里小伙伴转发，QQ联系方式。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-02-25",
     "internalOnly": false
   },
@@ -574,6 +628,8 @@
     "requirements": [],
     "deadline": "2026/3/6",
     "comments": "近期正在推进的已有项目，项目会持续至少1年。合适的译员也可选择只推进项目测试，测试会支付一笔固定费用。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-02-25",
     "internalOnly": false
   },
@@ -594,6 +650,8 @@
     "requirements": [],
     "deadline": "招到为止",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-02-10",
     "internalOnly": false
   },
@@ -616,6 +674,8 @@
     "requirements": [],
     "deadline": "-",
     "comments": "不是急招岗位，作为预备二次元项目的PM，一开始会需要分担部分Arknights的翻译工作。",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-01-07",
     "internalOnly": true
   },
@@ -638,6 +698,8 @@
     "requirements": [],
     "deadline": "2026-12-31",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-01-06",
     "internalOnly": true
   },
@@ -659,6 +721,8 @@
     "requirements": [],
     "deadline": "1月7号",
     "comments": "参与项目需要先做一个免费试译，如果通过会折算费用。需要有日英本地化经验的老师",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2026-01-04",
     "internalOnly": true
   },
@@ -680,6 +744,8 @@
     "requirements": [],
     "deadline": "无",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-24",
     "internalOnly": true
   },
@@ -700,6 +766,8 @@
     "requirements": [],
     "deadline": "12月底",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-19",
     "internalOnly": false
   },
@@ -720,6 +788,8 @@
     "requirements": [],
     "deadline": "1月30日",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-19",
     "internalOnly": false
   },
@@ -740,6 +810,8 @@
     "requirements": [],
     "deadline": "长期储备需求",
     "comments": "发布渠道看全区那",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-12",
     "internalOnly": false
   },
@@ -760,6 +832,8 @@
     "requirements": [],
     "deadline": "2026年1月底",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-04",
     "internalOnly": false
   },
@@ -780,6 +854,8 @@
     "requirements": [],
     "deadline": "2026.03",
     "comments": "项目不会终止，日语最紧急优先，有大量需求，效果好可持续合作，谢谢圈圈提供平台",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-03",
     "internalOnly": false
   },
@@ -800,6 +876,8 @@
     "requirements": [],
     "deadline": "2025.12.30",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-02",
     "internalOnly": false
   },
@@ -822,6 +900,8 @@
     "requirements": [],
     "deadline": "2026年1月",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-02",
     "internalOnly": true
   },
@@ -843,6 +923,8 @@
     "requirements": [],
     "deadline": "12/9",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-12-01",
     "internalOnly": true
   },
@@ -864,6 +946,8 @@
     "requirements": [],
     "deadline": "尽快",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-11-29",
     "internalOnly": true
   },
@@ -886,6 +970,8 @@
     "requirements": [],
     "deadline": "找到合适的即止",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-11-26",
     "internalOnly": true
   },
@@ -907,6 +993,8 @@
     "requirements": [],
     "deadline": "11月26日晚11点",
     "comments": "最好是计算机语言学，因为纯计算机专业背景不一定对这方面有了解",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-11-26",
     "internalOnly": true
   },
@@ -927,6 +1015,8 @@
     "requirements": [],
     "deadline": "2025年11月16日23:00",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-11-13",
     "internalOnly": false
   },
@@ -947,6 +1037,8 @@
     "requirements": [],
     "deadline": "12.30",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-11-13",
     "internalOnly": false
   },
@@ -968,6 +1060,8 @@
     "requirements": [],
     "deadline": "N/A",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-10-29",
     "internalOnly": false
   },
@@ -988,6 +1082,8 @@
     "requirements": [],
     "deadline": "2025.10.20",
     "comments": "测试8分钟",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-10-17",
     "internalOnly": false
   },
@@ -1008,6 +1104,8 @@
     "requirements": [],
     "deadline": "10月23号",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-10-11",
     "internalOnly": false
   },
@@ -1028,6 +1126,8 @@
     "requirements": [],
     "deadline": "10月10号",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-10-05",
     "internalOnly": false
   },
@@ -1048,6 +1148,8 @@
     "requirements": [],
     "deadline": "OCT 10",
     "comments": "直接和老外谈具体待遇",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-10-01",
     "internalOnly": false
   },
@@ -1068,6 +1170,8 @@
     "requirements": [],
     "deadline": "2025年10月10日",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-23",
     "internalOnly": false
   },
@@ -1088,6 +1192,8 @@
     "requirements": [],
     "deadline": "2025.9.19",
     "comments": "【待遇】日结",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-15",
     "internalOnly": false
   },
@@ -1108,6 +1214,8 @@
     "requirements": [],
     "deadline": "2025.9.19",
     "comments": "近河南或郑州者优先",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-15",
     "internalOnly": false
   },
@@ -1128,6 +1236,8 @@
     "requirements": [],
     "deadline": "9/20",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-12",
     "internalOnly": false
   },
@@ -1149,6 +1259,8 @@
     "requirements": [],
     "deadline": "9月12日16:00前",
     "comments": "急稿，需9月12日18:00前交稿",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-10",
     "internalOnly": false
   },
@@ -1169,6 +1281,8 @@
     "requirements": [],
     "deadline": "待定，ASAP",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-03",
     "internalOnly": false
   },
@@ -1189,6 +1303,8 @@
     "requirements": [],
     "deadline": "10月1日",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-03",
     "internalOnly": false
   },
@@ -1210,6 +1326,8 @@
     "requirements": [],
     "deadline": "英译波兰语、泰语、土耳其语、意大利语；9/22日截止。其他语种长期招聘",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-09-01",
     "internalOnly": false
   },
@@ -1230,6 +1348,8 @@
     "requirements": [],
     "deadline": "250915",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-29",
     "internalOnly": false
   },
@@ -1250,6 +1370,8 @@
     "requirements": [],
     "deadline": "Undefined.",
     "comments": "Please note that this job post aims to find talents to join our team and have availability for future projects. Projects may not be immediately available upon hiring.",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-22",
     "internalOnly": false
   },
@@ -1270,6 +1392,8 @@
     "requirements": [],
     "deadline": "Undefined.",
     "comments": "For applicants: please clearly provide your past accomplishments as a business development manager. This will be a key factor in our hiring decision.",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-22",
     "internalOnly": false
   },
@@ -1290,6 +1414,8 @@
     "requirements": [],
     "deadline": "9月31日",
     "comments": "应届毕业生或非应届生均可，欢迎感兴趣的同学投递个人简历至邮箱",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-18",
     "internalOnly": false
   },
@@ -1310,6 +1436,8 @@
     "requirements": [],
     "deadline": "根据项目缺口而定",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-06",
     "internalOnly": false
   },
@@ -1331,6 +1459,8 @@
     "requirements": [],
     "deadline": "不定",
     "comments": "请使用内推码推进更快速：QQG1PFU\n投递渠道：官网/库洛招聘公众号\n链接\nhttps://kurogame.jobs.feishu.cn/s/dLy17rb0SVE\nhttps://kurogame.jobs.feishu.cn/index/position/7535295845601823002/detail https://kurogame.jobs.feishu.cn/index/position/7535295287143041290/detail\nhttps://kurogame.jobs.feishu.cn/index/position/7535293983388862762/detail ",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-06",
     "internalOnly": false
   },
@@ -1352,6 +1482,8 @@
     "requirements": [],
     "deadline": "无",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-08-04",
     "internalOnly": true
   },
@@ -1374,6 +1506,8 @@
     "requirements": [],
     "deadline": "8.2",
     "comments": "",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-07-31",
     "internalOnly": true
   },
@@ -1394,6 +1528,8 @@
     "requirements": [],
     "deadline": "2025年8.10内",
     "comments": "如口译老师在动画方面和游戏方面比较熟悉最佳",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-07-30",
     "internalOnly": false
   },
@@ -1415,6 +1551,8 @@
     "requirements": [],
     "deadline": "10天内翻译完毕，大概6.5w，安装实际字符费用结算",
     "comments": "首次发布，翻译的好的话，后期还有其他项目可以长期合作",
+    "contact": "",
+    "referralType": "circle",
     "postedAt": "2025-07-29",
     "internalOnly": false
   }
