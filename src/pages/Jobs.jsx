@@ -448,10 +448,10 @@ const Jobs = () => {
                                 {job.languagePair}
                               </span>
                             )}
-                            {/* 推动转化标签：EA岗位小红心 */}
+                            {/* 推动转化标签：EA岗位小绿心 */}
                             {job.company?.includes('EA') && (
                               <span className="text-xs" title="加班少">
-                                ❤️
+                                💚
                               </span>
                             )}
                           </div>
