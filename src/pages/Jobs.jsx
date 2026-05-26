@@ -1,110 +1,71 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Search, MapPin, Clock, Globe, Briefcase, Filter, Heart, X, ChevronDown, Users } from 'lucide-react';
 import rawJobsData from '../data/jobs.json';
 
-// ===== localStorage 覆盖（管理后台写入） =====
-const STORAGE_KEY = 'remote_q_admin_overrides';
+/* ===== 工具函数 ===== */
 function getOverrides() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  try { return JSON.parse(localStorage.getItem('remote_q_admin_overrides') || '{}'); }
   catch { return {}; }
 }
 function applyOverrides(jobs) {
-  const ov = getOverrides();
+  const overrides = getOverrides();
   return jobs.map(job => {
-    const o = ov[job.id];
-    if (!o) return job;
-    return {
-      ...job,
-      ...(o.hidden !== undefined && { hidden: o.hidden }),
-      ...(o.title !== undefined && { title: o.title }),
-      ...(o.company !== undefined && { company: o.company }),
-      ...(o.salary !== undefined && { salary: o.salary }),
-      ...(o.salaryNote !== undefined && { salaryNote: o.salaryNote }),
-      ...(o.deadline !== undefined && { deadline: o.deadline }),
-      ...(o.location !== undefined && { location: o.location }),
-      ...(o.type !== undefined && { type: o.type }),
-      ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
-    };
-  });
+    const ov = overrides[job.id] || {};
+    return { ...job, ...(ov.hidden !== undefined && { hidden: ov.hidden }) };
+  }).filter(job => !job.hidden);
 }
 
-// 解析截止日期状态
 function parseDeadline(deadline, postedAt) {
-  if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
-  const dl = deadline.toLowerCase();
-
-  // 急招类（最高优先级）
+  if (!deadline) return { type: 'unknown' };
+  const dl = String(deadline).toLowerCase().trim();
+  
+  // 急招关键词
   if (['急招', '急聘', '紧急招聘', 'urgent hiring'].some(k => dl.includes(k))) {
     return { type: 'urgent' };
   }
-
-  // 长期类
+  
+  // 长期关键词
   if (['长期', 'long term', 'longterm', 'no time limitation', 'until we hired', 'n/a'].some(k => dl.includes(k))) {
     return { type: 'longterm' };
   }
-
-  // 尽快/招到即止（无明确截止日期，算开放）
-  if (['尽快', '招到即止', '招到为止', '找到合适的即止', 'asap', '不定', '待定'].some(k => dl.includes(k))) {
-    return { type: 'open' };
-  }
-
-  // 未提供/空
-  if (['未提供', '未明确', '无', 'undefined'].some(k => dl.includes(k))) {
-    return { type: 'open' };
-  }
-
-  // 尝试提取日期
-  let m;
-  // YYYY-MM-DD / YYYY/MM/DD
-  m = deadline.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
-  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
-
-  // YYYY.MM.DD
-  m = deadline.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
-  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
-
+  
+  // YYYY-MM-DD
+  let m = dl.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(parseInt(m[1]), parseInt(m[2])-1, parseInt(m[3])) };
+  
   // YYYY年M月D日
-  m = deadline.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
-  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
-
-  // YYYY年M.D（如"2025年8.10内"）
-  m = deadline.match(/(\d{4})年(\d{1,2})\.(\d{1,2})/);
-  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
-
-  // YYYY年M月（如"2026年3月"）→ 默认该月最后一天
-  m = deadline.match(/(\d{4})年(\d{1,2})月/);
-  if (m) {
-    const year = parseInt(m[1]);
-    const month = parseInt(m[2]);
-    // 下个月第0天 = 本月最后一天
-    const lastDay = new Date(year, month, 0).getDate();
-    return { type: 'date', date: new Date(`${year}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`) };
+  m = dl.match(/(\d{4})年(\d{1,2})月(\d{1,2})日?/);
+  if (m) return { type: 'date', date: new Date(parseInt(m[1]), parseInt(m[2])-1, parseInt(m[3])) };
+  
+  // YYYY年M.D
+  m = dl.match(/(\d{4})年(\d{1,2})\.(\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(parseInt(m[1]), parseInt(m[2])-1, parseInt(m[3])) };
+  
+  // M月D日 / M/D（按 postedAt 推断年份）
+  m = dl.match(/(\d{1,2})月(\d{1,2})日?/) || dl.match(/^(\d{1,2})\/(\d{1,2})$/);
+  if (m && postedAt) {
+    const year = postedAt.match(/(\d{4})/)?.[1] || new Date().getFullYear().toString();
+    return { type: 'date', date: new Date(parseInt(year), parseInt(m[1])-1, parseInt(m[2])) };
   }
-
-  // M月D日 → 优先用 postedAt 推断年份，否则当前年
-  m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
+  
+  // YYYY年M月
+  m = dl.match(/(\d{4})年(\d{1,2})月/);
   if (m) {
-    const inferredYear = postedAt ? new Date(postedAt).getFullYear() : new Date().getFullYear();
-    return { type: 'date', date: new Date(`${inferredYear}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+    const d = new Date(parseInt(m[1]), parseInt(m[2])-1, 1);
+    d.setMonth(d.getMonth() + 1, 0);
+    return { type: 'date', date: d };
   }
-
-  // M月 → 优先用 postedAt 推断年份，默认该月最后一天
-  m = deadline.match(/(\d{1,2})月/);
-  if (m) {
-    const inferredYear = postedAt ? new Date(postedAt).getFullYear() : new Date().getFullYear();
-    const month = parseInt(m[1]);
-    const lastDay = new Date(inferredYear, month, 0).getDate();
-    return { type: 'date', date: new Date(`${inferredYear}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`) };
+  
+  // M月（按 postedAt 推断年份，取月末）
+  m = dl.match(/(\d{1,2})月/);
+  if (m && postedAt) {
+    const year = postedAt.match(/(\d{4})/)?.[1] || new Date().getFullYear().toString();
+    const d = new Date(parseInt(year), parseInt(m[1])-1, 1);
+    d.setMonth(d.getMonth() + 1, 0);
+    return { type: 'date', date: d };
   }
-
-  // M/D
-  m = deadline.match(/(\d{1,2})\/(\d{1,2})/);
-  if (m) {
-    const inferredYear = postedAt ? new Date(postedAt).getFullYear() : new Date().getFullYear();
-    return { type: 'date', date: new Date(`${inferredYear}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
-  }
-
+  
   return { type: 'unknown' };
 }
 
@@ -158,241 +119,182 @@ const Jobs = () => {
       );
     }
     
-    // 搜索
+    // 关键词搜索
     if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      jobs = jobs.filter(job =>
-        job.title?.toLowerCase().includes(query) ||
-        job.company?.toLowerCase().includes(query) ||
-        job.description?.toLowerCase().includes(query) ||
-        job.languagePair?.toLowerCase().includes(query)
+      const q = searchQuery.toLowerCase();
+      jobs = jobs.filter(job => 
+        job.title?.toLowerCase().includes(q) ||
+        job.company?.toLowerCase().includes(q) ||
+        job.location?.toLowerCase().includes(q) ||
+        job.languagePair?.toLowerCase().includes(q) ||
+        job.type?.some(t => t.toLowerCase().includes(q))
       );
     }
     
-    // 远程/线下筛选
+    // 工作地点筛选
+    if (selectedLocation !== '全部') {
+      jobs = jobs.filter(job => 
+        selectedLocation === '远程' 
+          ? job.location?.includes('远程')
+          : !job.location?.includes('远程')
+      );
+    }
+    
+    // 工作模式筛选
     if (selectedWorkMode !== '全部') {
-      if (selectedWorkMode === '远程') {
-        jobs = jobs.filter(job => job.location?.includes('远程'));
-      } else if (selectedWorkMode === '线下') {
-        jobs = jobs.filter(job => 
-          job.location && !job.location.includes('远程') && job.location.length > 0
-        );
-      }
+      jobs = jobs.filter(job => 
+        selectedWorkMode === '远程' 
+          ? job.location?.includes('远程')
+          : !job.location?.includes('远程')
+      );
     }
     
-    // 兼职/全职/外包/正编筛选
+    // 类型筛选
     if (selectedType !== '全部') {
-      jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
+      jobs = jobs.filter(job => job.type?.includes(selectedType));
     }
     
-    // 在招筛选
+    // 状态筛选
     if (selectedStatus === '在招') {
-      jobs = jobs.filter(job => !job.internalOnly);
+      jobs = jobs.filter(job => {
+        const status = getDeadlineStatus(job.deadline, job.postedAt);
+        return status !== 'expired';
+      });
     }
     
-    // 过期岗位自动沉底，其余按发布日期从新到旧
+    // 排序：过期放最后
     jobs.sort((a, b) => {
       const sa = getDeadlineStatus(a.deadline, a.postedAt);
       const sb = getDeadlineStatus(b.deadline, b.postedAt);
       if (sa === 'expired' && sb !== 'expired') return 1;
       if (sa !== 'expired' && sb === 'expired') return -1;
-      return b.postedAt.localeCompare(a.postedAt);
+      
+      // 同状态内按发布日期倒序
+      const pa = new Date(a.postedAt || 0);
+      const pb = new Date(b.postedAt || 0);
+      return pb - pa;
     });
     
     return jobs;
-  }, [searchQuery, selectedNav, selectedWorkMode, selectedType, selectedStatus]);
+  }, [searchQuery, selectedNav, selectedLocation, selectedType, selectedStatus, selectedWorkMode]);
 
-  // 岗位形式标签颜色
+  // 类型颜色映射
   const typeColorMap = {
-    '全职': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '兼职': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '外包': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '远程': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '内部': 'border border-orange-200 bg-orange-50 text-orange-600'
+    '全职': 'bg-green-50 text-green-700',
+    '兼职': 'bg-blue-50 text-blue-700',
+    '外包': 'bg-orange-50 text-orange-700',
+    '实习': 'bg-purple-50 text-purple-700',
+    '正编': 'bg-indigo-50 text-indigo-700',
   };
 
-  // 左侧导航
-  const navItems = [
-    { key: '全部工作', label: '全部工作', count: jobsData.length },
-    { key: '远程工作', label: '远程工作', count: jobsData.filter(j => j.location?.includes('远程') || j.type?.some(t => t.includes('线上'))).length },
-  ];
-
-  // 处理导航切换
-  const handleNavClick = (key) => {
-    setSelectedNav(key);
-    if (key === '远程工作') {
-      setSelectedWorkMode('远程');
-    } else if (selectedWorkMode !== '全部') {
-      // 切回"全部工作"时，如果工作方式不是"全部"，重置为"全部"
-      setSelectedWorkMode('全部');
-    }
-  };
+  const jobCount = filteredJobs.length;
+  const totalCount = jobsData.filter(j => !j.hidden).length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 二维码弹窗 */}
-      {/* 关于我们弹窗 */}
-      {showQrModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
-          <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">关于我们</h3>
-            <div className="text-sm text-gray-600 space-y-2 mb-5">
-              <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业同仁。</p>
-              <p>推动外语人兼职实习就业找出路，定期分享行业资讯、岗位内推与职业成长案例。</p>
+    <div className="min-h-screen bg-white">
+      {/* 顶部导航 */}
+      <div className="sticky top-0 z-50 bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
+          {/* 左侧：搜索 */}
+          <div className="flex-1 flex items-center gap-2 min-w-0">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="搜索岗位、公司、语言..."
+                className="w-full pl-9 pr-4 py-2 bg-gray-50 rounded-lg text-sm outline-none focus:bg-gray-100 transition-colors"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <p className="text-xs text-gray-500 text-center mb-3">扫码添加圈圈微信，加入社群</p>
-              <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
-                <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
-              </div>
-            </div>
-            <button 
-              onClick={() => setShowQrModal(false)}
-              className="w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
-            >
-              关闭
-            </button>
           </div>
-        </div>
-      )}
-
-      {/* Remote Q 小程序弹窗 */}
-      {showRemoteQModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowRemoteQModal(false)}>
-          <div className="bg-white rounded-xl p-6 max-w-sm mx-4 relative" onClick={e => e.stopPropagation()}>
+          
+          {/* 右侧：导航按钮 */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
-              onClick={() => setShowRemoteQModal(false)}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="关闭"
+              onClick={() => setShowQrModal(true)}
+              className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              加入社群
             </button>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">Remote Q</h3>
-            <p className="text-sm text-gray-500 mb-5 text-center">远程工作的大众点评，快捷查看客户口碑</p>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-xs text-gray-500 text-center mb-3">扫码跳转小程序</p>
-              <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
-                <img src="/images/remote-q-miniapp-qr.png" alt="Remote Q 小程序二维码" className="w-full h-full object-contain" />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 顶部栏 */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-4 flex-1">
-              <h1 className="text-xl font-bold text-[#fd8e2a] shrink-0">Remote Q</h1>
-              <div className="relative w-64 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="搜索公司、职位、语种..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-100 rounded-xl text-sm outline-none focus:border-gray-300 transition-colors"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <button 
-                onClick={() => setShowQrModal(true)}
-                className="px-4 py-2 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors inline-flex items-center gap-1.5"
-              >
-                <Users className="w-3.5 h-3.5" />
-                加入社群（1300+小伙伴同行）
-              </button>
-              <a 
-                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors inline-flex items-center gap-1.5"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                人才帮招
-              </a>
-            </div>
+            <a
+              href="https://www.remoteq.xyz/admin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              管理后台
+            </a>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 pb-6 pt-6">
-        {/* Hero 区域 */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold">
-            <span className="text-[#fd8e2a]">Remote Q</span> <span className="text-lg font-medium text-gray-600">@圈圈翻译与本地化社群</span>
-          </h2>
-          <p className="text-sm text-gray-500 mt-2 max-w-xl mx-auto">
-            5年+，聚集5700+语言服务行业小伙伴，外语人兼职实习就业出路看过来~！
-          </p>
-        </div>
-
+      {/* 主体 */}
+      <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex gap-6">
           {/* 左侧导航 */}
-          <div className="w-64 shrink-0 space-y-4">
-            {/* 导航 + CTA 统一卡片 */}
-            <div className="bg-white rounded-xl overflow-hidden">
-              {/* 导航项 */}
-              {navItems.map(item => (
-                <button
-                  key={item.key}
-                  onClick={() => handleNavClick(item.key)}
-                  className={`w-full px-4 py-3 text-left text-sm transition-colors flex items-center justify-between ${
-                    selectedNav === item.key ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  <span>{item.label}</span>
-                  <span className="text-xs text-gray-400">{item.count}</span>
-                </button>
-              ))}
-
-              {/* 主推CTA：社群知识库 */}
-              <a
-                href="https://my.feishu.cn/wiki/R8iFwKE0aiBSfKka20rc8HNNnJ6?from=from_copylink"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-4 py-3 bg-[#fd8e2a] text-white text-sm font-medium hover:bg-[#e57f1f] transition-colors flex items-center justify-between"
-              >
-                <span>社群知识库</span>
-                <span className="text-xs">→</span>
-              </a>
-
-              {/* 次推CTA：人才帮招 */}
-              <a
-                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-4 py-3 text-gray-900 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-between"
-              >
-                <span>人才帮招</span>
-                <span className="text-xs text-gray-400">我也要发布</span>
-              </a>
-
-              {/* Remote Q 小程序 */}
+          <div className="w-56 shrink-0 space-y-3">
+            <button
+              onClick={() => setSelectedNav('全部工作')}
+              className={`w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-left ${
+                selectedNav === '全部工作' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-4 h-4" />
+                全部工作
+                <span className="ml-auto text-xs opacity-60">{totalCount}</span>
+              </div>
+            </button>
+            <button
+              onClick={() => setSelectedNav('远程工作')}
+              className={`w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-left ${
+                selectedNav === '远程工作' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                远程工作
+              </div>
+            </button>
+            
+            <div className="pt-4 border-t border-gray-100">
               <button
-                onClick={() => setShowRemoteQModal(true)}
-                className="w-full px-4 py-3 text-gray-900 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-between border-t border-gray-100"
+                onClick={() => setShowQrModal(true)}
+                className="w-full px-4 py-2.5 rounded-lg text-sm font-medium bg-[#fd8e2a] text-white hover:bg-[#e87f1f] transition-colors text-left"
               >
-                <span>Remote Q</span>
-                <span className="text-xs text-gray-400">远程工作的大众点评</span>
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  社群简介
+                </div>
+              </button>
+              <button
+                onClick={() => window.open('https://mp.weixin.qq.com/s/JN3UgXYqmg8F_8E1kE6pMQ', '_blank')}
+                className="w-full mt-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-left"
+              >
+                <div className="flex items-center gap-2">
+                  <Heart className="w-4 h-4" />
+                  人才帮招
+                </div>
               </button>
             </div>
           </div>
 
-          {/* 右侧职位列表 */}
-          <div className="flex-1">
-            {/* 筛选标签 */}
-            <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
-              <div className="flex flex-wrap gap-4">
+          {/* 右侧内容 */}
+          <div className="flex-1 min-w-0">
+            {/* 筛选栏 */}
+            <div className="mb-4 bg-white rounded-xl border border-gray-100 p-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">工作方式</span>
+                  <span className="text-xs text-gray-400 font-medium">工作模式</span>
                   <div className="flex gap-1">
                     {workModeFilters.map(filter => (
                       <button
@@ -411,7 +313,7 @@ const Jobs = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">岗位形式</span>
+                  <span className="text-xs text-gray-400 font-medium">类型</span>
                   <div className="flex gap-1">
                     {typeFilters.map(filter => (
                       <button
@@ -594,128 +496,6 @@ const Jobs = () => {
                     </div>
                     );
                   })}
-                      <div className="flex items-start gap-4 flex-1 min-w-0">
-                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 text-xs font-bold text-gray-500">
-                          {job.company?.slice(0, 2) || '公司'}
-                        </div>
-                        
-                        <div className="min-w-0 flex-1">
-                          <h3 className="text-base font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate">
-                            <Link to={`/job/${job.id}`} className="hover:underline">
-                              {job.title?.length > 20 ? job.title.slice(0, 20) + '...' : job.title}
-                            </Link>
-                          </h3>
-                          
-                          <div className="flex items-center gap-2 mt-1 text-sm text-gray-500 min-w-0">
-                            <span className="truncate max-w-[200px]">{job.company}</span>
-                            {job.location && (
-                              <>
-                                <span className="text-gray-300">·</span>
-                                <span className="flex items-center gap-1">
-                                  <MapPin className="w-3 h-3" />
-                                  {job.location}
-                                </span>
-                              </>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-wrap gap-1.5 mt-2">
-                            {job.type?.map((t, i) => (
-                              <span 
-                                key={i} 
-                                className={`px-2 py-0.5 rounded text-xs font-medium ${typeColorMap[t] || 'bg-gray-100 text-gray-600'}`}
-                              >
-                                {t}
-                              </span>
-                            ))}
-                            {job.languagePair && (
-                              <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 flex items-center gap-1">
-                                <Globe className="w-3 h-3" />
-                                {job.languagePair}
-                              </span>
-                            )}
-                            {/* 推动转化标签：EA/沐瞳 小绿心 = 加班少 */}
-                            {(job.company?.includes('EA') || job.company?.includes('沐瞳')) && (
-                              <span className="text-xs">
-                                💚 加班少
-                              </span>
-                            )}
-                            {/* 推动转化标签：沐瞳/趣加 小红心 = 在职群友可咨询 */}
-                            {(job.company?.includes('沐瞳') || job.company?.includes('趣加')) && (
-                              <span className="text-xs">
-                                ❤️ 在职群友可咨询
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="text-right shrink-0 ml-4">
-                        {job.salary && (
-                          <div className="text-base font-semibold text-gray-900" title={job.salary}>
-                            {job.salary.length > 10 ? job.salary.slice(0, 10) + '…' : job.salary}
-                          </div>
-                        )}
-                        <div className="flex items-center justify-end gap-1 mt-1 text-xs text-gray-400">
-                          <Clock className="w-3 h-3" />
-                          {job.postedAt}
-                        </div>
-                        {(() => {
-                          const p = parseDeadline(job.deadline, job.postedAt);
-                          const today = new Date();
-                          today.setHours(0,0,0,0);
-
-                          // 急招：火焰图标
-                          if (p.type === 'urgent') {
-                            return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span>🔥</span>
-                                <span className="text-orange-600 font-medium">急招</span>
-                              </div>
-                            );
-                          }
-
-                          // 有明确日期且已过期：红点 + 已过期
-                          if (p.type === 'date' && p.date < today) {
-                            return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                                <span className="text-red-500">已过期</span>
-                              </div>
-                            );
-                          }
-
-                          // 有明确日期且未过期：绿点 + 日期
-                          if (p.type === 'date' && p.date >= today) {
-                            return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                <span className="text-green-600">{formatDate(p.date)}</span>
-                              </div>
-                            );
-                          }
-
-                          // 长期：绿点 + 长期
-                          if (p.type === 'longterm') {
-                            return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                <span className="text-green-600">长期</span>
-                              </div>
-                            );
-                          }
-
-                          // 无截止日期/招到即止/尽快/open/unknown：绿点 + 在招
-                          return (
-                            <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                              <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                              <span className="text-green-600">在招</span>
-                            </div>
-                          );
-                        })()}
-                      </div>
-                    </div>
-                  ))}
                 </div>
               ) : (
                 <div className="text-center py-16">
