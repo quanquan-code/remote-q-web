@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus } from 'lucide-react';
+import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import rawJobsData from '../data/jobs.json';
 
@@ -255,14 +255,15 @@ const Jobs = () => {
                 onClick={() => setShowQrModal(true)}
                 className="px-4 py-2 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
-                关于我们
+                加入社群（累计加入5700人）
               </button>
               <a 
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors inline-flex items-center gap-1.5"
               >
+                <FileText className="w-3.5 h-3.5" />
                 人才帮招
               </a>
             </div>
