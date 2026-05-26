@@ -304,7 +304,7 @@ const Jobs = () => {
             <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 <Users className="w-4 h-4" />
                 <span>社群简介</span>
