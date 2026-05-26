@@ -131,8 +131,7 @@ const JobDetail = () => {
 
             {isFullTime ? (
               <>
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">添加内推微信</h3>
-                <p className="text-sm text-gray-500 mb-6">扫码添加圈圈，协助内推</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">添加内推微信</h3>
               </>
             ) : (
               <>
