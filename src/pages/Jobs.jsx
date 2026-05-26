@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText } from 'lucide-react';
+import { Search, MapPin, Clock, Globe, Building2, Briefcase } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import rawJobsData from '../data/jobs.json';
 
@@ -16,11 +16,9 @@ function applyOverrides(jobs) {
     if (!o) return job;
     return {
       ...job,
-      ...(o.hidden !== undefined && { hidden: o.hidden }),
       ...(o.title !== undefined && { title: o.title }),
       ...(o.company !== undefined && { company: o.company }),
       ...(o.salary !== undefined && { salary: o.salary }),
-      ...(o.salaryNote !== undefined && { salaryNote: o.salaryNote }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.location !== undefined && { location: o.location }),
       ...(o.type !== undefined && { type: o.type }),
@@ -56,6 +54,7 @@ function parseDeadline(deadline, postedAt) {
 
   // 尝试提取日期
   let m;
+
   // YYYY-MM-DD / YYYY/MM/DD
   m = deadline.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
   if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
@@ -68,13 +67,33 @@ function parseDeadline(deadline, postedAt) {
   m = deadline.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
   if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
 
-  // M月D日 — 根据发布年份推断（去年发布的默认去年截止）
+  // YYYY年M月（精确到月，默认该月最后一天）
+  m = deadline.match(/(\d{4})年(\d{1,2})月/);
+  if (m) {
+    const year = parseInt(m[1]);
+    const month = parseInt(m[2]);
+    const lastDay = new Date(year, month, 0).getDate();
+    return { type: 'date', date: new Date(`${year}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`) };
+  }
+
+  // M月D日 — 根据发布年份推断
   m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
   if (m) {
     const postedYear = postedAt ? parseInt(postedAt.slice(0, 4)) : null;
     const currentYear = new Date().getFullYear();
     const year = (postedYear && postedYear < currentYear) ? postedYear : currentYear;
     return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+  }
+
+  // M月（纯月份，今年/去年，默认该月最后一天）
+  m = deadline.match(/^(\d{1,2})月$/);
+  if (m) {
+    const postedYear = postedAt ? parseInt(postedAt.slice(0, 4)) : null;
+    const currentYear = new Date().getFullYear();
+    const year = (postedYear && postedYear < currentYear) ? postedYear : currentYear;
+    const month = parseInt(m[1]);
+    const lastDay = new Date(year, month, 0).getDate();
+    return { type: 'date', date: new Date(`${year}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`) };
   }
 
   // M/D — 同上
@@ -119,196 +138,180 @@ const Jobs = () => {
   const [selectedWorkMode, setSelectedWorkMode] = useState('全部');
   const [showQrModal, setShowQrModal] = useState(false);
 
-  // 筛选选项
-  const locationFilters = ['全部', '远程', '线下'];
+  // 工作模式筛选项
   const workModeFilters = ['全部', '远程', '线下'];
-  const typeFilters = ['全部', '兼职', '全职', '外包', '正编'];
-  const statusFilters = ['全部', '在招'];
+
+  // ===== 计算筛选条件 =====
+  const navItems = ['全部工作', '全职', '兼职', '实习', '外包', '正编', '内部需求'];
+  const locationOptions = ['全部', '远程', '线下', ...new Set(jobsData.map(j => j.location).filter(Boolean))];
+  const typeOptions = ['全部', '全职', '兼职', '实习', '外包', '正编', '内部'];
+  const statusOptions = ['全部', '急招', '在招', '长期', '已过期'];
 
   const filteredJobs = useMemo(() => {
-    let jobs = jobsData;
-    
-    // 过滤已隐藏岗位
-    jobs = jobs.filter(job => !job.hidden);
-    
-    // 左侧导航筛选
-    if (selectedNav === '远程工作') {
-      jobs = jobs.filter(job => 
-        job.location?.includes('远程') || job.type?.some(t => t.includes('线上'))
-      );
-    }
-    
-    // 搜索
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      jobs = jobs.filter(job =>
-        job.title?.toLowerCase().includes(query) ||
-        job.company?.toLowerCase().includes(query) ||
-        job.description?.toLowerCase().includes(query) ||
-        job.languagePair?.toLowerCase().includes(query)
-      );
-    }
-    
-    // 远程/线下筛选
-    if (selectedWorkMode !== '全部') {
-      if (selectedWorkMode === '远程') {
-        jobs = jobs.filter(job => job.location?.includes('远程'));
-      } else if (selectedWorkMode === '线下') {
-        jobs = jobs.filter(job => 
-          job.location && !job.location.includes('远程') && job.location.length > 0
-        );
+    return jobsData.filter(job => {
+      // 导航筛选
+      if (selectedNav === '内部需求') {
+        if (!job.type?.includes('内部')) return false;
+      } else if (selectedNav !== '全部工作') {
+        if (!job.type?.includes(selectedNav)) return false;
       }
-    }
-    
-    // 兼职/全职/外包/正编筛选
-    if (selectedType !== '全部') {
-      jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
-    }
-    
-    // 在招筛选
-    if (selectedStatus === '在招') {
-      jobs = jobs.filter(job => !job.internalOnly);
-    }
-    
-    // 过期岗位自动沉底，其余按发布日期从新到旧
-    jobs.sort((a, b) => {
+
+      // 搜索
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const match =
+          job.title?.toLowerCase().includes(query) ||
+          job.company?.toLowerCase().includes(query) ||
+          job.description?.toLowerCase().includes(query);
+        if (!match) return false;
+      }
+
+      // 地点筛选
+      if (selectedLocation !== '全部') {
+        if (selectedLocation === '远程') {
+          if (!job.location?.includes('远程')) return false;
+        } else if (selectedLocation === '线下') {
+          if (job.location?.includes('远程') && !job.location?.includes('线下')) return false;
+        } else {
+          if (!job.location?.includes(selectedLocation)) return false;
+        }
+      }
+
+      // 类型筛选
+      if (selectedType !== '全部') {
+        if (!job.type?.includes(selectedType)) return false;
+      }
+
+      // 状态筛选
+      if (selectedStatus !== '全部') {
+        const s = getDeadlineStatus(job.deadline, job.postedAt);
+        if (selectedStatus === '急招' && s !== 'urgent') return false;
+        if (selectedStatus === '在招' && s !== 'open') return false;
+        if (selectedStatus === '长期' && s !== 'longterm') return false;
+        if (selectedStatus === '已过期' && s !== 'expired') return false;
+      }
+
+      // 工作模式筛选
+      if (selectedWorkMode !== '全部') {
+        if (selectedWorkMode === '远程') {
+          if (!job.location?.includes('远程')) return false;
+        } else if (selectedWorkMode === '线下') {
+          if (!job.location?.includes('线下')) return false;
+        }
+      }
+
+      return true;
+    }).sort((a, b) => {
+      // 排序：急招 > 在招 > 长期 > 已过期
       const sa = getDeadlineStatus(a.deadline, a.postedAt);
       const sb = getDeadlineStatus(b.deadline, b.postedAt);
-      if (sa === 'expired' && sb !== 'expired') return 1;
-      if (sa !== 'expired' && sb === 'expired') return -1;
-      return b.postedAt.localeCompare(a.postedAt);
+      const order = { urgent: 0, open: 1, longterm: 2, expired: 3 };
+      return (order[sa] || 99) - (order[sb] || 99);
     });
-    
-    return jobs;
-  }, [searchQuery, selectedNav, selectedWorkMode, selectedType, selectedStatus]);
+  }, [searchQuery, selectedNav, selectedLocation, selectedType, selectedStatus, selectedWorkMode]);
 
-  // 岗位形式标签颜色
   const typeColorMap = {
-    '全职': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '兼职': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '外包': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '远程': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '内部': 'border border-orange-200 bg-orange-50 text-orange-600'
-  };
-
-  // 左侧导航
-  const navItems = [
-    { key: '全部工作', label: '全部工作', count: jobsData.length },
-    { key: '远程工作', label: '远程工作', count: jobsData.filter(j => j.location?.includes('远程') || j.type?.some(t => t.includes('线上'))).length },
-  ];
-
-  // 处理导航切换
-  const handleNavClick = (key) => {
-    setSelectedNav(key);
-    if (key === '远程工作') {
-      setSelectedWorkMode('远程');
-    } else if (selectedWorkMode !== '全部') {
-      // 切回"全部工作"时，如果工作方式不是"全部"，重置为"全部"
-      setSelectedWorkMode('全部');
-    }
+    '全职': 'bg-blue-50 text-blue-600',
+    '兼职': 'bg-green-50 text-green-600',
+    '实习': 'bg-purple-50 text-purple-600',
+    '外包': 'bg-orange-50 text-orange-600',
+    '正编': 'bg-indigo-50 text-indigo-600',
+    '内部': 'bg-amber-50 text-amber-600',
+    '远程': 'bg-gray-100 text-gray-600',
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 二维码弹窗 */}
-      {/* 关于我们弹窗 */}
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
-          <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">关于我们</h3>
-            <div className="text-sm text-gray-600 space-y-2 mb-5">
-              <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业同仁。</p>
-              <p>推动外语人兼职实习就业找出路，定期分享行业资讯、岗位内推与职业成长案例。</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <p className="text-xs text-gray-500 text-center mb-3">扫码添加圈圈微信，加入社群</p>
-              <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
-                <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
-              </div>
-            </div>
-            <button 
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative" onClick={e => e.stopPropagation()}>
+            <button
               onClick={() => setShowQrModal(false)}
-              className="w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              关闭
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
+            <h3 className="text-xl font-semibold text-gray-900 mb-1">添加内推微信</h3>
+            <p className="text-sm text-gray-500 mb-6">扫码添加圈圈，协助内推</p>
+            <div className="bg-gray-50 rounded-xl w-64 h-64 mx-auto flex items-center justify-center overflow-hidden">
+              <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
+            </div>
+            <p className="mt-6 text-center text-sm text-gray-500">
+              来和群友当同事吧！
+            </p>
           </div>
         </div>
       )}
 
-      {/* 顶部栏 */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold text-[#fd8e2a] shrink-0">Remote Q</h1>
-              <div className="relative w-64 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="搜索公司、职位、语种..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-100 rounded-xl text-sm outline-none focus:border-gray-300 transition-colors"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setShowQrModal(true)}
-                className="px-4 py-2 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors inline-flex items-center gap-1.5"
-              >
-                <Users className="w-3.5 h-3.5" />
-                加入社群（1300+小伙伴同行）
-              </button>
-              <a 
-                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
-                target="_blank" 
+      {/* 顶部导航 */}
+      <header className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-14">
+            <Link to="/" className="flex items-center gap-2">
+              <span className="text-lg font-bold text-gray-900">Remote Q</span>
+            </Link>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://my.feishu.cn/wiki/R8iFwKE0aiBSfKka20rc8HNNnJ6?from=from_copylink"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors inline-flex items-center gap-1.5"
+                className="text-sm text-[#fd8e2a] hover:text-[#e57f1f] font-medium flex items-center gap-1"
               >
-                <FileText className="w-3.5 h-3.5" />
+                加入社群
+              </a>
+              <a
+                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
+              >
                 人才帮招
               </a>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-7xl mx-auto px-4 pb-6 pt-6">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Hero 区域 */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold">
-            <span className="text-[#fd8e2a]">Remote Q</span> <span className="text-lg font-medium text-gray-600">@圈圈翻译与本地化社群</span>
-          </h2>
-          <p className="text-sm text-gray-500 mt-2 max-w-xl mx-auto">
-            5年+，聚集5700+语言服务行业小伙伴，外语人兼职实习就业出路看过来~！
-          </p>
+        <div className="mb-8">
+          <div className="bg-white rounded-xl border border-gray-100 p-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              <span className="text-[#fd8e2a]">Remote Q</span> · 远程工作职位列表
+            </h1>
+            <p className="text-gray-500 text-sm">
+              @圈圈翻译与本地化社群 · 5年+ · 5700+同仁 · 外语人兼职实习就业出路
+            </p>
+          </div>
         </div>
 
         <div className="flex gap-6">
           {/* 左侧导航 */}
-          <div className="w-64 shrink-0 space-y-4">
-            {/* 导航 + CTA 统一卡片 */}
-            <div className="bg-white rounded-xl overflow-hidden">
-              {/* 导航项 */}
+          <div className="w-48 shrink-0 space-y-3">
+            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
               {navItems.map(item => (
                 <button
-                  key={item.key}
-                  onClick={() => handleNavClick(item.key)}
-                  className={`w-full px-4 py-3 text-left text-sm transition-colors flex items-center justify-between ${
-                    selectedNav === item.key ? 'bg-gray-50 text-gray-900 font-medium' : 'text-gray-600 hover:bg-gray-50'
+                  key={item}
+                  onClick={() => setSelectedNav(item)}
+                  className={`w-full px-4 py-3 text-left text-sm font-medium transition-colors flex items-center justify-between ${
+                    selectedNav === item
+                      ? 'bg-gray-50 text-gray-900'
+                      : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
-                  <span>{item.label}</span>
-                  <span className="text-xs text-gray-400">{item.count}</span>
+                  <span>{item}</span>
+                  <span className="text-xs text-gray-400">
+                    {item === '全部工作' ? jobsData.length : jobsData.filter(j => {
+                      if (item === '内部需求') return j.type?.includes('内部');
+                      return j.type?.includes(item);
+                    }).length}
+                  </span>
                 </button>
               ))}
 
-              {/* 主推CTA：社群知识库 */}
               <a
                 href="https://my.feishu.cn/wiki/R8iFwKE0aiBSfKka20rc8HNNnJ6?from=from_copylink"
                 target="_blank"
@@ -319,80 +322,87 @@ const Jobs = () => {
                 <span className="text-xs">→</span>
               </a>
 
-              {/* 次推CTA：人才帮招 */}
-              <a
-                href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-4 py-3 text-gray-900 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-between"
+              <button
+                onClick={() => setShowQrModal(true)}
+                className="w-full px-4 py-3 bg-white text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-between border-t border-gray-100"
               >
-                <span>人才帮招</span>
-                <span className="text-xs text-gray-400">我也要发布</span>
-              </a>
+                <span>关于我们</span>
+                <span className="text-xs text-gray-400">社群简介</span>
+              </button>
             </div>
           </div>
 
-          {/* 右侧职位列表 */}
-          <div className="flex-1">
-            {/* 筛选标签 */}
+          {/* 右侧内容 */}
+          <div className="flex-1 min-w-0">
+            {/* 筛选栏 */}
             <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">工作方式</span>
-                  <div className="flex gap-1">
-                    {workModeFilters.map(filter => (
-                      <button
-                        key={filter}
-                        onClick={() => setSelectedWorkMode(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                          selectedWorkMode === filter 
-                            ? 'bg-gray-900 text-white border-gray-900' 
-                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
-                        }`}
-                      >
-                        {filter}
-                      </button>
-                    ))}
-                  </div>
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="搜索岗位、公司..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 w-48 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">岗位形式</span>
-                  <div className="flex gap-1">
-                    {typeFilters.map(filter => (
-                      <button
-                        key={filter}
-                        onClick={() => setSelectedType(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                          selectedType === filter 
-                            ? 'bg-gray-900 text-white border-gray-900' 
-                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
-                        }`}
-                      >
-                        {filter}
-                      </button>
+                  <span className="text-sm text-gray-500">地点:</span>
+                  <select
+                    value={selectedLocation}
+                    onChange={e => setSelectedLocation(e.target.value)}
+                    className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none"
+                  >
+                    {locationOptions.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
                     ))}
-                  </div>
+                  </select>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">状态</span>
-                  <div className="flex gap-1">
-                    {statusFilters.map(filter => (
-                      <button
-                        key={filter}
-                        onClick={() => setSelectedStatus(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                          selectedStatus === filter 
-                            ? 'bg-gray-900 text-white border-gray-900' 
-                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
-                        }`}
-                      >
-                        {filter}
-                      </button>
+                  <span className="text-sm text-gray-500">类型:</span>
+                  <select
+                    value={selectedType}
+                    onChange={e => setSelectedType(e.target.value)}
+                    className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none"
+                  >
+                    {typeOptions.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
                     ))}
-                  </div>
+                  </select>
                 </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">状态:</span>
+                  <select
+                    value={selectedStatus}
+                    onChange={e => setSelectedStatus(e.target.value)}
+                    className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none"
+                  >
+                    {statusOptions.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* 工作模式筛选 */}
+              <div className="flex flex-wrap gap-2 mt-3">
+                {workModeFilters.map(filter => (
+                  <button
+                    key={filter}
+                    onClick={() => setSelectedWorkMode(filter)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
+                      selectedWorkMode === filter
+                        ? 'bg-gray-900 text-white border-gray-900'
+                        : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -510,38 +520,31 @@ const Jobs = () => {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
                                 <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                <span className="text-green-600">{formatDate(p.date)}</span>
+                                <span className="text-green-600">{formatDate(p.date)}截止</span>
                               </div>
                             );
                           }
 
-                          // 长期：绿点 + 长期
+                          // 长期
                           if (p.type === 'longterm') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                <span className="text-green-600">长期</span>
+                                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span className="text-blue-600">长期</span>
                               </div>
                             );
                           }
 
-                          // 无截止日期/招到即止/尽快/open/unknown：绿点 + 在招
-                          return (
-                            <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                              <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                              <span className="text-green-600">在招</span>
-                            </div>
-                          );
+                          return null;
                         })()}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-16">
-                  <Briefcase className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-                  <p className="text-gray-400">暂无匹配岗位</p>
-                  <p className="text-sm text-gray-400 mt-1">试试调整筛选条件</p>
+                <div className="px-4 py-12 text-center text-gray-400">
+                  <Search className="w-8 h-8 mx-auto mb-3 opacity-50" />
+                  <p>暂无符合条件的岗位</p>
                 </div>
               )}
             </div>
