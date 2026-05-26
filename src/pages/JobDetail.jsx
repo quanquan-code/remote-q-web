@@ -136,8 +136,8 @@ const JobDetail = () => {
               </>
             ) : (
               <>
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">欢迎加入圈圈社群</h3>
-                <p className="text-sm text-gray-500 mb-6">欢迎加入圈圈翻译与本地化社群，获取更多行业信息与合作机会</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1">加入圈圈翻译与本地化社群</h3>
+                <p className="text-sm text-gray-500 mb-6">获取更多行业信息与合作机会</p>
               </>
             )}
 
