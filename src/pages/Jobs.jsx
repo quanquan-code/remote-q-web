@@ -210,17 +210,24 @@ const Jobs = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 二维码弹窗 */}
+      {/* 关于我们弹窗 */}
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
           <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">加入圈圈社群</h3>
-            <p className="text-sm text-gray-500 mb-4">扫码添加圈圈微信，拉你进圈圈社群</p>
-            <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
-              <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">关于我们</h3>
+            <div className="text-sm text-gray-600 space-y-2 mb-5">
+              <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业同仁。</p>
+              <p>推动外语人兼职实习就业找出路，定期分享行业资讯、岗位内推与职业成长案例。</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <p className="text-xs text-gray-500 text-center mb-3">扫码添加圈圈微信，加入社群</p>
+              <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
+                <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
+              </div>
             </div>
             <button 
               onClick={() => setShowQrModal(false)}
-              className="mt-4 w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
+              className="w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
             >
               关闭
             </button>
@@ -248,7 +255,7 @@ const Jobs = () => {
                 onClick={() => setShowQrModal(true)}
                 className="px-4 py-2 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
-                圈圈翻译与本地化社群
+                关于我们
               </button>
               <a 
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
