@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, Download, Upload, CheckSquare, Square, BarChart3, Users, Briefcase, Settings, Globe, Tag, MapPin, LayoutDashboard, ExternalLink, Search, Filter, X, Save, TrendingUp } from 'lucide-react';
 import jobsData from '../data/jobs.json';
@@ -181,6 +181,7 @@ function Sidebar({ activeTab, setActiveTab }) {
 
 /* ===== 主页面 ===== */
 const Admin = () => {
+  useEffect(() => { document.title = 'Remote Q 后台'; }, []);
   const [authed, setAuthed] = useState(() => sessionStorage.getItem('rq_admin_auth') === '1');
   const [activeTab, setActiveTab] = useState('jobs');
   const [overrides, setOverrides] = useState(loadOverrides);
