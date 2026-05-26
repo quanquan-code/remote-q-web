@@ -517,10 +517,10 @@ function processRecord(record, index) {
   const fields = record.fields || {};
   const company = getFieldText(fields, '公司/个人 Company/Individual Name');
   const jobNameField = getFieldArray(fields, '招募岗位名称');
+  const descField = getFieldArray(fields, '岗位要求Job Description');
   const titleResult = cleanTitle(jobNameField, descField);
   const title = titleResult.title;
   const titleOverflow = titleResult.overflow;
-  const descField = getFieldArray(fields, '岗位要求Job Description');
   const channelField = getFieldArray(fields, '希望发布渠道 Where to post your job?');
   const internalOnly = isInternalOnly(channelField);
   // 全渠道发布显示真实公司名，仅内部发布走匿名化
