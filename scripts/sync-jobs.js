@@ -412,7 +412,7 @@ function isPureFormTag(text) {
   return words.every(w => FORM_TAGS.some(tag => w.includes(tag.toLowerCase())));
 }
 
-function cleanTitle(jobNameField) {
+function cleanTitle(jobNameField, descriptionField) {
   // 收集所有候选文本
   const candidates = [];
   if (jobNameField && jobNameField.length) {
@@ -422,6 +422,18 @@ function cleanTitle(jobNameField) {
         // 多行文本拆分成单独的行
         const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 2);
         candidates.push(...lines);
+      }
+    }
+  }
+  
+  // 如果招募岗位名称为空，从岗位描述的前几行提取候选标题
+  if (!candidates.length && descriptionField && descriptionField.length) {
+    for (const d of descriptionField) {
+      const text = (typeof d === 'string' ? d : d?.text || '').trim();
+      if (text && text.length > 2) {
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 2);
+        // 取前5行作为标题候选
+        candidates.push(...lines.slice(0, 5));
       }
     }
   }
@@ -468,8 +480,8 @@ function cleanTitle(jobNameField) {
 function finalizeTitle(raw) {
   let cleaned = raw.trim();
   
-  // 去掉常见前缀
-  cleaned = cleaned.replace(/^(岗位|需求|职位|招聘)[:：]\s*/i, '');
+  // 去掉常见前缀（岗位描述里的）
+  cleaned = cleaned.replace(/^(岗位|需求|职位|招聘|岗位职责|岗位描述|【岗位描述】|\[Responsibilities\]|Responsibilities)[:：\s]*/i, '');
   cleaned = cleaned.replace(/^\d+[、.\s]+/, '');
   
   // 去掉括号及里面的内容
@@ -489,6 +501,14 @@ function finalizeTitle(raw) {
   cleaned = cleaned.replace(/(岗位|招募|招聘|需求|急招)[，,]*$/i, '');
   cleaned = cleaned.replace(/[：:\-]$/, '').trim();
   
+  // 如果清理后为空，但原始文本有实质内容，尝试取第一行非空内容
+  if (!cleaned && raw.trim()) {
+    cleaned = raw.trim().split('\n')[0].trim();
+    // 再次清理
+    cleaned = cleaned.replace(/^(岗位|需求|职位|招聘|岗位职责|岗位描述|【岗位描述】|\[Responsibilities\]|Responsibilities)[:：\s]*/i, '');
+    cleaned = cleaned.replace(/^\d+[、.\s]+/, '');
+  }
+  
   // 不再截断标题——列表页用 CSS truncate，详情页显示完整
   return { title: cleaned || '翻译/本地化岗位', overflow: '' };
 }
@@ -497,7 +517,7 @@ function processRecord(record, index) {
   const fields = record.fields || {};
   const company = getFieldText(fields, '公司/个人 Company/Individual Name');
   const jobNameField = getFieldArray(fields, '招募岗位名称');
-  const titleResult = cleanTitle(jobNameField);
+  const titleResult = cleanTitle(jobNameField, descField);
   const title = titleResult.title;
   const titleOverflow = titleResult.overflow;
   const descField = getFieldArray(fields, '岗位要求Job Description');
