@@ -304,14 +304,16 @@ const Jobs = () => {
                 </button>
               ))}
 
-              {/* 主推CTA：加入社群 */}
-              <button
-                onClick={() => setShowQrModal(true)}
+              {/* 主推CTA：社群知识库 */}
+              <a
+                href="https://my.feishu.cn/wiki/R8iFwKE0aiBSfKka20rc8HNNnJ6?from=from_copylink"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full px-4 py-3 bg-[#fd8e2a] text-white text-sm font-medium hover:bg-[#e57f1f] transition-colors flex items-center justify-between"
               >
-                <span>加入社群（1300+）</span>
+                <span>社群知识库</span>
                 <span className="text-xs">→</span>
-              </button>
+              </a>
 
               {/* 次推CTA：人才帮招 */}
               <a
