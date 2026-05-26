@@ -30,7 +30,7 @@ function applyOverrides(jobs) {
 }
 
 // 解析截止日期状态
-function parseDeadline(deadline) {
+function parseDeadline(deadline, postedAt) {
   if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
   const dl = deadline.toLowerCase();
 
@@ -72,25 +72,44 @@ function parseDeadline(deadline) {
   m = deadline.match(/(\d{4})年(\d{1,2})\.(\d{1,2})/);
   if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
 
-  // M月D日（今年）
+  // YYYY年M月（如"2026年3月"）→ 默认该月最后一天
+  m = deadline.match(/(\d{4})年(\d{1,2})月/);
+  if (m) {
+    const year = parseInt(m[1]);
+    const month = parseInt(m[2]);
+    // 下个月第0天 = 本月最后一天
+    const lastDay = new Date(year, month, 0).getDate();
+    return { type: 'date', date: new Date(`${year}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`) };
+  }
+
+  // M月D日 → 优先用 postedAt 推断年份，否则当前年
   m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
   if (m) {
-    const year = new Date().getFullYear();
-    return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+    const inferredYear = postedAt ? new Date(postedAt).getFullYear() : new Date().getFullYear();
+    return { type: 'date', date: new Date(`${inferredYear}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+  }
+
+  // M月 → 优先用 postedAt 推断年份，默认该月最后一天
+  m = deadline.match(/(\d{1,2})月/);
+  if (m) {
+    const inferredYear = postedAt ? new Date(postedAt).getFullYear() : new Date().getFullYear();
+    const month = parseInt(m[1]);
+    const lastDay = new Date(inferredYear, month, 0).getDate();
+    return { type: 'date', date: new Date(`${inferredYear}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`) };
   }
 
   // M/D
   m = deadline.match(/(\d{1,2})\/(\d{1,2})/);
   if (m) {
-    const year = new Date().getFullYear();
-    return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+    const inferredYear = postedAt ? new Date(postedAt).getFullYear() : new Date().getFullYear();
+    return { type: 'date', date: new Date(`${inferredYear}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
   }
 
   return { type: 'unknown' };
 }
 
-function getDeadlineStatus(deadline) {
-  const p = parseDeadline(deadline);
+function getDeadlineStatus(deadline, postedAt) {
+  const p = parseDeadline(deadline, postedAt);
   if (p.type === 'urgent') return 'urgent';
   if (p.type === 'longterm') return 'longterm';
   if (p.type === 'date') {
@@ -173,8 +192,8 @@ const Jobs = () => {
     
     // 过期岗位自动沉底，其余按发布日期从新到旧
     jobs.sort((a, b) => {
-      const sa = getDeadlineStatus(a.deadline);
-      const sb = getDeadlineStatus(b.deadline);
+      const sa = getDeadlineStatus(a.deadline, a.postedAt);
+      const sb = getDeadlineStatus(b.deadline, b.postedAt);
       if (sa === 'expired' && sb !== 'expired') return 1;
       if (sa !== 'expired' && sb === 'expired') return -1;
       return b.postedAt.localeCompare(a.postedAt);
@@ -513,7 +532,7 @@ const Jobs = () => {
                           {job.postedAt}
                         </div>
                         {(() => {
-                          const p = parseDeadline(job.deadline);
+                          const p = parseDeadline(job.deadline, job.postedAt);
                           const today = new Date();
                           today.setHours(0,0,0,0);
 
