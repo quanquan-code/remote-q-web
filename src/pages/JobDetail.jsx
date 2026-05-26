@@ -266,7 +266,7 @@ const JobDetail = () => {
                     rel="noopener noreferrer" 
                     className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
                   >
-                    <p className="text-sm font-medium text-[#fd8e2a]">游戏本地化入门讲座</p>
+                    <p className="text-sm font-medium text-[#fd8e2a]">游戏本地化从零入门讲座 by黑神话悟空本地化参与者</p>
                     <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
                   </a>
                 )}
