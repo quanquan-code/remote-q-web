@@ -238,19 +238,21 @@ const Jobs = () => {
       {/* 顶部栏 */}
       <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <h1 className="text-xl font-bold text-[#fd8e2a] shrink-0">Remote Q</h1>
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="搜索公司、职位、语种..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-100 rounded-xl text-sm outline-none focus:border-gray-300 transition-colors"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-bold text-[#fd8e2a] shrink-0">Remote Q</h1>
+              <div className="relative w-64 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="搜索公司、职位、语种..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-100 rounded-xl text-sm outline-none focus:border-gray-300 transition-colors"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-2 ml-auto">
+            <div className="flex items-center gap-2">
               <button 
                 onClick={() => setShowQrModal(true)}
                 className="px-4 py-2 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
