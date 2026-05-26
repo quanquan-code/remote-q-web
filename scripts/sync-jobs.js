@@ -157,9 +157,20 @@ function extractLocation(jobName, comments, formField, locationSupplement) {
 
   // 其次读取飞书「岗位形式」字段中的线上/线下信息
   const formText = JSON.stringify(formField || []).toLowerCase();
-  if (formText.includes('线上') || formText.includes('远程')) return '远程';
-  if (formText.includes('线下')) {
-    // 从岗位名称和备注中提取城市名
+  const hasRemote = formText.includes('线上') || formText.includes('远程');
+  const hasOnsite = formText.includes('线下');
+  
+  // 同时支持线上和线下 → 显示组合标签
+  if (hasRemote && hasOnsite) {
+    const text = `${jobName || ''} ${comments || ''}`;
+    const cities = ['上海', '北京', '广州', '深圳', '杭州', '成都', '苏州', '珠海', '长沙', '厦门', '汕头', '南京', '武汉', '郑州', '东京'];
+    const locations = cities.filter(city => text.includes(city));
+    if (locations.length > 0) return `远程&线下(${locations.join('/')})`;
+    return '远程&线下';
+  }
+  
+  if (hasRemote) return '远程';
+  if (hasOnsite) {
     const text = `${jobName || ''} ${comments || ''}`;
     const cities = ['上海', '北京', '广州', '深圳', '杭州', '成都', '苏州', '珠海', '长沙', '厦门', '汕头', '南京', '武汉', '郑州', '东京'];
     const locations = cities.filter(city => text.includes(city));
