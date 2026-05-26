@@ -229,7 +229,14 @@ function extractLocation(jobName, comments, formField, locationSupplement) {
 }
 
 function extractLanguagePair(title, description) {
-  const text = ((title || '') + ' ' + (description || '')).toLowerCase();
+  const rawText = ((title || '') + ' ' + (description || ''));
+  const text = rawText.toLowerCase();
+  
+  // 先处理特殊写法：简中→英语/日语/韩语 等
+  const normalized = text
+    .replace(/简中/g, '中').replace(/繁中/g, '中')
+    .replace(/英语/g, '英').replace(/日语/g, '日').replace(/韩语/g, '韩').replace(/德语/g, '德').replace(/法语/g, '法').replace(/俄语/g, '俄').replace(/西语/g, '西').replace(/葡语/g, '葡')
+    .replace(/\/\s*/g, '/');
   
   // 严格匹配：只认明确的语言对组合词
   const pairs = [
@@ -246,7 +253,7 @@ function extractLanguagePair(title, description) {
   ];
   
   for (const item of pairs) {
-    if (item.keywords.some(k => text.includes(k))) {
+    if (item.keywords.some(k => normalized.includes(k))) {
       return item.pair;
     }
   }
