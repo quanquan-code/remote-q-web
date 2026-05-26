@@ -253,7 +253,7 @@ const Jobs = () => {
             <div className="flex items-center gap-2 ml-auto">
               <button 
                 onClick={() => setShowQrModal(true)}
-                className="px-4 py-2 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 加入社群（累计加入5700人）
               </button>
