@@ -68,6 +68,10 @@ function parseDeadline(deadline) {
   m = deadline.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
   if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
 
+  // YYYY年M.D（如"2025年8.10内"）
+  m = deadline.match(/(\d{4})年(\d{1,2})\.(\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
   // M月D日（今年）
   m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
   if (m) {
