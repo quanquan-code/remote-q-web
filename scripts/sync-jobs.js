@@ -489,25 +489,7 @@ function finalizeTitle(raw) {
   cleaned = cleaned.replace(/(岗位|招募|招聘|需求|急招)[，,]*$/i, '');
   cleaned = cleaned.replace(/[：:\-]$/, '').trim();
   
-  // 截断超长标题（中文超过25字，英文超过50字符），多余内容返回
-  const isChinese = /[\u4e00-\u9fa5]/.test(cleaned);
-  const maxLen = isChinese ? 25 : 50;
-  if (cleaned.length > maxLen) {
-    // 尝试在标点处优雅截断
-    let cutIndex = maxLen;
-    const delimiters = isChinese ? ['。', '，', '；', '、', ' '] : ['.', ',', ';', ' '];
-    for (const d of delimiters) {
-      const idx = cleaned.lastIndexOf(d, maxLen);
-      if (idx > maxLen * 0.5) {
-        cutIndex = idx + 1;
-        break;
-      }
-    }
-    const overflow = cleaned.slice(cutIndex).trim();
-    cleaned = cleaned.slice(0, cutIndex).trim();
-    return { title: cleaned || '翻译/本地化岗位', overflow };
-  }
-  
+  // 不再截断标题——列表页用 CSS truncate，详情页显示完整
   return { title: cleaned || '翻译/本地化岗位', overflow: '' };
 }
 

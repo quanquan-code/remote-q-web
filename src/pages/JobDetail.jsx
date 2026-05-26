@@ -219,21 +219,43 @@ const JobDetail = () => {
         )}
 
         {/* 推荐阅读 */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
-          <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <BookOpen className="w-4 h-4" />
-            推荐阅读
-          </h2>
-          <p className="text-sm text-gray-500 mb-4">社群小伙伴成功应聘案例</p>
-          <div className="space-y-3">
-            {relatedCases.map((c, i) => (
-              <a key={i} href={c.url} target="_blank" rel="noopener noreferrer" className="block p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors">
-                <p className="text-sm font-medium text-gray-900">{c.title}</p>
-                <p className="text-xs text-gray-400 mt-1">{c.author}</p>
-              </a>
-            ))}
+        {(relatedCases.length > 0 || isFullTime) && (
+          <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
+            <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              推荐阅读
+            </h2>
+            
+            {isFullTime && (
+              <>
+                <p className="text-xs text-gray-400 mb-3 font-medium">圈圈推荐</p>
+                <a 
+                  href="https://m.shifangwk.cn/lecture2/32397987?es__at=1779773474370" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
+                >
+                  <p className="text-sm font-medium text-[#fd8e2a]">游戏本地化入门讲座</p>
+                  <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
+                </a>
+              </>
+            )}
+            
+            {relatedCases.length > 0 && (
+              <>
+                <p className="text-xs text-gray-400 mb-3">社群小伙伴成功应聘案例</p>
+                <div className="space-y-3">
+                  {relatedCases.map((c, i) => (
+                    <a key={i} href={c.url} target="_blank" rel="noopener noreferrer" className="block p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors">
+                      <p className="text-sm font-medium text-gray-900">{c.title}</p>
+                      <p className="text-xs text-gray-400 mt-1">{c.author}</p>
+                    </a>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-        </div>
+        )}
 
         {/* 底部 CTA */}
         <div className="bg-white rounded-xl border border-gray-100 p-6">
