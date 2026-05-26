@@ -511,8 +511,8 @@ const Jobs = () => {
                                 💚 加班少
                               </span>
                             )}
-                            {/* 推动转化标签：沐瞳 小红心 = 在职群友可咨询 */}
-                            {job.company?.includes('沐瞳') && (
+                            {/* 推动转化标签：沐瞳/趣加 小红心 = 在职群友可咨询 */}
+                            {(job.company?.includes('沐瞳') || job.company?.includes('趣加')) && (
                               <span className="text-xs">
                                 ❤️ 在职群友可咨询
                               </span>
