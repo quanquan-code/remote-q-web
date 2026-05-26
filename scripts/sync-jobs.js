@@ -232,17 +232,24 @@ function extractLanguagePair(title, description) {
   const rawText = ((title || '') + ' ' + (description || ''));
   const text = rawText.toLowerCase();
   
-  // 先处理特殊写法：简中→英语/日语/韩语 等
+  // 处理特殊写法：先保留简体/繁体信息，再匹配
   const normalized = text
-    .replace(/简中/g, '中').replace(/繁中/g, '中')
+    .replace(/繁中/g, '繁中').replace(/简中/g, '简中')
     .replace(/英语/g, '英').replace(/日语/g, '日').replace(/韩语/g, '韩').replace(/德语/g, '德').replace(/法语/g, '法').replace(/俄语/g, '俄').replace(/西语/g, '西').replace(/葡语/g, '葡')
     .replace(/\/\s*/g, '/');
   
   // 严格匹配：只认明确的语言对组合词
+  // ⚠️ 简中/繁中是独立标识，不缩减为"中"
   const pairs = [
-    { keywords: ['中英', '中译英', '英译中', '汉译英', '英译汉', '英汉', '汉英', 'chinese-english', 'english-chinese', '中↔英', '中→英', '英→中'], pair: '中↔英' },
-    { keywords: ['中日', '中译日', '日译中', '汉译日', '日译汉', 'chinese-japanese', 'japanese-chinese', '中↔日', '中→日', '日→中'], pair: '中↔日' },
-    { keywords: ['中韩', '中译韩', '韩译中', '汉译韩', '韩译汉', 'chinese-korean', 'korean-chinese', '中↔韩', '中→韩', '韩→中'], pair: '中↔韩' },
+    // 简体中
+    { keywords: ['简中↔英', '简中→英', '英→简中', '简中译英', '英译简中', '汉译英', '英译汉', 'chinese-english', 'english-chinese', '中↔英', '中→英', '英→中', '中英', '中译英', '英译中'], pair: '简中↔英' },
+    { keywords: ['简中↔日', '简中→日', '日→简中', '简中译日', '日译简中', 'chinese-japanese', 'japanese-chinese', '中↔日', '中→日', '日→中', '中日', '中译日', '日译中'], pair: '简中↔日' },
+    { keywords: ['简中↔韩', '简中→韩', '韩→简中', '简中译韩', '韩译简中', 'chinese-korean', 'korean-chinese', '中↔韩', '中→韩', '韩→中', '中韩', '中译韩', '韩译中'], pair: '简中↔韩' },
+    // 繁体中
+    { keywords: ['繁中↔英', '繁中→英', '英→繁中', '繁中译英', '英译繁中', '繁英', '繁中译英'], pair: '繁中↔英' },
+    { keywords: ['繁中↔日', '繁中→日', '日→繁中', '繁中译日', '日译繁中'], pair: '繁中↔日' },
+    { keywords: ['繁中↔韩', '繁中→韩', '韩→繁中', '繁中译韩', '韩译繁中'], pair: '繁中↔韩' },
+    // 其他语言对
     { keywords: ['英日', '英译日', '日译英', 'english-japanese', 'japanese-english', '英↔日', '英→日', '日→英'], pair: '英↔日' },
     { keywords: ['英韩', '英译韩', '韩译英', 'english-korean', 'korean-english', '英↔韩', '英→韩', '韩→英'], pair: '英↔韩' },
     { keywords: ['中俄', '中译俄', '俄译中', '汉译俄', '俄译汉', 'chinese-russian', 'russian-chinese', '中↔俄', '中→俄', '俄→中'], pair: '中↔俄' },
