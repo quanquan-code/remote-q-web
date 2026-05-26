@@ -87,12 +87,27 @@ const KNOWN_MAP = [
 ];
 
 function getFieldText(fields, name) {
-  // 先尝试精确匹配，再尝试忽略空格差异匹配
+  // 先尝试精确匹配
   let val = fields[name];
+  // 再尝试忽略大小写和空格匹配
   if (val === undefined) {
     const keys = Object.keys(fields);
-    const key = keys.find(k => k.replace(/\s+/g, '') === name.replace(/\s+/g, ''));
+    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => k.toLowerCase().replace(/\s+/g, '') === lowerTarget);
     if (key) val = fields[key];
+  }
+  // 最后尝试包含匹配（字段名包含目标名，或目标名包含字段名）
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const lowerKey = k.toLowerCase().replace(/\s+/g, '');
+      return lowerKey.includes(lowerTarget) || lowerTarget.includes(lowerKey);
+    });
+    if (key) {
+      console.log(`  📌 字段匹配成功: "${name}" -> "${key}"`);
+      val = fields[key];
+    }
   }
   if (typeof val === 'string') return val;
   if (Array.isArray(val)) return val.map(v => typeof v === 'string' ? v : v?.text || '').join(' ').trim();
@@ -103,8 +118,21 @@ function getFieldArray(fields, name) {
   let val = fields[name];
   if (val === undefined) {
     const keys = Object.keys(fields);
-    const key = keys.find(k => k.replace(/\s+/g, '') === name.replace(/\s+/g, ''));
+    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => k.toLowerCase().replace(/\s+/g, '') === lowerTarget);
     if (key) val = fields[key];
+  }
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const lowerKey = k.toLowerCase().replace(/\s+/g, '');
+      return lowerKey.includes(lowerTarget) || lowerTarget.includes(lowerKey);
+    });
+    if (key) {
+      console.log(`  📌 字段匹配成功: "${name}" -> "${key}"`);
+      val = fields[key];
+    }
   }
   return Array.isArray(val) ? val : (val ? [val] : []);
 }
