@@ -451,7 +451,7 @@ const Jobs = () => {
                             {/* 推动转化标签 */}
                             {job.company?.includes('EA') && (
                               <span className="px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-600 border border-green-100">
-                                加班少
+                                ❤️ 加班少
                               </span>
                             )}
                           </div>
