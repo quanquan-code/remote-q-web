@@ -135,8 +135,8 @@ const JobDetail = () => {
               </>
             ) : (
               <>
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">加入圈圈翻译与本地化社群</h3>
-                <p className="text-sm text-gray-500 mb-6">获取更多行业信息与合作机会</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1 text-center">加入圈圈翻译与本地化社群</h3>
+                <p className="text-sm text-gray-500 mb-6 text-center">获取更多行业信息与合作机会</p>
               </>
             )}
 
@@ -351,10 +351,9 @@ const JobDetail = () => {
             </>
           ) : (
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-4">感兴趣？加入圈圈社群了解更多</p>
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
               >
                 加入圈圈社群
               </button>
