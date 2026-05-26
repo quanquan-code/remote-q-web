@@ -263,9 +263,8 @@ const Jobs = () => {
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors inline-flex items-center gap-1.5"
+                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
-                <FileText className="w-3.5 h-3.5" />
                 人才帮招
               </a>
             </div>
@@ -306,10 +305,10 @@ const Jobs = () => {
               {/* 主推CTA：加入社群 */}
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+                className="w-full px-4 py-3 bg-[#fd8e2a] text-white text-sm font-medium hover:bg-[#e57f1f] transition-colors flex items-center justify-between"
               >
-                <Users className="w-4 h-4" />
-                <span>加入社群（1300人同行）</span>
+                <span>加入社群（1300+）</span>
+                <span className="text-xs">→</span>
               </button>
 
               {/* 次推CTA：人才帮招 */}
@@ -317,11 +316,10 @@ const Jobs = () => {
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center gap-2 px-4 py-3 text-gray-900 text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="w-full px-4 py-3 text-gray-900 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-between"
               >
-                <Plus className="w-4 h-4" />
                 <span>人才帮招</span>
-                <span className="ml-auto text-xs text-gray-400">我也要发布</span>
+                <span className="text-xs text-gray-400">我也要发布</span>
               </a>
             </div>
           </div>
