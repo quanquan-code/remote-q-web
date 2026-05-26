@@ -644,7 +644,7 @@
     "type": [
       "兼职"
     ],
-    "location": "",
+    "location": "远程",
     "salary": "¥200RMB/小时",
     "salaryNote": "",
     "languagePair": null,
@@ -652,7 +652,7 @@
     "description": "帮朋友家小孩招一个法语老师，要求有一定教学经验 能够和学生沟通聊天，锻炼口语和听力",
     "fullDescription": "帮朋友家小孩招一个法语老师，要求有一定教学经验\n能够和学生沟通聊天，锻炼口语和听力",
     "requirements": [],
-    "deadline": "招到为止",
+    "deadline": "2025-05-01",
     "comments": "",
     "contact": "",
     "referralType": "circle",

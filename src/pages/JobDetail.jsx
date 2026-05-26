@@ -54,6 +54,15 @@ const caseLibrary = {
       url: 'https://mp.weixin.qq.com/s?__biz=MzU1OTk2MDQzMA==&mid=2247511995&idx=1&sn=c563965bfc8cde806b059db5877747b5',
       summary: '普通院校英专→学生时代接翻译活→投500+份简历→游戏运营实习→海外广告投放（月入2.5万*14薪）→在职拿到英国市场营销硕士Offer'
     }
+  ],
+  // 教培类案例
+  '教培': [
+    {
+      title: '法语本转NLP硕士，兼职教培走向AI产品经理',
+      author: '神仙不留名 · 社群编号5610',
+      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      summary: '法语本科→法国交换→索邦大学NLP硕士→兼职法语教培（目标AI产品经理）'
+    }
   ]
 };
 
@@ -63,13 +72,17 @@ function getRelatedCases(job) {
   if (job.company && caseLibrary[job.company]) {
     cases.push(...caseLibrary[job.company]);
   }
-  // 2. 按行业关键词匹配（游戏、ESG、医学等）
+  // 2. 按行业关键词匹配
   const text = `${job.title} ${job.description || ''} ${job.fullDescription || ''}`;
-  for (const [keyword, keywordCases] of Object.entries(caseLibrary)) {
-    if (keyword === '游戏' && (text.includes('游戏') || text.includes('Game') || text.includes('本地化'))) {
-      // 去重：避免和游戏公司名重复添加
+  const keywords = [
+    { key: '游戏', patterns: ['游戏', 'Game', '本地化'] },
+    { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导'] }
+  ];
+  for (const { key, patterns } of keywords) {
+    if (caseLibrary[key] && patterns.some(p => text.includes(p))) {
+      // 去重
       const existingUrls = new Set(cases.map(c => c.url));
-      for (const kc of keywordCases) {
+      for (const kc of caseLibrary[key]) {
         if (!existingUrls.has(kc.url)) cases.push(kc);
       }
     }
@@ -79,6 +92,12 @@ function getRelatedCases(job) {
     return caseLibrary['游戏'];
   }
   return cases;
+}
+
+// 判断岗位是否属于游戏行业
+function isGameJob(job) {
+  const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
+  return text.includes('游戏') || text.includes('Game') || text.includes('本地化');
 }
 
 const JobDetail = () => {
@@ -236,14 +255,14 @@ const JobDetail = () => {
         )}
 
         {/* 推荐阅读 */}
-        {(relatedCases.length > 0 || isFullTime) && (
+        {(relatedCases.length > 0 || (isFullTime && isGameJob(job))) && (
           <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
             <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
               推荐阅读
             </h2>
             
-            {isFullTime && (
+            {isFullTime && isGameJob(job) && (
               <>
                 <p className="text-xs text-gray-400 mb-3 font-medium">圈圈推荐</p>
                 {/* 本地化项目经理专属推荐 */}
