@@ -112,10 +112,12 @@ const Jobs = () => {
   const [selectedLocation, setSelectedLocation] = useState('全部');
   const [selectedType, setSelectedType] = useState('全部');
   const [selectedStatus, setSelectedStatus] = useState('全部');
+  const [selectedWorkMode, setSelectedWorkMode] = useState('全部');
   const [showQrModal, setShowQrModal] = useState(false);
 
   // 筛选选项
   const locationFilters = ['全部', '远程', '线下'];
+  const workModeFilters = ['全部', '远程', '线下'];
   const typeFilters = ['全部', '兼职', '全职', '外包', '正编'];
   const statusFilters = ['全部', '在招'];
 
