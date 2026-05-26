@@ -87,14 +87,25 @@ const KNOWN_MAP = [
 ];
 
 function getFieldText(fields, name) {
-  const val = fields[name];
+  // 先尝试精确匹配，再尝试忽略空格差异匹配
+  let val = fields[name];
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const key = keys.find(k => k.replace(/\s+/g, '') === name.replace(/\s+/g, ''));
+    if (key) val = fields[key];
+  }
   if (typeof val === 'string') return val;
   if (Array.isArray(val)) return val.map(v => typeof v === 'string' ? v : v?.text || '').join(' ').trim();
   return String(val || '');
 }
 
 function getFieldArray(fields, name) {
-  const val = fields[name];
+  let val = fields[name];
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const key = keys.find(k => k.replace(/\s+/g, '') === name.replace(/\s+/g, ''));
+    if (key) val = fields[key];
+  }
   return Array.isArray(val) ? val : (val ? [val] : []);
 }
 
