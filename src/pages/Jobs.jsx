@@ -422,7 +422,7 @@ const Jobs = () => {
                         <div className="min-w-0 flex-1">
                           <h3 className="text-base font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
                             <Link to={`/job/${job.id}`} className="hover:underline">
-                              {job.title.length > 10 ? job.title.slice(0, 10) + '...' : job.title}
+                              {job.title.length > 20 ? job.title.slice(0, 20) + '...' : job.title}
                             </Link>
                           </h3>
                           
