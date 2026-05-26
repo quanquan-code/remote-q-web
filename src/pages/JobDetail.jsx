@@ -270,12 +270,14 @@ const JobDetail = () => {
         <div className="bg-white rounded-xl border border-gray-100 p-6">
           {isFullTime ? (
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-4">全职岗位支持内推，添加圈圈微信发送简历</p>
+              <p className="text-sm text-gray-500 mb-4">
+                和圈友当同事！扫码加圈圈，内推码我给你
+              </p>
               <button
                 onClick={() => setShowQrModal(true)}
                 className="w-full py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
-                添加圈圈微信，投递简历
+                扫码获取内推码
               </button>
             </div>
           ) : (
