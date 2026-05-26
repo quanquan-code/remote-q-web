@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
 import rawJobsData from '../data/jobs.json';
@@ -103,6 +103,15 @@ function isGameJob(job) {
 const JobDetail = () => {
   const { id } = useParams();
   const [showQrModal, setShowQrModal] = useState(false);
+
+  // 浏览计数
+  useEffect(() => {
+    if (!id) return;
+    const key = 'rq_job_views';
+    const views = JSON.parse(localStorage.getItem(key) || '{}');
+    views[id] = (views[id] || 0) + 1;
+    localStorage.setItem(key, JSON.stringify(views));
+  }, [id]);
 
   const jobsData = applyOverrides(rawJobsData);
   const job = jobsData.find(j => j.id === id);

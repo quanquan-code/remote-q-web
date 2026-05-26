@@ -679,6 +679,52 @@ const Admin = () => {
                 </div>
               </div>
 
+              {/* 浏览最多的岗位 */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-3">浏览最多的岗位（本设备）</h3>
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  {(() => {
+                    const views = JSON.parse(localStorage.getItem('rq_job_views') || '{}');
+                    const sorted = Object.entries(views)
+                      .sort((a, b) => b[1] - a[1])
+                      .slice(0, 10);
+                    if (sorted.length === 0) {
+                      return (
+                        <div className="p-8 text-center text-sm text-gray-400">
+                          暂无浏览数据
+                        </div>
+                      );
+                    }
+                    return (
+                      <table className="w-full text-sm">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-2.5 text-left text-xs font-medium text-gray-500">排名</th>
+                            <th className="px-4 py-2.5 text-left text-xs font-medium text-gray-500">岗位</th>
+                            <th className="px-4 py-2.5 text-left text-xs font-medium text-gray-500">公司</th>
+                            <th className="px-4 py-2.5 text-right text-xs font-medium text-gray-500">浏览次数</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {sorted.map(([jobId, count], idx) => {
+                            const job = jobsData.find(j => j.id === jobId);
+                            if (!job) return null;
+                            return (
+                              <tr key={jobId} className="hover:bg-gray-50">
+                                <td className="px-4 py-3 text-xs text-gray-400">{idx + 1}</td>
+                                <td className="px-4 py-3 text-sm font-medium text-gray-900">{job.title}</td>
+                                <td className="px-4 py-3 text-xs text-gray-500">{job.company || '-'}</td>
+                                <td className="px-4 py-3 text-right text-sm font-bold text-gray-900">{count}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    );
+                  })()}
+                </div>
+              </div>
+
               {/* 设备分布 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white rounded-xl border border-gray-100 p-5">
