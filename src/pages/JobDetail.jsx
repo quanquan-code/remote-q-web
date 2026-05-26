@@ -34,7 +34,7 @@ function applyOverrides(jobs) {
 const caseLibrary = {
   '沐瞳': [
     {
-      title: '物联网工程转行沐瞳游戏本地化：投简历做题面试全流程',
+      title: '沐瞳游戏本地化投递到入职的全攻略',
       author: '冬天吃西瓜 · 社群编号5710',
       url: 'https://mp.weixin.qq.com/s/j2YJeiiy88z5P9Bi5yi-ug',
       summary: '2019年物联网工程毕业→教培愤而离职→B站字幕翻译起步→读圈圈公众号自学→火星测试→22-25年兼职翻译250万字→25年末沐瞳外包招募→投简历做题面试→入职上海'
@@ -121,8 +121,8 @@ const JobDetail = () => {
           <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
             {isFullTime ? (
               <>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">添加圈圈微信</h3>
-                <p className="text-sm text-gray-500 mb-4">扫码添加圈圈，发送简历即可内推</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">群友变同事！</h3>
+                <p className="text-sm text-gray-500 mb-4">扫码添加圈圈，协助内推</p>
               </>
             ) : (
               <>
@@ -293,9 +293,9 @@ const JobDetail = () => {
                   </p>
                   <button
                     onClick={() => setShowQrModal(true)}
-                    className="w-full py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                    className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
                   >
-                    扫码获取内推码
+                    扫码内推！
                   </button>
                 </div>
               )}
@@ -314,7 +314,7 @@ const JobDetail = () => {
                   )}
                   <button
                     onClick={() => setShowQrModal(true)}
-                    className="w-full py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                    className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
                   >
                     有问题？联系圈圈
                   </button>
@@ -330,13 +330,13 @@ const JobDetail = () => {
                   <div className="flex gap-3">
                     <button
                       onClick={() => setShowQrModal(true)}
-                      className="flex-1 py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
+                      className="flex-1 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
                     >
                       联系圈圈加入
                     </button>
                     <button
                       onClick={() => setShowQrModal(true)}
-                      className="flex-1 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+                      className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
                     >
                       社群简介
                     </button>
