@@ -273,7 +273,7 @@ const JobDetail = () => {
               <p className="text-sm text-gray-500 mb-4">全职岗位支持内推，添加圈圈微信发送简历</p>
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+                className="w-full py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 添加圈圈微信，投递简历
               </button>
@@ -283,7 +283,7 @@ const JobDetail = () => {
               <p className="text-sm text-gray-500 mb-4">感兴趣？加入圈圈社群了解更多</p>
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+                className="w-full py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 加入圈圈社群
               </button>

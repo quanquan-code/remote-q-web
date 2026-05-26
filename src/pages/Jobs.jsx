@@ -246,7 +246,7 @@ const Jobs = () => {
             <div className="flex items-center gap-2 ml-auto">
               <button 
                 onClick={() => setShowQrModal(true)}
-                className="px-4 py-2 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+                className="px-4 py-2 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 圈圈翻译与本地化社群
               </button>
@@ -254,7 +254,7 @@ const Jobs = () => {
                 href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 border border-gray-100 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 人才帮招
               </a>
@@ -297,7 +297,7 @@ const Jobs = () => {
             <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
               <button
                 onClick={() => setShowQrModal(true)}
-                className="w-full flex items-center gap-2 px-4 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+                className="w-full flex items-center gap-2 px-4 py-3 border border-gray-200 text-[#fd8e2a] rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 <Users className="w-4 h-4" />
                 <span>社群简介</span>
