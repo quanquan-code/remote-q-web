@@ -452,13 +452,13 @@ const Jobs = () => {
                             )}
                             {/* 推动转化标签：EA/沐瞳 小绿心 = 加班少 */}
                             {(job.company?.includes('EA') || job.company?.includes('沐瞳')) && (
-                              <span className="text-xs text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
+                              <span className="text-xs">
                                 💚 加班少
                               </span>
                             )}
                             {/* 推动转化标签：沐瞳 小红心 = 在职群友可咨询 */}
                             {job.company?.includes('沐瞳') && (
-                              <span className="text-xs text-red-500 bg-red-50 px-1.5 py-0.5 rounded">
+                              <span className="text-xs">
                                 ❤️ 在职群友可咨询
                               </span>
                             )}
