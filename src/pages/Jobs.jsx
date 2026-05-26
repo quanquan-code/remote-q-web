@@ -279,7 +279,7 @@ const Jobs = () => {
             <span className="text-[#fd8e2a]">Remote Q</span> <span className="text-lg font-medium text-gray-600">@圈圈翻译与本地化社群</span>
           </h2>
           <p className="text-sm text-gray-500 mt-2 max-w-xl mx-auto">
-            运营5年+，汇聚5700+语言服务行业同仁，外语人兼职实习就业出路看这里~
+            5年+，聚集5700+语言服务行业小伙伴，外语人兼职实习就业出路在这里~！
           </p>
         </div>
 
