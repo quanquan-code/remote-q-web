@@ -542,6 +542,18 @@ function processRecord(record, index) {
   const submitTime = fields['提交时间'];
   const postedAt = submitTime ? new Date(submitTime).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
 
+  // 联系方式 & 内推类型判断
+  const contact = getFieldText(fields, '联系方式 Your contact');
+  let referralType = 'circle'; // 默认：圈圈内推
+  if (contact) {
+    const c = contact.toLowerCase();
+    if (c.includes('仅限社群') || c.includes('内部') || c.includes('付费')) {
+      referralType = 'internal'; // 仅限社群内部
+    } else if (c.includes('内推码') || c.includes('内推') || c.includes('referral') || c.includes('小伙伴')) {
+      referralType = 'community'; // 社群小伙伴内推
+    }
+  }
+
   const job = {
     id: String(record.record_id || index + 1),
     title,
@@ -557,6 +569,8 @@ function processRecord(record, index) {
     requirements,
     deadline,
     comments,
+    contact,
+    referralType,
     postedAt,
     internalOnly: false,
   };
