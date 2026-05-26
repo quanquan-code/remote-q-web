@@ -537,6 +537,11 @@ function processRecord(record, index) {
     : company;
   const formField = getFieldArray(fields, '岗位形式（兼职/外包/全职/线上/线下）Recruitment Positions (Part-time/Outsourced/Full-time/Remote/On-site)');
   const jobType = extractType(title, formField);
+  
+  // 舜禹岗位自动标记为内部
+  if (finalCompany?.includes('舜禹') && !jobType?.includes('内部')) {
+    jobType.push('内部');
+  }
   const salaryResult = extractSalary(
     getFieldArray(fields, '薪资区间（请标注按原文/译文千字/时薪/天/月等）Salary Bands (per word count/hour/day/month/project etc.)'),
     jobType,
