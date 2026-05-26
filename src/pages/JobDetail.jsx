@@ -150,7 +150,9 @@ const JobDetail = () => {
 
             {isFullTime ? (
               <>
-                <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">添加内推微信</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">
+                  {job.id === 'recvjSpj8Lknld' ? 'FunPlus英语语言专家内推' : '添加内推微信'}
+                </h3>
               </>
             ) : (
               <>
@@ -160,7 +162,11 @@ const JobDetail = () => {
             )}
 
             <div className="bg-gray-50 rounded-xl w-64 h-64 mx-auto flex items-center justify-center overflow-hidden">
-              <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
+              <img 
+                src={job.id === 'recvjSpj8Lknld' ? '/images/funplus-english-expert-qr.jpg' : '/images/wechat-qr.png'} 
+                alt={job.id === 'recvjSpj8Lknld' ? 'FunPlus英语语言专家内推二维码' : '圈圈微信二维码'} 
+                className="w-full h-full object-contain" 
+              />
             </div>
 
             <p className="mt-6 text-center text-sm text-gray-500">
