@@ -177,12 +177,12 @@ const JobDetail = () => {
           </div>
 
           <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-2 gap-4">
-            {(job.salary || job.salaryNote) && (
-              <div>
-                <span className="text-xs text-gray-400">薪资</span>
-                <p className="text-base font-semibold text-gray-900 mt-1 whitespace-pre-wrap">{job.salary || job.salaryNote}</p>
-              </div>
-            )}
+            <div>
+              <span className="text-xs text-gray-400">薪资</span>
+              <p className="text-base font-semibold text-gray-900 mt-1 whitespace-pre-wrap">
+                {job.salary || job.salaryNote || '待议'}
+              </p>
+            </div>
             {job.deadline && (
               <div>
                 <span className="text-xs text-gray-400">截止日期</span>
@@ -192,37 +192,16 @@ const JobDetail = () => {
           </div>
         </div>
 
-        {/* 岗位职责 */}
+        {/* 岗位要求（完整内容，不拆分职责和要求） */}
         {job.fullDescription && (
           <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
             <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Briefcase className="w-4 h-4" />
-              岗位职责
+              岗位要求
             </h2>
             <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
               {job.fullDescription}
             </div>
-          </div>
-        )}
-
-        {/* 岗位要求 */}
-        {job.requirements && (
-          <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
-            <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              岗位要求
-            </h2>
-            {Array.isArray(job.requirements) ? (
-              <ol className="text-sm text-gray-700 leading-relaxed list-decimal list-inside space-y-1.5">
-                {job.requirements.map((req, i) => (
-                  <li key={i}>{req}</li>
-                ))}
-              </ol>
-            ) : (
-              <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                {job.requirements}
-              </div>
-            )}
           </div>
         )}
 

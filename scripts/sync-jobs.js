@@ -538,16 +538,22 @@ function processRecord(record, index) {
   const salary = salaryResult.salary;
   const salaryNote = salaryResult.salaryNote;
   let comments = getFieldText(fields, '其他补充说明 Other comments');
+  // 试译内容（如有）——追加到备注栏
+  const referenceText = getFieldText(fields, '试译内容（如有）reference');
+  if (referenceText) {
+    comments = comments ? `${comments}\n\n【试译内容】\n${referenceText}` : `【试译内容】\n${referenceText}`;
+  }
   // 把薪资中提取的福利信息追加到备注
   if (salaryResult.benefits) {
     comments = comments ? `${comments}\n\n【待遇】${salaryResult.benefits}` : `【待遇】${salaryResult.benefits}`;
   }
-  // 分离岗位职责和岗位要求，避免详情页重复
-  const { duties, requirements } = splitJobDescription(descField);
-  let fullDescription = duties;
-  if (titleOverflow) {
-    fullDescription = titleOverflow + (fullDescription ? '\n\n' + fullDescription : '');
-  }
+  // 不再拆分岗位职责和岗位要求——全部放进 fullDescription
+  const fullDescription = getFieldText(fields, '岗位要求Job Description');
+  const requirements = []; // 不再拆分，避免出错
+  // 标题溢出内容追加到岗位描述前面
+  const finalFullDescription = titleOverflow 
+    ? (titleOverflow + (fullDescription ? '\n\n' + fullDescription : '')) 
+    : fullDescription;
   const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);
   const deadline = getFieldText(fields, '截止日期 End Date');
@@ -565,7 +571,7 @@ function processRecord(record, index) {
     languagePair,
     gameType: null,
     description,
-    fullDescription,
+    fullDescription: finalFullDescription,
     requirements,
     deadline,
     comments,
