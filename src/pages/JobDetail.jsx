@@ -296,14 +296,11 @@ const JobDetail = () => {
               {/* 类型1：圈圈内推（默认） */}
               {(!job.referralType || job.referralType === 'circle') && (
                 <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-4">
-                    和圈友当同事！扫码加圈圈，内推码我给你
-                  </p>
                   <button
                     onClick={() => setShowQrModal(true)}
                     className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
                   >
-                    扫码内推！
+                    专属内推，来和群友当同事→
                   </button>
                 </div>
               )}
