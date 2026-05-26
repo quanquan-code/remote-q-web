@@ -238,15 +238,30 @@ const JobDetail = () => {
             {isFullTime && (
               <>
                 <p className="text-xs text-gray-400 mb-3 font-medium">圈圈推荐</p>
-                <a 
-                  href="https://m.shifangwk.cn/lecture2/32397987?es__at=1779773474370" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
-                >
-                  <p className="text-sm font-medium text-[#fd8e2a]">游戏本地化入门讲座</p>
-                  <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
-                </a>
+                {/* 本地化项目经理专属推荐 */}
+                {job.title?.includes('本地化项目经理') && (
+                  <a 
+                    href="https://m.shifangwk.cn/lecture2/33930891?_t=1779782879949" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
+                  >
+                    <p className="text-sm font-medium text-[#fd8e2a]">付费讲座 | Lucian：从零开始成为T0级游戏大厂本地化项目经理！</p>
+                    <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
+                  </a>
+                )}
+                {/* 通用游戏本地化推荐 */}
+                {!job.title?.includes('本地化项目经理') && (
+                  <a 
+                    href="https://m.shifangwk.cn/lecture2/32397987?es__at=1779773474370" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
+                  >
+                    <p className="text-sm font-medium text-[#fd8e2a]">游戏本地化入门讲座</p>
+                    <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
+                  </a>
+                )}
               </>
             )}
             
