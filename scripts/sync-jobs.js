@@ -178,20 +178,28 @@ function extractLocation(jobName, comments, formField, locationSupplement) {
   return '';
 }
 
-function extractLanguagePair(description) {
-  const d = (description || '').toLowerCase();
-  if (d.includes('中') && d.includes('英')) return '中↔英';
-  if (d.includes('中') && d.includes('日')) return '中↔日';
-  if (d.includes('中') && d.includes('韩')) return '中↔韩';
-  if (d.includes('英') && d.includes('日')) return '英↔日';
-  if (d.includes('英') && d.includes('韩')) return '英↔韩';
-  if (d.includes('日') && d.includes('英')) return '日→英';
-  if (d.includes('韩') && d.includes('英')) return '韩→英';
-  if (d.includes('中') && d.includes('俄')) return '中↔俄';
-  if (d.includes('中') && d.includes('法')) return '中↔法';
-  if (d.includes('中') && d.includes('德')) return '中↔德';
-  if (d.includes('中') && d.includes('西')) return '中↔西';
-  if (d.includes('中') && d.includes('葡')) return '中↔葡';
+function extractLanguagePair(title, description) {
+  const text = ((title || '') + ' ' + (description || '')).toLowerCase();
+  
+  // 严格匹配：只认明确的语言对组合词
+  const pairs = [
+    { keywords: ['中英', '中译英', '英译中', '汉译英', '英译汉', '英汉', '汉英', 'chinese-english', 'english-chinese', '中↔英', '中→英', '英→中'], pair: '中↔英' },
+    { keywords: ['中日', '中译日', '日译中', '汉译日', '日译汉', 'chinese-japanese', 'japanese-chinese', '中↔日', '中→日', '日→中'], pair: '中↔日' },
+    { keywords: ['中韩', '中译韩', '韩译中', '汉译韩', '韩译汉', 'chinese-korean', 'korean-chinese', '中↔韩', '中→韩', '韩→中'], pair: '中↔韩' },
+    { keywords: ['英日', '英译日', '日译英', 'english-japanese', 'japanese-english', '英↔日', '英→日', '日→英'], pair: '英↔日' },
+    { keywords: ['英韩', '英译韩', '韩译英', 'english-korean', 'korean-english', '英↔韩', '英→韩', '韩→英'], pair: '英↔韩' },
+    { keywords: ['中俄', '中译俄', '俄译中', '汉译俄', '俄译汉', 'chinese-russian', 'russian-chinese', '中↔俄', '中→俄', '俄→中'], pair: '中↔俄' },
+    { keywords: ['中法', '中译法', '法译中', '汉译法', '法译汉', 'chinese-french', 'french-chinese', '中↔法', '中→法', '法→中'], pair: '中↔法' },
+    { keywords: ['中德', '中译德', '德译中', '汉译德', '德译汉', 'chinese-german', 'german-chinese', '中↔德', '中→德', '德→中'], pair: '中↔德' },
+    { keywords: ['中西', '中译西', '西译中', '汉译西', '西译汉', 'chinese-spanish', 'spanish-chinese', '中↔西', '中→西', '西→中'], pair: '中↔西' },
+    { keywords: ['中葡', '中译葡', '葡译中', '汉译葡', '葡译汉', 'chinese-portuguese', 'portuguese-chinese', '中↔葡', '中→葡', '葡→中'], pair: '中↔葡' },
+  ];
+  
+  for (const item of pairs) {
+    if (item.keywords.some(k => text.includes(k))) {
+      return item.pair;
+    }
+  }
   return null;
 }
 
@@ -556,7 +564,7 @@ function processRecord(record, index) {
   const finalFullDescription = titleOverflow 
     ? (titleOverflow + (fullDescription ? '\n\n' + fullDescription : '')) 
     : fullDescription;
-  const languagePair = extractLanguagePair(getFieldText(fields, '岗位要求Job Description'));
+  const languagePair = extractLanguagePair(title, getFieldText(fields, '岗位要求Job Description'));
   const description = extractDescription(descField);
   const deadline = getFieldText(fields, '截止日期 End Date');
   const submitTime = fields['提交时间'];
