@@ -34,7 +34,7 @@ function applyOverrides(jobs) {
 const caseLibrary = {
   '沐瞳': [
     {
-      title: '沐瞳游戏本地化投递到入职的全攻略',
+      title: '沐瞳 | 从转行开始进入游戏本地化全攻略',
       author: '冬天吃西瓜 · 社群编号5710',
       url: 'https://mp.weixin.qq.com/s/j2YJeiiy88z5P9Bi5yi-ug',
       summary: '2019年物联网工程毕业→教培愤而离职→B站字幕翻译起步→读圈圈公众号自学→火星测试→22-25年兼职翻译250万字→25年末沐瞳外包招募→投简历做题面试→入职上海'
@@ -43,13 +43,13 @@ const caseLibrary = {
   // 通用游戏行业案例
   '游戏': [
     {
-      title: '如何从自由译员逆袭成为头部大厂本地化项目经理',
+      title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
       url: 'https://mp.weixin.qq.com/s/FKHpkPQjz8oUsK2EumWBeg',
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）'
     },
     {
-      title: '英专生毕业三年年薪35万：游戏运营转海外广告投放',
+      title: '从零开始到游戏公司海外投放的全攻略',
       author: 'Roxy · 社群编号1688',
       url: 'https://mp.weixin.qq.com/s?__biz=MzU1OTk2MDQzMA==&mid=2247511995&idx=1&sn=c563965bfc8cde806b059db5877747b5',
       summary: '普通院校英专→学生时代接翻译活→投500+份简历→游戏运营实习→海外广告投放（月入2.5万*14薪）→在职拿到英国市场营销硕士Offer'
