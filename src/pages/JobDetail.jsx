@@ -118,27 +118,36 @@ const JobDetail = () => {
       {/* 二维码弹窗 */}
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
-          <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative" onClick={e => e.stopPropagation()}>
+            {/* 右上角关闭按钮 */}
+            <button
+              onClick={() => setShowQrModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
             {isFullTime ? (
               <>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">群友变同事！</h3>
-                <p className="text-sm text-gray-500 mb-4">扫码添加圈圈，协助内推</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1">添加内推微信</h3>
+                <p className="text-sm text-gray-500 mb-6">扫码添加圈圈，协助内推</p>
               </>
             ) : (
               <>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">欢迎加入圈圈社群</h3>
-                <p className="text-sm text-gray-500 mb-4">欢迎加入圈圈翻译与本地化社群，获取更多行业信息与合作机会</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1">欢迎加入圈圈社群</h3>
+                <p className="text-sm text-gray-500 mb-6">欢迎加入圈圈翻译与本地化社群，获取更多行业信息与合作机会</p>
               </>
             )}
-            <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
+
+            <div className="bg-gray-50 rounded-xl w-64 h-64 mx-auto flex items-center justify-center overflow-hidden">
               <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
             </div>
-            <button 
-              onClick={() => setShowQrModal(false)}
-              className="mt-4 w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
-            >
-              关闭
-            </button>
+
+            <p className="mt-6 text-center text-sm text-gray-500">
+              来和群友当同事吧！
+            </p>
           </div>
         </div>
       )}
