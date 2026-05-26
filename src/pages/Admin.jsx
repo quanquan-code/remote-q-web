@@ -233,6 +233,10 @@ const Admin = () => {
     selectedIds.forEach(id => updateField(id, 'deadline', '已招到'));
     setSelectedIds(new Set());
   };
+  const bulkExpired = () => {
+    selectedIds.forEach(id => updateField(id, 'deadline', '已到期'));
+    setSelectedIds(new Set());
+  };
 
   const toggleSelect = (id) => {
     setSelectedIds(prev => {
@@ -263,6 +267,8 @@ const Admin = () => {
       jobs = jobs.filter(j => overrides[j.id]?.hidden ?? j.hidden);
     } else if (filterStatus === 'filled') {
       jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到');
+    } else if (filterStatus === 'expired') {
+      jobs = jobs.filter(j => getDeadlineStatus(j.deadline, j.postedAt) === 'expired');
     } else if (filterStatus === 'active') {
       jobs = jobs.filter(j => {
         const d = overrides[j.id]?.deadline ?? j.deadline;
@@ -281,6 +287,7 @@ const Admin = () => {
   const visibleCount = jobsData.filter(j => !(overrides[j.id]?.hidden ?? j.hidden)).length;
   const hiddenCount = jobsData.length - visibleCount;
   const filledCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到').length;
+  const expiredCount = jobsData.filter(j => getDeadlineStatus(j.deadline, j.postedAt) === 'expired').length;
 
   const handleExport = () => {
     const json = exportJobsJson(overrides);
@@ -326,7 +333,7 @@ const Admin = () => {
               </h2>
               {activeTab === 'jobs' && (
                 <span className="text-xs text-gray-400">
-                  显示 {visibleCount} / 隐藏 {hiddenCount} / 已招到 {filledCount} / 共 {jobsData.length}
+                  显示 {visibleCount} / 隐藏 {hiddenCount} / 已招到 {filledCount} / 已到期 {expiredCount} / 共 {jobsData.length}
                 </span>
               )}
             </div>
@@ -382,6 +389,7 @@ const Admin = () => {
                     <option value="all">全部</option>
                     <option value="active">在招中</option>
                     <option value="filled">已招到</option>
+                    <option value="expired">已到期</option>
                     <option value="visible">显示中</option>
                     <option value="hidden">已隐藏</option>
                   </select>
@@ -410,6 +418,9 @@ const Admin = () => {
                     </button>
                     <button onClick={bulkFilled} className="px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-xs hover:bg-green-100">
                       批量已招到
+                    </button>
+                    <button onClick={bulkExpired} className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs hover:bg-orange-100">
+                      批量已到期
                     </button>
                     <button onClick={() => setSelectedIds(new Set())} className="px-2 py-1.5 text-gray-400 hover:text-gray-600">
                       <X className="w-4 h-4" />
@@ -475,6 +486,10 @@ const Admin = () => {
                           ) : isHidden ? (
                             <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
                               隐藏
+                            </span>
+                          ) : getDeadlineStatus(job.deadline, job.postedAt) === 'expired' ? (
+                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-600">
+                              已到期
                             </span>
                           ) : (
                             <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">
@@ -627,6 +642,17 @@ const Admin = () => {
                                   title="标记已招到"
                                 >
                                   已招到
+                                </button>
+                              )}
+                              {!isFilled && getDeadlineStatus(job.deadline, job.postedAt) === 'expired' && (
+                                <button
+                                  onClick={() => {
+                                    updateField(job.id, 'deadline', '已到期');
+                                  }}
+                                  className="px-2 py-1.5 text-xs text-orange-600 hover:text-orange-700 rounded hover:bg-orange-50"
+                                  title="标记已到期"
+                                >
+                                  已到期
                                 </button>
                               )}
                             </>
