@@ -211,14 +211,25 @@ function getRelatedCases(job) {
 
   for (const { case: c } of topCases) {
     if (!existingUrls.has(c.url)) {
-      const title = c.careerName
-        ? `${c.name} | ${c.careerName}`
-        : (c.name || '社群案例');
+      // 标题：从职业路径提炼，截断到30字确保一行，去掉人名避免与下方重复
+      let title = c.careerPath || c.careerName || c.summary || '';
+      // 如果标题里包含人名，尝试去掉开头的人名部分（常见格式："人名 | ..."）
+      if (title.includes(' | ')) {
+        title = title.split(' | ').slice(1).join(' | '); // 取" | "后面的内容
+      }
+      // 截断到30字符，确保一行
+      if (title.length > 30) {
+        title = title.slice(0, 28) + '...';
+      }
+      // 兜底：如果提炼完为空，用职业名称
+      if (!title.trim()) {
+        title = c.careerName || '社群就业案例';
+      }
       cases.push({
         title,
         author: c.name + (c.number ? ` · 社群编号${c.number}` : ''),
         url: c.url,
-        summary: c.careerPath || c.summary || ''
+        summary: '' // 标题已经是路径提炼，summary不再重复显示
       });
       existingUrls.add(c.url);
     }
