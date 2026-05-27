@@ -22,7 +22,7 @@ function applyOverrides(jobs) {
   return jobs.map(job => {
     const o = ov[job.id];
     if (!o) return job;
-    return {
+    const result = {
       ...job,
       ...(o.hidden !== undefined && { hidden: o.hidden }),
       ...(o.title !== undefined && { title: o.title }),
@@ -36,6 +36,11 @@ function applyOverrides(jobs) {
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
       ...(o.status !== undefined && { status: o.status }),
     };
+    // referralType 选「仅限内部」时，自动补上「内部」标签
+    if (result.referralType === 'internal' && !result.type?.includes('内部')) {
+      result.type = [...(result.type || []), '内部'];
+    }
+    return result;
   });
 }
 
