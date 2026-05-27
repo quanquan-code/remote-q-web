@@ -149,6 +149,7 @@ const Jobs = () => {
   const [selectedStatus, setSelectedStatus] = useState('全部');
   const [selectedWorkMode, setSelectedWorkMode] = useState('全部');
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showRemoteQModal, setShowRemoteQModal] = useState(false);
 
   // 筛选选项
   const locationFilters = ['全部', '远程', '线下'];
@@ -267,6 +268,36 @@ const Jobs = () => {
         </div>
       )}
 
+      {/* Remote Q 小程序弹窗 */}
+      {showRemoteQModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowRemoteQModal(false)}>
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4 relative" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setShowRemoteQModal(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">Remote Q</h3>
+            <p className="text-sm text-gray-500 mb-5 text-center">远程工作的大众点评</p>
+            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <p className="text-xs text-gray-500 text-center mb-3">扫码跳转小程序</p>
+              <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
+                <img src="/images/remote-q-miniapp-qr.png" alt="Remote Q 小程序二维码" className="w-full h-full object-contain" />
+              </div>
+            </div>
+            <button
+              onClick={() => setShowRemoteQModal(false)}
+              className="w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
+            >
+              关闭
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 顶部栏 */}
       <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -357,6 +388,15 @@ const Jobs = () => {
                 <span>人才帮招</span>
                 <span className="text-xs text-gray-400">我也要发布</span>
               </a>
+
+              {/* Remote Q 小程序 */}
+              <button
+                onClick={() => setShowRemoteQModal(true)}
+                className="w-full px-4 py-3 text-gray-900 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-between border-t border-gray-100"
+              >
+                <span>Remote Q</span>
+                <span className="text-xs text-gray-400">远程工作的大众点评</span>
+              </button>
             </div>
           </div>
 
