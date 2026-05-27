@@ -251,10 +251,10 @@ function getRelatedCases(job) {
       if (!title) title = '社群就业案例';
       if (title.length > 30) title = title.slice(0, 28) + '...';
       cases.push({
-        title,
+        title: c.careerName || title,
         author: (c.name || '社群成员') + (c.number ? ` · 社群编号${c.number}` : ''),
         url: c.url,
-        summary
+        summary: ''
       });
       existingUrls.add(c.url);
     }
@@ -527,9 +527,6 @@ const JobDetail = () => {
                     {c.title}
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
-                  {c.summary && c.summary !== c.title && (
-                    <p className="text-xs text-gray-600 leading-relaxed mt-1 line-clamp-2">{c.summary}</p>
-                  )}
                 </a>
               ))}
             </div>
