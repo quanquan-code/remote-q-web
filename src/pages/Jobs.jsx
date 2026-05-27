@@ -221,7 +221,8 @@ const Jobs = () => {
     '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
     '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
     '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '内部': 'border border-orange-200 bg-orange-50 text-orange-600'
+    '内部': 'border border-orange-200 bg-orange-50 text-orange-600',
+    '公开': 'border border-green-200 bg-green-50 text-green-600'
   };
 
   // 左侧导航
@@ -501,6 +502,12 @@ const Jobs = () => {
                                 {t}
                               </span>
                             ))}
+                            {/* 全职/正编岗位且非内部 → 公开标签 */}
+                            {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
+                              <span className="px-2 py-0.5 rounded text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                                公开
+                              </span>
+                            )}
                             {job.languagePair && (
                               <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 flex items-center gap-1">
                                 <Globe className="w-3 h-3" />

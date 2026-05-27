@@ -438,6 +438,12 @@ const JobDetail = () => {
                     {t}
                   </span>
                 ))}
+                {/* 全职/正编且非内部 → 公开标签 */}
+                {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
+                  <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                    公开
+                  </span>
+                )}
               </div>
             </div>
           </div>
