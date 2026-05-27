@@ -50,7 +50,7 @@ const caseLibrary = {
     {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
-      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
       summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。CATTI二口二笔（大三）+一口（工作后），从0到1搭建本地化管线。'
     }
   ],
@@ -82,7 +82,7 @@ const caseLibrary = {
     {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
-      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
       summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员'
     }
   ],
@@ -98,29 +98,29 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://mp.weixin.qq.com/s/FKHpkPQjz8oUsK2EumWBeg',
+      url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink\u0026inviter_id=125279331',
       summary: '汉语言文学→CATTI→自由译员→游戏公司译员→头部大厂本地化项目经理。3年走完全程。'
     },
     {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
-      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
       summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员'
     }
   ],
   '内容创作': [
-    {
-      title: '审美是语言从业者最后的护城河 | 从英专到三联/芭莎撰稿人',
-      author: '小季 Eloise Ji · 社群编号3050',
-      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
-      summary: '本科英专→UCL社科硕士→小红书1.7万+粉娱乐影视博主→三联生活周刊19篇+芭莎1篇时尚撰稿人→时尚创译与本地化。99年INTJ，用"审美"作为核心护城河。'
-    }
+    // {
+    //   title: '审美是语言从业者最后的护城河 | 从英专到三联/芭莎撰稿人',
+    //   author: '小季 Eloise Ji · 社群编号3050',
+    //   url: '待补充',
+    //   summary: '本科英专→UCL社科硕士→小红书1.7万+粉娱乐影视博主→三联生活周刊19篇+芭莎1篇时尚撰稿人→时尚创译与本地化。99年INTJ，用"审美"作为核心护城河。'
+    // }
   ],
   '教培': [
     {
       title: '法语本转NLP硕士，兼职教培走向AI产品经理',
       author: '神仙不留名 · 社群编号5610',
-      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      url: 'https://mp.weixin.qq.com/s/vSpzeD04EzwHQq9NL1l3YA',
       summary: '法语本科→法国交换→索邦大学NLP硕士→兼职法语教培（目标AI产品经理）'
     }
   ]
