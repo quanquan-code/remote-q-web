@@ -55,6 +55,7 @@ function exportJobsJson(overrides) {
       ...(ov.type !== undefined && { type: ov.type }),
       ...(ov.fullDescription !== undefined && { fullDescription: ov.fullDescription }),
       ...(ov.requirements !== undefined && { requirements: ov.requirements }),
+      ...(ov.referralType !== undefined && { referralType: ov.referralType }),
     };
   });
   return JSON.stringify(merged, null, 2);
@@ -555,6 +556,15 @@ const Admin = () => {
                                   className="w-40 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
                                   placeholder="类型，如：全职,远程"
                                 />
+                                <select
+                                  value={overrides[job.id]?.referralType ?? job.referralType ?? 'auto'}
+                                  onChange={e => updateField(job.id, 'referralType', e.target.value)}
+                                  className="px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
+                                >
+                                  <option value="auto">自动（兼职=内部 / 全职=内推）</option>
+                                  <option value="internal">仅限内部</option>
+                                  <option value="neitui">支持内推</option>
+                                </select>
                               </div>
                               <textarea
                                 value={overrides[job.id]?.fullDescription ?? job.fullDescription ?? ''}
@@ -595,7 +605,24 @@ const Admin = () => {
                                   </span>
                                 )}
                               </div>
-                              <p className="text-xs text-gray-400 mt-1 line-clamp-1">{job.description || job.fullDescription || ''}</p>
+                              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                <p className="text-xs text-gray-400 line-clamp-1">{job.description || job.fullDescription || ''}</p>
+                                {(overrides[job.id]?.referralType ?? job.referralType) && (
+                                  <span className={`px-1.5 py-0.5 rounded text-[10px] ${
+                                    (overrides[job.id]?.referralType ?? job.referralType) === 'internal'
+                                      ? 'bg-blue-50 text-blue-600'
+                                      : (overrides[job.id]?.referralType ?? job.referralType) === 'neitui'
+                                      ? 'bg-green-50 text-green-600'
+                                      : 'bg-gray-100 text-gray-500'
+                                  }`}>
+                                    {(overrides[job.id]?.referralType ?? job.referralType) === 'internal'
+                                      ? '仅限内部'
+                                      : (overrides[job.id]?.referralType ?? job.referralType) === 'neitui'
+                                      ? '支持内推'
+                                      : '自动'}
+                                  </span>
+                                )}
+                              </div>
                               <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-400">
                                 <span>ID: {job.id}</span>
                                 <span>·</span>

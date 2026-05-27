@@ -337,23 +337,23 @@ const JobDetail = () => {
         )}
 
         {/* 底部 CTA */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
-          <div className="flex gap-3">
-            <button
-              onClick={() => setShowQrModal(true)}
-              className="flex-1 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-            >
-              联系圈圈
-            </button>
-            <a
-              href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium text-center hover:bg-gray-50 transition-colors"
-            >
-              我也要发布
-            </a>
-          </div>
+        <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-3">
+          {/* 主按钮：根据岗位类型显示不同文案 */}
+          <button
+            onClick={() => setShowQrModal(true)}
+            className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+          >
+            {isFullTime ? '简历内推' : '加入社群'}
+          </button>
+          {/* 我也要发布 */}
+          <a
+            href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium text-center hover:bg-gray-50 transition-colors"
+          >
+            我也要发布
+          </a>
         </div>
       </div>
     </div>
