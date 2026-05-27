@@ -3,7 +3,7 @@
     {
       "id": "recvkOlZ5CiMxY",
       "title": "英中技术翻译 | 航空工程，航空发动机",
-      "company": "舜禹",
+      "company": "社群内部需求",
       "type": [
         "兼职",
         "内部"
@@ -19,18 +19,19 @@
       "fullDescription": "工作要求：\n1. 资质：英语专八或同等水平，或具备航空工程背景且英语CET-6以上；\n2. 经验要求：有大型涡扇发动机手册翻译经验，熟悉RR Trent系列发动机、RR手册结构。\n3. 其他：支持驻场工作，或Base北京可优先考虑；需签署保密承诺。\n4. 测试：需先通过试译（免费）",
       "requirements": [],
       "deadline": "急招，预计下月启动，整体项目预期9个月左右完成",
-      "comments": "【急招】【仅限内部发布】\n项目周期：预计下月启动，整体项目预期9个月左右完成\n驻场部分：驻场时长基于项目周期，具体主要看对应任务进度（食宿等费用可包）\n\n【试译内容】\n需先通过试译（免费）",
+      "comments": "\n项目周期：预计下月启动，整体项目预期9个月左右完成\n驻场部分：驻场时长基于项目周期，具体主要看对应任务进度（食宿等费用可包）\n\n【试译内容】\n需先通过试译（免费）",
       "contact": "resource@transphere.com（邮件主题请备注：英中技术翻译 | 航空工程，航空发动机）",
       "referralType": "circle",
       "postedAt": "2026-05-27",
-      "internalOnly": false
+      "internalOnly": true
     },
     {
       "id": "recvkOnW5WMzzf",
       "title": "中意专利翻译 | 机械/电子通信领域",
-      "company": "上海榛壳信息科技咨询有限公司",
+      "company": "社群内部需求",
       "type": [
-        "兼职"
+        "兼职",
+        "内部"
       ],
       "location": "远程",
       "salary": "¥150-350元/千字",
@@ -47,7 +48,7 @@
       "contact": "投递简历至 cara.hu@tranzshell；微信 caraokee（添加好友时请备注 意大利语译员）",
       "referralType": "circle",
       "postedAt": "2026-05-27",
-      "internalOnly": false
+      "internalOnly": true
     },
     {
       "id": "recvkBgVevYFpQ",
@@ -2463,7 +2464,7 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-05-27T12:23:15.462Z",
+    "syncedAt": "2026-05-27T12:35:46.596Z",
     "jobCount": 71,
     "caseCount": 49
   }
