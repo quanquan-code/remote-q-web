@@ -152,7 +152,6 @@ const Jobs = () => {
   const locationFilters = ['全部', '远程', '线下'];
   const workModeFilters = ['全部', '远程', '线下'];
   const typeFilters = ['全部', '兼职', '全职', '外包', '正编'];
-  const statusFilters = ['全部', '在招'];
 
   const filteredJobs = useMemo(() => {
     let jobs = jobsData;
@@ -194,14 +193,6 @@ const Jobs = () => {
       jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
     }
     
-    // 在招筛选（过滤已招到、已过期、内部）
-    if (selectedStatus === '在招') {
-      jobs = jobs.filter(job => {
-        const d = getDeadlineStatus(job.deadline, job.postedAt);
-        return d !== 'filled' && d !== 'expired' && !job.internalOnly;
-      });
-    }
-    
     // 过期岗位和已招到自动沉底，其余按发布日期从新到旧
     jobs.sort((a, b) => {
       const sa = getDeadlineStatus(a.deadline, a.postedAt);
@@ -215,7 +206,7 @@ const Jobs = () => {
     });
     
     return jobs;
-  }, [searchQuery, selectedNav, selectedWorkMode, selectedType, selectedStatus]);
+  }, [searchQuery, selectedNav, selectedWorkMode, selectedType]);
 
   // 岗位形式标签颜色
   const typeColorMap = {
@@ -409,25 +400,6 @@ const Jobs = () => {
                     ))}
                   </div>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-medium">状态</span>
-                  <div className="flex gap-1">
-                    {statusFilters.map(filter => (
-                      <button
-                        key={filter}
-                        onClick={() => setSelectedStatus(filter)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                          selectedStatus === filter 
-                            ? 'bg-gray-900 text-white border-gray-900' 
-                            : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200'
-                        }`}
-                      >
-                        {filter}
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -445,12 +417,12 @@ const Jobs = () => {
                 <div className="divide-y divide-gray-100">
                   {filteredJobs.map(job => {
                     const jobStatus = getDeadlineStatus(job.deadline, job.postedAt);
-                    const isExpired = jobStatus === 'expired';
+                    const isClosed = jobStatus === 'expired' || jobStatus === 'filled';
                     return (
                       <div
                         key={job.id}
                         onClick={() => navigate(`/job/${job.id}`)}
-                        className={`px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer ${isExpired ? 'bg-gray-100' : ''}`}
+                        className={`px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer ${isClosed ? 'bg-gray-200' : ''}`}
                       >
                       <div className="flex items-start gap-4 flex-1 min-w-0">
                         <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 text-xs font-bold text-gray-500">
@@ -541,16 +513,6 @@ const Jobs = () => {
                             );
                           }
 
-                          // 急招：红点
-                          if (status === 'urgent') {
-                            return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
-                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                                <span>急招</span>
-                              </div>
-                            );
-                          }
-
                           // 长期：绿点
                           if (status === 'longterm') {
                             return (
@@ -561,10 +523,11 @@ const Jobs = () => {
                             );
                           }
 
-                          // 在招：无点
+                          // 其他（包括 open/urgent）统一显示为急招：红点
                           return (
                             <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
-                              <span>在招</span>
+                              <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                              <span>急招</span>
                             </div>
                           );
                         })()}
