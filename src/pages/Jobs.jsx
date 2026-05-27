@@ -443,12 +443,15 @@ const Jobs = () => {
 
               {filteredJobs.length > 0 ? (
                 <div className="divide-y divide-gray-100">
-                  {filteredJobs.map(job => (
-                    <div
-                      key={job.id}
-                      onClick={() => navigate(`/job/${job.id}`)}
-                      className="px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer"
-                    >
+                  {filteredJobs.map(job => {
+                    const jobStatus = getDeadlineStatus(job.deadline, job.postedAt);
+                    const isExpired = jobStatus === 'expired';
+                    return (
+                      <div
+                        key={job.id}
+                        onClick={() => navigate(`/job/${job.id}`)}
+                        className={`px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer ${isExpired ? 'bg-gray-100' : ''}`}
+                      >
                       <div className="flex items-start gap-4 flex-1 min-w-0">
                         <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 text-xs font-bold text-gray-500">
                           {job.company?.slice(0, 2) || '公司'}
@@ -518,43 +521,47 @@ const Jobs = () => {
                         {(() => {
                           const status = getDeadlineStatus(job.deadline, job.postedAt);
 
-                          // 已招到
+                          // 已招到：✅
                           if (status === 'filled') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span>✅</span>
                                 <span>已招到</span>
                               </div>
                             );
                           }
 
-                          // 已过期
+                          // 已过期：灰点
                           if (status === 'expired') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span className="w-2 h-2 rounded-full bg-gray-400"></span>
                                 <span>已过期</span>
                               </div>
                             );
                           }
 
-                          // 急招
+                          // 急招：红点
                           if (status === 'urgent') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
                                 <span>急招</span>
                               </div>
                             );
                           }
 
-                          // 长期
+                          // 长期：绿点
                           if (status === 'longterm') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
                                 <span>长期</span>
                               </div>
                             );
                           }
 
-                          // 在招
+                          // 在招：无点
                           return (
                             <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
                               <span>在招</span>
@@ -563,7 +570,8 @@ const Jobs = () => {
                         })()}
                       </div>
                     </div>
-                  ))}
+                  );
+                })}
                 </div>
               ) : (
                 <div className="text-center py-16">
