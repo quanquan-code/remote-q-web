@@ -479,6 +479,15 @@ const Jobs = () => {
                               {job.title?.length > 30 ? job.title.slice(0, 30) + '...' : job.title}
                             </Link>
                           </h3>
+                          {/* 推动转化标签：跟职位标题对齐 */}
+                          <div className="flex items-center gap-2 mt-1">
+                            {(job.company?.includes('EA') || job.company?.includes('沐瞳')) && (
+                              <span className="text-xs">💚 加班少</span>
+                            )}
+                            {(job.company?.includes('沐瞳') || job.company?.includes('趣加')) && (
+                              <span className="text-xs">❤️ 在职群友可咨询</span>
+                            )}
+                          </div>
                           
                           <div className="flex items-center gap-2 mt-1 text-sm text-gray-500 min-w-0">
                             <span className="truncate max-w-[200px]">{job.company}</span>
@@ -504,7 +513,7 @@ const Jobs = () => {
                             ))}
                             {/* 全职/正编岗位且非内部 → 公开标签 */}
                             {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
-                              <span className="px-2 py-0.5 rounded text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                              <span className="px-2 py-0.5 rounded text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
                                 公开
                               </span>
                             )}
@@ -512,18 +521,6 @@ const Jobs = () => {
                               <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 flex items-center gap-1">
                                 <Globe className="w-3 h-3" />
                                 {job.languagePair}
-                              </span>
-                            )}
-                            {/* 推动转化标签：EA/沐瞳 小绿心 = 加班少 */}
-                            {(job.company?.includes('EA') || job.company?.includes('沐瞳')) && (
-                              <span className="text-xs">
-                                💚 加班少
-                              </span>
-                            )}
-                            {/* 推动转化标签：沐瞳/趣加 小红心 = 在职群友可咨询 */}
-                            {(job.company?.includes('沐瞳') || job.company?.includes('趣加')) && (
-                              <span className="text-xs">
-                                ❤️ 在职群友可咨询
                               </span>
                             )}
                           </div>
