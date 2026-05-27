@@ -381,40 +381,6 @@ const JobDetail = () => {
           </div>
         )}
 
-        {/* 关键信息 */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
-          <h2 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <Globe className="w-4 h-4" />
-            关键信息
-          </h2>
-          <div className="space-y-2 text-sm">
-            {job.salaryRange && (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500">薪资区间：</span>
-                <span className="font-medium text-gray-900">{job.salaryRange}</span>
-              </div>
-            )}
-            {job.paymentCycle && (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500">结算周期：</span>
-                <span className="text-gray-700">{job.paymentCycle}</span>
-              </div>
-            )}
-            {job.languagePair && (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500">语言对：</span>
-                <span className="text-gray-700">{job.languagePair}</span>
-              </div>
-            )}
-            {job.deadline && (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500">截止日期：</span>
-                <span className="text-gray-700">{job.deadline}</span>
-              </div>
-            )}
-          </div>
-        </div>
-
         {/* 知识弹药库 */}
         {relatedCases.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
