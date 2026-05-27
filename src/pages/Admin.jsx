@@ -560,11 +560,11 @@ const Admin = () => {
                       <Square className="w-4 h-4" />
                     )}
                   </button>
-                  <div className="w-8">状态</div>
+                  <div className="w-20">状态</div>
                   <div className="flex-1 min-w-0">岗位信息</div>
-                  <div className="w-32">薪资</div>
-                  <div className="w-36">状态</div>
-                  <div className="w-32">操作</div>
+                  <div className="w-28">薪资</div>
+                  <div className="w-28">截止</div>
+                  <div className="w-40">操作</div>
                 </div>
 
                 {sortedJobs.map(job => {
@@ -595,24 +595,40 @@ const Admin = () => {
                         </button>
 
                         {/* 状态标签 */}
-                        <div className="w-8 shrink-0">
-                          {isFilled ? (
-                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
-                              已招到
-                            </span>
-                          ) : isHidden ? (
-                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
-                              隐藏
-                            </span>
-                          ) : getDeadlineStatus(job.deadline, job.postedAt) === 'expired' ? (
-                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-600">
-                              已到期
-                            </span>
-                          ) : (
-                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">
-                              在招
-                            </span>
-                          )}
+                        <div className="w-20 shrink-0">
+                          {(() => {
+                            if (isFilled) return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
+                                ✅ 已招到
+                              </span>
+                            );
+                            if (isHidden) return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
+                                🫥 隐藏
+                              </span>
+                            );
+                            const status = getDeadlineStatus(deadline, job.postedAt);
+                            if (status === 'expired') return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400">
+                                ● 已到期
+                              </span>
+                            );
+                            if (status === 'urgent') return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-600">
+                                🔴 急招
+                              </span>
+                            );
+                            if (status === 'longterm') return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-600">
+                                📌 长期
+                              </span>
+                            );
+                            return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">
+                                ● 在招
+                              </span>
+                            );
+                          })()}
                         </div>
 
                         {/* 岗位信息 */}
@@ -727,7 +743,7 @@ const Admin = () => {
                         </div>
 
                         {/* 薪资 */}
-                        <div className="w-32 shrink-0 text-sm text-gray-700">
+                        <div className="w-28 shrink-0 text-sm text-gray-700">
                           {isEditing ? (
                             <input
                               type="text"
@@ -744,7 +760,7 @@ const Admin = () => {
                         </div>
 
                         {/* 状态 / 截止日期 */}
-                        <div className="w-36 shrink-0">
+                        <div className="w-28 shrink-0">
                           {isEditing ? (
                             <div className="space-y-1">
                               <select
