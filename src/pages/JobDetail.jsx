@@ -167,14 +167,15 @@ function getRelatedCases(job) {
     if (!c.url) continue;
 
     let score = 0;
-    const caseText = `${c.name || ''} ${c.careerName || ''} ${c.careerPath || ''} ${c.background || ''}`.toLowerCase();
+    const caseText = `${c.name || ''} ${c.careerName || ''}`.toLowerCase();
+    const caseHistoryText = `${c.careerPath || ''} ${c.background || ''}`.toLowerCase();
 
     // 公司名精确匹配（最高权重）
     if (job.company && caseText.includes(job.company.toLowerCase())) {
       score += 100;
     }
 
-    // 岗位名称模糊匹配（次高权重）
+    // 岗位名称模糊匹配 —— 优先匹配最终职业（careerName），次匹配历史路径（careerPath）
     if (job.title) {
       const titleLower = job.title.toLowerCase();
       const jobTitleKeywords = [
@@ -186,9 +187,12 @@ function getRelatedCases(job) {
         { words: ['运营', '社群', 'community'], weight: 40 },
       ];
       for (const { words, weight } of jobTitleKeywords) {
-        const caseHasKeyword = words.some(w => caseText.includes(w));
-        if (caseHasKeyword && words.some(w => titleLower.includes(w))) {
-          score += weight;
+        const careerHasKeyword = words.some(w => caseText.includes(w));
+        const historyHasKeyword = words.some(w => caseHistoryText.includes(w));
+        const jobHasKeyword = words.some(w => titleLower.includes(w));
+        if (jobHasKeyword) {
+          if (careerHasKeyword) score += weight;      // 最终职业匹配 → 全权重
+          else if (historyHasKeyword) score += weight * 0.3; // 仅历史路径匹配 → 30%权重
         }
       }
     }
