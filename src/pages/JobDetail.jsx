@@ -354,7 +354,7 @@ const JobDetail = () => {
             <div className="flex items-center gap-2">
               <span className="text-gray-500">薪资：</span>
               <span className="font-medium text-gray-900">{job.salary}</span>
-              {job.salaryNote && (
+              {job.salaryNote && job.salaryNote !== job.salary && !job.salary?.includes(job.salaryNote) && (
                 <span className="text-xs text-gray-400">（{job.salaryNote}）</span>
               )}
             </div>
