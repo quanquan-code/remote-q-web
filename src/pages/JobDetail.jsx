@@ -411,7 +411,7 @@ const JobDetail = () => {
         </Link>
 
         {/* 岗位标题卡 */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
+        <div className="bg-white rounded-xl p-6 mb-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
