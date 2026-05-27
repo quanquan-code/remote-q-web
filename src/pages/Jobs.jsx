@@ -518,51 +518,46 @@ const Jobs = () => {
                         {(() => {
                           const status = getDeadlineStatus(job.deadline, job.postedAt);
 
-                          // 已招到：灰点 + 已招到
+                          // 已招到
                           if (status === 'filled') {
                             return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-gray-400"></span>
-                                <span className="text-gray-500">已招到</span>
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span>已招到</span>
                               </div>
                             );
                           }
 
-                          // 已过期：红点 + 已过期
+                          // 已过期
                           if (status === 'expired') {
                             return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                                <span className="text-red-500">已过期</span>
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span>已过期</span>
                               </div>
                             );
                           }
 
-                          // 急招：火焰图标
+                          // 急招
                           if (status === 'urgent') {
                             return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span>🔥</span>
-                                <span className="text-orange-600 font-medium">急招</span>
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span>急招</span>
                               </div>
                             );
                           }
 
-                          // 长期：蓝点 + 长期
+                          // 长期
                           if (status === 'longterm') {
                             return (
-                              <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                                <span className="text-blue-600">长期</span>
+                              <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                                <span>长期</span>
                               </div>
                             );
                           }
 
-                          // 在招：绿点 + 在招
+                          // 在招
                           return (
-                            <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                              <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                              <span className="text-green-600">在招</span>
+                            <div className="mt-1 flex items-center justify-end gap-1 text-xs text-gray-500">
+                              <span>在招</span>
                             </div>
                           );
                         })()}
