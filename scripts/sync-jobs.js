@@ -845,6 +845,7 @@ async function main() {
   jobs.sort((a, b) => b.postedAt.localeCompare(a.postedAt));
 
   // 写入岗位数据（包含案例库）
+  const outPath = path.join(__dirname, '..', 'src', 'data', 'jobs.json');
   const output = {
     jobs,
     caseLibrary: cases,
