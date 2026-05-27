@@ -513,7 +513,7 @@ const Jobs = () => {
                       <div
                         key={job.id}
                         onClick={() => navigate(`/job/${job.id}`)}
-                        className={`px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer ${isClosed ? 'bg-[#f5f5f5]' : ''}`}
+                        className={`px-4 py-4 flex items-start justify-between group hover:bg-gray-50 transition-colors cursor-pointer ${isClosed ? 'bg-[#f5f5f5]' : ''} ${job.type?.includes('内部') ? 'border border-orange-400 rounded-xl' : ''}`}
                       >
                       <div className="flex items-start gap-4 flex-1 min-w-0">
                         <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 text-xs font-bold text-gray-500">
