@@ -782,6 +782,9 @@ const Admin = () => {
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
                                 <span className="text-sm font-medium text-gray-900">{job.title}</span>
+                                {overrides[job.id] && Object.keys(overrides[job.id]).some(k => k !== 'hidden') && (
+                                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-600 border border-purple-100">已编辑</span>
+                                )}
                                 <span className="text-xs text-gray-400">@{job.company || '未知公司'}</span>
                                 {job.type?.map(t => (
                                   <span key={t} className="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-500">{t}</span>
