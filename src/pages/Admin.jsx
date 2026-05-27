@@ -237,6 +237,14 @@ const Admin = () => {
     selectedIds.forEach(id => updateField(id, 'deadline', '已到期'));
     setSelectedIds(new Set());
   };
+  const bulkUrgent = () => {
+    selectedIds.forEach(id => updateField(id, 'deadline', '急招'));
+    setSelectedIds(new Set());
+  };
+  const bulkLongterm = () => {
+    selectedIds.forEach(id => updateField(id, 'deadline', '长期'));
+    setSelectedIds(new Set());
+  };
 
   const toggleSelect = (id) => {
     setSelectedIds(prev => {
@@ -269,6 +277,10 @@ const Admin = () => {
       jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到');
     } else if (filterStatus === 'expired') {
       jobs = jobs.filter(j => getDeadlineStatus(j.deadline, j.postedAt) === 'expired');
+    } else if (filterStatus === 'urgent') {
+      jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '急招');
+    } else if (filterStatus === 'longterm') {
+      jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '长期');
     } else if (filterStatus === 'active') {
       jobs = jobs.filter(j => {
         const d = overrides[j.id]?.deadline ?? j.deadline;
@@ -288,6 +300,8 @@ const Admin = () => {
   const hiddenCount = jobsData.length - visibleCount;
   const filledCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到').length;
   const expiredCount = jobsData.filter(j => getDeadlineStatus(j.deadline, j.postedAt) === 'expired').length;
+  const urgentCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '急招').length;
+  const longtermCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '长期').length;
 
   const handleExport = () => {
     const json = exportJobsJson(overrides);
@@ -333,7 +347,7 @@ const Admin = () => {
               </h2>
               {activeTab === 'jobs' && (
                 <span className="text-xs text-gray-400">
-                  显示 {visibleCount} / 隐藏 {hiddenCount} / 已招到 {filledCount} / 已到期 {expiredCount} / 共 {jobsData.length}
+                  显示 {visibleCount} / 隐藏 {hiddenCount} / 🔥急招 {urgentCount} / 📌长期 {longtermCount} / ✅已招到 {filledCount} / ⏰已到期 {expiredCount} / 共 {jobsData.length}
                 </span>
               )}
             </div>
@@ -388,6 +402,8 @@ const Admin = () => {
                   >
                     <option value="all">全部</option>
                     <option value="active">在招中</option>
+                    <option value="urgent">🔥 急招</option>
+                    <option value="longterm">📌 长期</option>
                     <option value="filled">已招到</option>
                     <option value="expired">已到期</option>
                     <option value="visible">显示中</option>
@@ -416,10 +432,16 @@ const Admin = () => {
                     <button onClick={bulkShow} className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs hover:bg-gray-200">
                       批量显示
                     </button>
+                    <button onClick={bulkUrgent} className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs hover:bg-orange-100">
+                      批量急招
+                    </button>
+                    <button onClick={bulkLongterm} className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs hover:bg-blue-100">
+                      批量长期
+                    </button>
                     <button onClick={bulkFilled} className="px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-xs hover:bg-green-100">
                       批量已招到
                     </button>
-                    <button onClick={bulkExpired} className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs hover:bg-orange-100">
+                    <button onClick={bulkExpired} className="px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs hover:bg-red-100">
                       批量已到期
                     </button>
                     <button onClick={() => setSelectedIds(new Set())} className="px-2 py-1.5 text-gray-400 hover:text-gray-600">
@@ -446,8 +468,8 @@ const Admin = () => {
                   <div className="w-8">状态</div>
                   <div className="flex-1 min-w-0">岗位信息</div>
                   <div className="w-32">薪资</div>
-                  <div className="w-32">截止日期</div>
-                  <div className="w-28">操作</div>
+                  <div className="w-36">状态</div>
+                  <div className="w-32">操作</div>
                 </div>
 
                 {sortedJobs.map(job => {
@@ -600,16 +622,47 @@ const Admin = () => {
                           )}
                         </div>
 
-                        {/* 截止日期 */}
-                        <div className="w-32 shrink-0">
+                        {/* 状态 / 截止日期 */}
+                        <div className="w-36 shrink-0">
                           {isEditing ? (
-                            <input
-                              type="text"
-                              value={overrides[job.id]?.deadline ?? job.deadline ?? ''}
-                              onChange={e => updateField(job.id, 'deadline', e.target.value)}
-                              className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
-                              placeholder="截止日期"
-                            />
+                            <div className="space-y-1">
+                              <select
+                                value={(() => {
+                                  const d = overrides[job.id]?.deadline ?? job.deadline ?? '';
+                                  if (d === '已招到') return 'filled';
+                                  if (d === '已到期') return 'expired';
+                                  if (d === '长期') return 'longterm';
+                                  if (d === '急招') return 'urgent';
+                                  if (d && !['已招到','已到期','长期','急招'].includes(d)) return 'custom';
+                                  return 'open';
+                                })()}
+                                onChange={e => {
+                                  const v = e.target.value;
+                                  if (v === 'open') updateField(job.id, 'deadline', '');
+                                  else if (v === 'urgent') updateField(job.id, 'deadline', '急招');
+                                  else if (v === 'longterm') updateField(job.id, 'deadline', '长期');
+                                  else if (v === 'filled') updateField(job.id, 'deadline', '已招到');
+                                  else if (v === 'expired') updateField(job.id, 'deadline', '已到期');
+                                }}
+                                className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
+                              >
+                                <option value="open">在招</option>
+                                <option value="urgent">🔥 急招</option>
+                                <option value="longterm">📌 长期</option>
+                                <option value="filled">✅ 已招到</option>
+                                <option value="expired">⏰ 已到期</option>
+                                <option value="custom">自定义日期</option>
+                              </select>
+                              {(overrides[job.id]?.deadline ?? job.deadline ?? '') === 'custom' && (
+                                <input
+                                  type="text"
+                                  value={overrides[job.id]?.deadline ?? job.deadline ?? ''}
+                                  onChange={e => updateField(job.id, 'deadline', e.target.value)}
+                                  className="w-full px-2 py-1 border border-gray-200 rounded text-xs outline-none focus:border-gray-400"
+                                  placeholder="例：2026-06-15"
+                                />
+                              )}
+                            </div>
                           ) : (
                             <span className={`text-xs ${isFilled ? 'text-gray-400' : 'text-gray-600'}`}>
                               {deadline || '未设置'}
@@ -618,7 +671,7 @@ const Admin = () => {
                         </div>
 
                         {/* 操作 */}
-                        <div className="w-28 shrink-0 flex items-center gap-1">
+                        <div className="w-32 shrink-0 flex items-center gap-1 flex-wrap">
                           <button
                             onClick={() => setEditingId(isEditing ? null : job.id)}
                             className="px-2 py-1.5 text-xs text-gray-500 hover:text-gray-900 rounded hover:bg-gray-100"
@@ -636,20 +689,36 @@ const Admin = () => {
                                 {isHidden ? '显示' : '隐藏'}
                               </button>
                               {!isFilled && (
-                                <button
-                                  onClick={() => markFilled(job.id)}
-                                  className="px-2 py-1.5 text-xs text-green-600 hover:text-green-700 rounded hover:bg-green-50"
-                                  title="标记已招到"
-                                >
-                                  已招到
-                                </button>
+                                <>
+                                  <button
+                                    onClick={() => updateField(job.id, 'deadline', '急招')}
+                                    className="px-2 py-1.5 text-xs text-orange-600 hover:text-orange-700 rounded hover:bg-orange-50"
+                                    title="标记急招"
+                                  >
+                                    急招
+                                  </button>
+                                  <button
+                                    onClick={() => updateField(job.id, 'deadline', '长期')}
+                                    className="px-2 py-1.5 text-xs text-blue-600 hover:text-blue-700 rounded hover:bg-blue-50"
+                                    title="标记长期"
+                                  >
+                                    长期
+                                  </button>
+                                  <button
+                                    onClick={() => markFilled(job.id)}
+                                    className="px-2 py-1.5 text-xs text-green-600 hover:text-green-700 rounded hover:bg-green-50"
+                                    title="标记已招到"
+                                  >
+                                    已招到
+                                  </button>
+                                </>
                               )}
                               {!isFilled && getDeadlineStatus(job.deadline, job.postedAt) === 'expired' && (
                                 <button
                                   onClick={() => {
                                     updateField(job.id, 'deadline', '已到期');
                                   }}
-                                  className="px-2 py-1.5 text-xs text-orange-600 hover:text-orange-700 rounded hover:bg-orange-50"
+                                  className="px-2 py-1.5 text-xs text-red-600 hover:text-red-700 rounded hover:bg-red-50"
                                   title="标记已到期"
                                 >
                                   已到期
