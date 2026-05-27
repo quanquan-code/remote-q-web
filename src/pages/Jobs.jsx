@@ -144,15 +144,15 @@ function extractLanguages(job) {
   const text = `${job.title || ''} ${job.fullDescription || ''} ${job.requirements || ''} ${job.languagePair || ''}`;
   const langs = [];
   const langMap = [
-    { keys: ['英语', '英文', 'English', '英'], label: '英' },
-    { keys: ['日语', '日文', 'Japanese', '日'], label: '日' },
-    { keys: ['韩语', '韩文', 'Korean', '韩'], label: '韩' },
-    { keys: ['阿拉伯语', 'Arabic', '阿'], label: '阿' },
-    { keys: ['葡萄牙语', 'Portuguese', '葡'], label: '葡' },
-    { keys: ['俄语', 'Russian', '俄'], label: '俄' },
-    { keys: ['德语', 'German', '德'], label: '德' },
-    { keys: ['法语', 'French', '法'], label: '法' },
-    { keys: ['意大利语', 'Italian', '意'], label: '意' },
+    { keys: ['英语', '英文', 'English'], label: '英' },
+    { keys: ['日语', '日文', 'Japanese'], label: '日' },
+    { keys: ['韩语', '韩文', 'Korean'], label: '韩' },
+    { keys: ['阿拉伯语', 'Arabic'], label: '阿' },
+    { keys: ['葡萄牙语', 'Portuguese'], label: '葡' },
+    { keys: ['俄语', 'Russian'], label: '俄' },
+    { keys: ['德语', 'German'], label: '德' },
+    { keys: ['法语', 'French'], label: '法' },
+    { keys: ['意大利语', '意语', 'Italian'], label: '意' },
   ];
   for (const { keys, label } of langMap) {
     if (keys.some(k => text.includes(k))) {
