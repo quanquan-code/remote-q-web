@@ -557,6 +557,12 @@ const Jobs = () => {
                                 {t}
                               </span>
                             ))}
+                            {/* 全职且非外包 → 自动补正编标签 */}
+                            {job.type?.some(t => t.includes('全职')) && !job.type?.some(t => t.includes('外包')) && !job.type?.some(t => t.includes('正编')) && (
+                              <span className={`px-2 py-0.5 rounded text-xs font-medium ${typeColorMap['正编'] || 'bg-gray-100 text-gray-600'}`}>
+                                正编
+                              </span>
+                            )}
                             {/* 全职/正编岗位且非内部 → 公开标签 */}
                             {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
                               <span className="px-2 py-0.5 rounded text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
