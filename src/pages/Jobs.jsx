@@ -139,6 +139,29 @@ function formatDate(date) {
   return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 }
 
+// 从岗位名称和描述中提取语种
+function extractLanguages(job) {
+  const text = `${job.title || ''} ${job.fullDescription || ''} ${job.requirements || ''} ${job.languagePair || ''}`;
+  const langs = [];
+  const langMap = [
+    { keys: ['英语', '英文', 'English', '英'], label: '英' },
+    { keys: ['日语', '日文', 'Japanese', '日'], label: '日' },
+    { keys: ['韩语', '韩文', 'Korean', '韩'], label: '韩' },
+    { keys: ['阿拉伯语', 'Arabic', '阿'], label: '阿' },
+    { keys: ['葡萄牙语', 'Portuguese', '葡'], label: '葡' },
+    { keys: ['俄语', 'Russian', '俄'], label: '俄' },
+    { keys: ['德语', 'German', '德'], label: '德' },
+    { keys: ['法语', 'French', '法'], label: '法' },
+    { keys: ['意大利语', 'Italian', '意'], label: '意' },
+  ];
+  for (const { keys, label } of langMap) {
+    if (keys.some(k => text.includes(k))) {
+      langs.push(label);
+    }
+  }
+  return langs.length > 0 ? langs : ['其他'];
+}
+
 const jobsData = applyOverrides(rawJobsData);
 
 const Jobs = () => {
@@ -149,6 +172,7 @@ const Jobs = () => {
   const [selectedType, setSelectedType] = useState('全部');
   const [selectedStatus, setSelectedStatus] = useState('全部');
   const [selectedWorkMode, setSelectedWorkMode] = useState('全部');
+  const [selectedLanguage, setSelectedLanguage] = useState('全部');
   const [showQrModal, setShowQrModal] = useState(false);
   const [showRemoteQModal, setShowRemoteQModal] = useState(false);
 
@@ -156,6 +180,7 @@ const Jobs = () => {
   const locationFilters = ['全部', '远程', '线下'];
   const workModeFilters = ['全部', '远程', '线下'];
   const typeFilters = ['全部', '兼职', '全职', '外包', '正编'];
+  const languageFilters = ['全部', '英', '日', '韩', '阿', '葡', '俄', '德', '法', '意', '其他'];
 
   const filteredJobs = useMemo(() => {
     let jobs = jobsData;
@@ -197,6 +222,14 @@ const Jobs = () => {
       jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
     }
     
+    // 语种筛选
+    if (selectedLanguage !== '全部') {
+      jobs = jobs.filter(job => {
+        const langs = extractLanguages(job);
+        return langs.includes(selectedLanguage);
+      });
+    }
+    
     // 过期岗位和已招到自动沉底，其余按发布日期从新到旧
     jobs.sort((a, b) => {
       const sa = getDeadlineStatus(a.deadline, a.postedAt, a.status);
@@ -210,7 +243,7 @@ const Jobs = () => {
     });
     
     return jobs;
-  }, [searchQuery, selectedNav, selectedWorkMode, selectedType]);
+  }, [searchQuery, selectedNav, selectedWorkMode, selectedType, selectedLanguage]);
 
   // 岗位形式标签颜色
   const typeColorMap = {
@@ -444,6 +477,20 @@ const Jobs = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* 语种筛选 */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-400 font-medium">语种</span>
+                  <select
+                    value={selectedLanguage}
+                    onChange={e => setSelectedLanguage(e.target.value)}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium border border-gray-200 bg-white text-gray-600 outline-none focus:border-gray-400 cursor-pointer"
+                  >
+                    {languageFilters.map(filter => (
+                      <option key={filter} value={filter}>{filter}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -522,6 +569,12 @@ const Jobs = () => {
                                 {job.languagePair}
                               </span>
                             )}
+                            {/* 语种标签 */}
+                            {extractLanguages(job).map(lang => (
+                              <span key={lang} className="px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">
+                                {lang}
+                              </span>
+                            ))}
                           </div>
                         </div>
                       </div>
