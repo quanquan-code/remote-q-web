@@ -32,7 +32,9 @@ function applyOverrides(jobs) {
 }
 
 // 社群案例库（硬编码映射，后续可改从API读取）
+// 数据来源：MEMORY.md 外语人就业去哪儿案例库
 const caseLibrary = {
+  // ===== 公司名精确匹配 =====
   '沐瞳': [
     {
       title: '沐瞳 | 从转行开始进入游戏本地化全攻略',
@@ -41,8 +43,33 @@ const caseLibrary = {
       summary: '2019年物联网工程毕业→教培愤而离职→B站字幕翻译起步→读圈圈公众号自学→火星测试→22-25年兼职翻译250万字→25年末沐瞳外包招募→投简历做题面试→入职上海'
     }
   ],
-  // 通用游戏行业案例
-  '游戏': [
+  '网易': [
+    {
+      title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
+      author: 'James',
+      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。CATTI二口二笔（大三）+一口（工作后），从0到1搭建本地化管线。'
+    }
+  ],
+  '米哈游': [
+    {
+      title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
+      author: 'James',
+      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。米哈游一小时现场笔译+创译考核。'
+    }
+  ],
+  'FunPlus': [
+    {
+      title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
+      author: 'Lucian · 社群编号3049',
+      url: 'https://mp.weixin.qq.com/s/FKHpkPQjz8oUsK2EumWBeg',
+      summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。'
+    }
+  ],
+  
+  // ===== 行业关键词匹配 =====
+  '游戏本地化': [
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
@@ -50,13 +77,42 @@ const caseLibrary = {
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）'
     },
     {
+      title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
+      author: 'James',
+      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员'
+    }
+  ],
+  '广告投放': [
+    {
       title: '从零开始到游戏公司海外投放的全攻略',
       author: 'Roxy · 社群编号1688',
       url: 'https://mp.weixin.qq.com/s?__biz=MzU1OTk2MDQzMA==&mid=2247511995&idx=1&sn=c563965bfc8cde806b059db5877747b5',
-      summary: '普通院校英专→学生时代接翻译活→投500+份简历→游戏运营实习→海外广告投放（月入2.5万*14薪）→在职拿到英国市场营销硕士Offer'
+      summary: '普通院校英专→学生时代接翻译活→投500+份简历→游戏运营实习→海外广告投放（月入2.5万*14薪）→在职拿到英国市场营销硕士Offer。00后，3年年薪35万+。'
     }
   ],
-  // 教培类案例
+  '翻译': [
+    {
+      title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
+      author: 'Lucian · 社群编号3049',
+      url: 'https://mp.weixin.qq.com/s/FKHpkPQjz8oUsK2EumWBeg',
+      summary: '汉语言文学→CATTI→自由译员→游戏公司译员→头部大厂本地化项目经理。3年走完全程。'
+    },
+    {
+      title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
+      author: 'James',
+      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员'
+    }
+  ],
+  '内容创作': [
+    {
+      title: '审美是语言从业者最后的护城河 | 从英专到三联/芭莎撰稿人',
+      author: '小季 Eloise Ji · 社群编号3050',
+      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      summary: '本科英专→UCL社科硕士→小红书1.7万+粉娱乐影视博主→三联生活周刊19篇+芭莎1篇时尚撰稿人→时尚创译与本地化。99年INTJ，用"审美"作为核心护城河。'
+    }
+  ],
   '教培': [
     {
       title: '法语本转NLP硕士，兼职教培走向AI产品经理',
@@ -69,36 +125,41 @@ const caseLibrary = {
 
 function getRelatedCases(job) {
   const cases = [];
+  const existingUrls = new Set();
+  
   // 1. 按公司名精确匹配
   if (job.company && caseLibrary[job.company]) {
-    cases.push(...caseLibrary[job.company]);
-  }
-  // 2. 按行业关键词匹配
-  const text = `${job.title} ${job.description || ''} ${job.fullDescription || ''}`;
-  const keywords = [
-    { key: '游戏', patterns: ['游戏', 'Game', '本地化'] },
-    { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导'] }
-  ];
-  for (const { key, patterns } of keywords) {
-    if (caseLibrary[key] && patterns.some(p => text.includes(p))) {
-      // 去重
-      const existingUrls = new Set(cases.map(c => c.url));
-      for (const kc of caseLibrary[key]) {
-        if (!existingUrls.has(kc.url)) cases.push(kc);
+    for (const c of caseLibrary[job.company]) {
+      if (!existingUrls.has(c.url)) {
+        cases.push(c);
+        existingUrls.add(c.url);
       }
     }
   }
-  // 3. 如果没有任何匹配，显示默认通用案例
-  if (cases.length === 0) {
-    return caseLibrary['游戏'];
-  }
-  return cases;
-}
-
-// 判断岗位是否属于游戏行业
-function isGameJob(job) {
+  
+  // 2. 按行业关键词匹配
   const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
-  return text.includes('游戏') || text.includes('Game') || text.includes('本地化');
+  const keywords = [
+    { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
+    { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
+    { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
+    { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
+    { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
+  ];
+  
+  for (const { key, patterns } of keywords) {
+    if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
+      for (const kc of caseLibrary[key]) {
+        if (!existingUrls.has(kc.url)) {
+          cases.push(kc);
+          existingUrls.add(kc.url);
+        }
+      }
+    }
+  }
+  
+  // 3. 没有匹配时返回空数组，不再硬塞默认案例
+  return cases;
 }
 
 const JobDetail = () => {
@@ -219,148 +280,135 @@ const JobDetail = () => {
                 <span className="text-gray-300">·</span>
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5" />
-                  {job.location || '地点待定'}
+                  {job.location}
+                </span>
+                <span className="text-gray-300">·</span>
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5" />
+                  {job.postedAt}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                {job.type?.map((t, i) => (
-                  <span
-                    key={i}
-                    className={`px-2.5 py-1 rounded-full text-xs font-medium ${typeColorMap[t] || 'bg-gray-100 text-gray-600'}`}
-                  >
+              <div className="flex flex-wrap gap-2 mt-3">
+                {job.type?.map(t => (
+                  <span key={t} className={`px-2 py-1 rounded-md text-xs font-medium ${typeColorMap[t] || 'border border-gray-200 bg-gray-50 text-gray-600'}`}>
                     {t}
                   </span>
                 ))}
-                {job.languagePair && (
-                  <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 flex items-center gap-1">
-                    <Globe className="w-3 h-3" />
-                    {job.languagePair}
-                  </span>
-                )}
               </div>
             </div>
-          </div>
-
-          <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-2 gap-4">
-            <div>
-              <span className="text-xs text-gray-400">薪资</span>
-              <p className="text-base font-semibold text-gray-900 mt-1 whitespace-pre-wrap">
-                {job.salary || job.salaryNote || '待议'}
-              </p>
-            </div>
-            {job.deadline && (
-              <div>
-                <span className="text-xs text-gray-400">截止日期</span>
-                <p className="text-sm text-gray-600 mt-1">{job.deadline}</p>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* 岗位要求（完整内容，不拆分职责和要求） */}
-        {job.fullDescription && (
+        {/* 岗位描述 */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Briefcase className="w-4 h-4" />
+            岗位详情
+          </h2>
+          <div className="text-sm text-gray-700 space-y-3 leading-relaxed whitespace-pre-line">
+            {job.fullDescription || job.description || '暂无详细描述'}
+          </div>
+        </div>
+
+        {/* 要求 */}
+        {job.requirements && job.requirements.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
             <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Briefcase className="w-4 h-4" />
+              <Clock className="w-4 h-4" />
               岗位要求
             </h2>
-            <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-              {job.fullDescription}
-            </div>
+            <ul className="space-y-2">
+              {job.requirements.map((req, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-1.5 shrink-0" />
+                  {req}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
-        {/* 备注 */}
-        {job.comments && (
-          <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
-            <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <MessageCircle className="w-4 h-4" />
-              备注要求
-            </h2>
-            <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap bg-amber-50 rounded-lg p-4 border border-amber-100">
-              {job.comments}
+        {/* 薪资 */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <Globe className="w-4 h-4" />
+            薪资 & 工作方式
+          </h2>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">薪资：</span>
+              <span className="font-medium text-gray-900">{job.salary}</span>
+              {job.salaryNote && (
+                <span className="text-xs text-gray-400">（{job.salaryNote}）</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">工作方式：</span>
+              <span className="text-gray-700">{job.type?.join('、') || '未指定'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">工作地点：</span>
+              <span className="text-gray-700">{job.location || '未指定'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">语言对：</span>
+              <span className="text-gray-700">{job.languagePair || '未指定'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">截止日期：</span>
+              <span className="text-gray-700">{job.deadline || '未指定'}</span>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* 推荐阅读 */}
-        {(relatedCases.length > 0 || (isFullTime && isGameJob(job))) && (
+        {/* 知识弹药库 */}
+        {relatedCases.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
             <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
               知识弹药库
             </h2>
             
-            {isFullTime && isGameJob(job) && (
-              <>
-                <p className="text-xs text-gray-400 mb-3 font-medium">圈圈推荐</p>
-                {/* 本地化项目经理专属推荐 */}
-                {job.title?.includes('本地化项目经理') && (
-                  <a 
-                    href="https://m.shifangwk.cn/lecture2/33930891?_t=1779782879949" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
-                  >
-                    <p className="text-sm font-medium text-[#fd8e2a]">付费讲座 | Lucian：从零开始成为T0级游戏大厂本地化项目经理！</p>
-                    <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
-                  </a>
-                )}
-                {/* 通用游戏本地化推荐 */}
-                {!job.title?.includes('本地化项目经理') && (
-                  <a 
-                    href="https://m.shifangwk.cn/lecture2/32397987?es__at=1779773474370" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="block p-3 rounded-lg border border-[#fd8e2a]/20 bg-[#fd8e2a]/5 hover:bg-[#fd8e2a]/10 transition-colors mb-4"
-                  >
-                    <p className="text-sm font-medium text-[#fd8e2a]">游戏本地化从零入门讲座 by黑神话悟空本地化参与者</p>
-                    <p className="text-xs text-gray-400 mt-1">付费课程 · 十方微课</p>
-                  </a>
-                )}
-              </>
-            )}
-            
-            {relatedCases.length > 0 && (
-              <>
-                <p className="text-xs text-gray-400 mb-3">社群小伙伴成功应聘案例</p>
-                <div className="space-y-3">
-                  {relatedCases.map((c, i) => (
-                    <a key={i} href={c.url} target="_blank" rel="noopener noreferrer" className="block p-3 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors">
-                      <p className="text-sm font-medium text-gray-900">{c.title}</p>
-                      <p className="text-xs text-gray-400 mt-1">{c.author}</p>
-                    </a>
-                  ))}
-                </div>
-              </>
-            )}
+            <div className="space-y-4">
+              {relatedCases.map((c, i) => (
+                <a 
+                  key={i}
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+                >
+                  <h3 className="text-sm font-medium text-gray-900 group-hover:text-[#fd8e2a] transition-colors mb-1">
+                    {c.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 mb-2">{c.author}</p>
+                  <p className="text-xs text-gray-600 leading-relaxed">{c.summary}</p>
+                </a>
+              ))}
+            </div>
           </div>
         )}
 
         {/* 底部 CTA */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-3">
-          {/* 主按钮：根据岗位类型显示不同文案 */}
-          <button
-            onClick={() => setShowQrModal(true)}
-            className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-          >
-            {/* 优先使用后台设置的 referralType，否则根据全职/兼职判断 */}
-            {(() => {
-              const rt = job.referralType;
-              if (rt === 'neitui') return '简历内推';
-              if (rt === 'internal') return '加入社群';
-              return isFullTime ? '简历内推' : '加入社群';
-            })()}
-          </button>
-          {/* 我也要发布 */}
-          <a
-            href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium text-center hover:bg-gray-50 transition-colors"
-          >
-            我也要发布
-          </a>
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <div className="flex flex-col gap-3">
+            <button 
+              onClick={() => setShowQrModal(true)}
+              className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors flex items-center justify-center gap-2"
+            >
+              <MessageCircle className="w-4 h-4" />
+              {isFullTime ? '简历内推' : '加入社群'}
+            </button>
+            <a 
+              href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+            >
+              <Briefcase className="w-4 h-4" />
+              我也要发布
+            </a>
+          </div>
         </div>
       </div>
     </div>
