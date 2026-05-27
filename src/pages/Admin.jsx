@@ -182,7 +182,7 @@ function Sidebar({ activeTab, setActiveTab }) {
 
 /* ===== 主页面 ===== */
 const Admin = () => {
-  useEffect(() => { document.title = 'Remote Q 后台'; }, []);
+  useEffect(() => { document.title = "Quan's Admin"; }, []);
   const [authed, setAuthed] = useState(() => sessionStorage.getItem('rq_admin_auth') === '1');
   const [activeTab, setActiveTab] = useState('jobs');
   const [overrides, setOverrides] = useState(loadOverrides);
