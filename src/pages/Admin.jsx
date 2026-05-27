@@ -785,7 +785,7 @@ const Admin = () => {
                                 {overrides[job.id] && Object.keys(overrides[job.id]).some(k => k !== 'hidden') && (
                                   <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-600 border border-purple-100">已编辑</span>
                                 )}
-                                <span className="text-xs text-gray-400">@{overrides[job.id]?.company ?? job.company || '未知公司'}</span>
+                                <span className="text-xs text-gray-400">@{(overrides[job.id]?.company ?? job.company) || '未知公司'}</span>
                                 {(overrides[job.id]?.type ?? job.type)?.map(t => (
                                   <span key={t} className="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-500">{t}</span>
                                 ))}
