@@ -338,82 +338,20 @@ const JobDetail = () => {
 
         {/* 底部 CTA */}
         <div className="bg-white rounded-xl border border-gray-100 p-6">
-          {isFullTime ? (
-            <>
-              {/* 类型1：圈圈内推（默认） */}
-              {(!job.referralType || job.referralType === 'circle') && (
-                <div className="text-center">
-                  <button
-                    onClick={() => setShowQrModal(true)}
-                    className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-                  >
-                    专属内推，来和群友当同事→
-                  </button>
-                </div>
-              )}
-
-              {/* 类型2：社群小伙伴内推 */}
-              {job.referralType === 'community' && (
-                <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-4">
-                    和群友成为同事！来自社群小伙伴的内推码
-                  </p>
-                  {job.contact && (
-                    <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-100">
-                      <p className="text-xs text-gray-400 mb-1">内推码</p>
-                      <p className="text-lg font-bold text-gray-900">{job.contact}</p>
-                    </div>
-                  )}
-                  <button
-                    onClick={() => setShowQrModal(true)}
-                    className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-                  >
-                    有问题？联系圈圈
-                  </button>
-                </div>
-              )}
-
-              {/* 类型3：仅限社群内部 */}
-              {job.referralType === 'internal' && (
-                <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-4">
-                    仅限社群内部。社群付费后，联系圈圈加入社群
-                  </p>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => setShowQrModal(true)}
-                      className="flex-1 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-                    >
-                      联系圈圈加入
-                    </button>
-                    <button
-                      onClick={() => setShowQrModal(true)}
-                      className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
-                    >
-                      社群简介
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="text-center">
-              <button
-                onClick={() => setShowQrModal(true)}
-                className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
-              >
-                加入圈圈社群
-              </button>
-            </div>
-          )}
-          <div className="mt-4 text-center">
+          <div className="flex gap-3">
+            <button
+              onClick={() => setShowQrModal(true)}
+              className="flex-1 py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
+            >
+              联系圈圈
+            </button>
             <a
               href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-gray-400 hover:text-gray-600 underline"
+              className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium text-center hover:bg-gray-50 transition-colors"
             >
-              我也要发布岗位需求
+              我也要发布
             </a>
           </div>
         </div>
