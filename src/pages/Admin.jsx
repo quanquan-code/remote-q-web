@@ -383,6 +383,17 @@ const Admin = () => {
       });
     }
     jobs.sort((a, b) => {
+      const aDeadline = overrides[a.id]?.deadline ?? a.deadline ?? '';
+      const bDeadline = overrides[b.id]?.deadline ?? b.deadline ?? '';
+      const aStatus = getDeadlineStatus(aDeadline, a.postedAt);
+      const bStatus = getDeadlineStatus(bDeadline, b.postedAt);
+
+      // 已招到/已到期 → 沉底（1），其余保持顶部（0）
+      const aClosed = aStatus === 'filled' || aStatus === 'expired' ? 1 : 0;
+      const bClosed = bStatus === 'filled' || bStatus === 'expired' ? 1 : 0;
+      if (aClosed !== bClosed) return aClosed - bClosed;
+
+      // 同一类内按 sortBy
       if (sortBy === 'postedAt') return b.postedAt.localeCompare(a.postedAt);
       if (sortBy === 'title') return (a.title || '').localeCompare(b.title || '');
       if (sortBy === 'company') return (a.company || '').localeCompare(b.company || '');
