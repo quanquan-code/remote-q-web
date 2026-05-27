@@ -32,6 +32,7 @@ function applyOverrides(jobs) {
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.location !== undefined && { location: o.location }),
       ...(o.type !== undefined && { type: o.type }),
+      ...(o.referralType !== undefined && { referralType: o.referralType }),
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
       ...(o.status !== undefined && { status: o.status }),
     };
