@@ -56,7 +56,7 @@ const caseLibrary = {
     {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
-      url: 'https://mp.weixin.qq.com/s/d73WbrQh5tZavEYBgdfAPw',
+      url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
       summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。米哈游一小时现场笔译+创译考核。'
     }
   ],
@@ -64,7 +64,7 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://mp.weixin.qq.com/s/FKHpkPQjz8oUsK2EumWBeg',
+      url: 'https://mp.weixin.qq.com/s/F2VKs37QT2MGdy5_Twv40A',
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。'
     }
   ],
@@ -288,12 +288,21 @@ const JobDetail = () => {
                   <Calendar className="w-3.5 h-3.5" />
                   {job.postedAt}
                 </span>
-                {job.salary && (
+                {job.salaryRange && (
                   <>
                     <span className="text-gray-300">·</span>
                     <span className="flex items-center gap-1 text-gray-700 font-medium">
                       <Globe className="w-3.5 h-3.5" />
-                      {job.salary}
+                      {job.salaryRange}
+                    </span>
+                  </>
+                )}
+                {job.paymentCycle && (
+                  <>
+                    <span className="text-gray-300">·</span>
+                    <span className="flex items-center gap-1 text-gray-500">
+                      <Clock className="w-3.5 h-3.5" />
+                      {job.paymentCycle}
                     </span>
                   </>
                 )}
@@ -360,6 +369,18 @@ const JobDetail = () => {
             关键信息
           </h2>
           <div className="space-y-2 text-sm">
+            {job.salaryRange && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">薪资区间：</span>
+                <span className="font-medium text-gray-900">{job.salaryRange}</span>
+              </div>
+            )}
+            {job.paymentCycle && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">结算周期：</span>
+                <span className="text-gray-700">{job.paymentCycle}</span>
+              </div>
+            )}
             {job.languagePair && (
               <div className="flex items-center gap-2">
                 <span className="text-gray-500">语言对：</span>
@@ -370,12 +391,6 @@ const JobDetail = () => {
               <div className="flex items-center gap-2">
                 <span className="text-gray-500">截止日期：</span>
                 <span className="text-gray-700">{job.deadline}</span>
-              </div>
-            )}
-            {job.salaryNote && job.salaryNote !== job.salary && !job.salary?.includes(job.salaryNote) && (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500">薪资说明：</span>
-                <span className="text-gray-700">{job.salaryNote}</span>
               </div>
             )}
           </div>
