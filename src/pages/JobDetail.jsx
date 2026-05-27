@@ -465,20 +465,22 @@ const JobDetail = () => {
               知识弹药库
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {relatedCases.map((c, i) => (
                 <a
                   key={i}
                   href={c.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+                  className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
                 >
-                  <h3 className="text-sm font-medium text-gray-900 group-hover:text-[#fd8e2a] transition-colors mb-1">
+                  <h3 className="text-sm font-medium text-gray-900 group-hover:text-[#fd8e2a] transition-colors">
                     {c.title}
                   </h3>
-                  <p className="text-xs text-gray-500 mb-2">{c.author}</p>
-                  <p className="text-xs text-gray-600 leading-relaxed">{c.summary}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
+                  {c.summary && c.summary !== c.title && (
+                    <p className="text-xs text-gray-600 leading-relaxed mt-1 line-clamp-2">{c.summary}</p>
+                  )}
                 </a>
               ))}
             </div>
