@@ -724,6 +724,13 @@ const Admin = () => {
                                 className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
                                 placeholder="岗位描述"
                               />
+                              <textarea
+                                value={overrides[job.id]?.adminNote ?? job.adminNote ?? ''}
+                                onChange={e => updateField(job.id, 'adminNote', e.target.value)}
+                                rows={2}
+                                className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 bg-yellow-50"
+                                placeholder="备注（仅后台可见）"
+                              />
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => setEditingId(null)}
@@ -774,6 +781,12 @@ const Admin = () => {
                                   </span>
                                 )}
                               </div>
+                              {(overrides[job.id]?.adminNote ?? job.adminNote) && (
+                                <div className="flex items-center gap-1 mt-1">
+                                  <span className="text-[10px] text-yellow-600 bg-yellow-50 px-1.5 py-0.5 rounded">备注</span>
+                                  <span className="text-[10px] text-yellow-700 truncate max-w-[200px]">{overrides[job.id]?.adminNote ?? job.adminNote}</span>
+                                </div>
+                              )}
                               <div className="flex items-center gap-2 mt-1 text-[10px] text-gray-400">
                                 <span>ID: {job.id}</span>
                                 <span>·</span>
