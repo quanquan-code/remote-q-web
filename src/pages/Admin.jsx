@@ -746,53 +746,6 @@ const Admin = () => {
                           >
                             {isEditing ? '完成' : '编辑'}
                           </button>
-                          {!isEditing && (
-                            <>
-                              <button
-                                onClick={() => toggleHidden(job.id)}
-                                className="px-2 py-1.5 text-xs text-gray-500 hover:text-gray-900 rounded hover:bg-gray-100"
-                                title={isHidden ? '显示' : '隐藏'}
-                              >
-                                {isHidden ? '显示' : '隐藏'}
-                              </button>
-                              {!isFilled && (
-                                <>
-                                  <button
-                                    onClick={() => updateField(job.id, 'deadline', '急招')}
-                                    className="px-2 py-1.5 text-xs text-orange-600 hover:text-orange-700 rounded hover:bg-orange-50"
-                                    title="标记急招"
-                                  >
-                                    急招
-                                  </button>
-                                  <button
-                                    onClick={() => updateField(job.id, 'deadline', '长期')}
-                                    className="px-2 py-1.5 text-xs text-blue-600 hover:text-blue-700 rounded hover:bg-blue-50"
-                                    title="标记长期"
-                                  >
-                                    长期
-                                  </button>
-                                  <button
-                                    onClick={() => markFilled(job.id)}
-                                    className="px-2 py-1.5 text-xs text-green-600 hover:text-green-700 rounded hover:bg-green-50"
-                                    title="标记已招到"
-                                  >
-                                    已招到
-                                  </button>
-                                </>
-                              )}
-                              {!isFilled && getDeadlineStatus(job.deadline, job.postedAt) === 'expired' && (
-                                <button
-                                  onClick={() => {
-                                    updateField(job.id, 'deadline', '已到期');
-                                  }}
-                                  className="px-2 py-1.5 text-xs text-red-600 hover:text-red-700 rounded hover:bg-red-50"
-                                  title="标记已到期"
-                                >
-                                  已到期
-                                </button>
-                              )}
-                            </>
-                          )}
                         </div>
                       </div>
                     </div>
