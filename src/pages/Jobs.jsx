@@ -294,10 +294,18 @@ const Jobs = () => {
       {/* 关于我们弹窗 */}
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
-          <div className="bg-white rounded-xl p-6 max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">关于我们</h3>
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4 relative" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setShowQrModal(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">关于我们</h3>
             <div className="text-sm text-gray-600 space-y-2 mb-5">
-              <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业同仁。</p>
+              <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业小伙伴。</p>
               <p>推动外语人兼职实习就业找出路，定期分享行业资讯、岗位内推与职业成长案例。</p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
@@ -306,12 +314,6 @@ const Jobs = () => {
                 <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
               </div>
             </div>
-            <button 
-              onClick={() => setShowQrModal(false)}
-              className="w-full py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800"
-            >
-              关闭
-            </button>
           </div>
         </div>
       )}
