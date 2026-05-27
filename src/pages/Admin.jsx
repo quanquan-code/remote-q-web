@@ -781,17 +781,17 @@ const Admin = () => {
                           ) : (
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className="text-sm font-medium text-gray-900">{job.title}</span>
+                                <span className="text-sm font-medium text-gray-900">{overrides[job.id]?.title ?? job.title}</span>
                                 {overrides[job.id] && Object.keys(overrides[job.id]).some(k => k !== 'hidden') && (
                                   <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-600 border border-purple-100">已编辑</span>
                                 )}
-                                <span className="text-xs text-gray-400">@{job.company || '未知公司'}</span>
-                                {job.type?.map(t => (
+                                <span className="text-xs text-gray-400">@{overrides[job.id]?.company ?? job.company || '未知公司'}</span>
+                                {(overrides[job.id]?.type ?? job.type)?.map(t => (
                                   <span key={t} className="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-500">{t}</span>
                                 ))}
-                                {job.location && (
+                                {(overrides[job.id]?.location ?? job.location) && (
                                   <span className="flex items-center gap-0.5 text-[10px] text-gray-400">
-                                    <MapPin className="w-3 h-3" />{job.location}
+                                    <MapPin className="w-3 h-3" />{overrides[job.id]?.location ?? job.location}
                                   </span>
                                 )}
                               </div>
