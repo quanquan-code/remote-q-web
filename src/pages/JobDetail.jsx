@@ -28,6 +28,8 @@ function applyOverrides(jobs) {
       ...(o.comments !== undefined && { comments: o.comments }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.status !== undefined && { status: o.status }),
+      ...(o.caseStudies !== undefined && { caseStudies: o.caseStudies }),
+      ...(o.adminNote !== undefined && { adminNote: o.adminNote }),
     };
   });
 }
@@ -68,7 +70,7 @@ const caseLibrary = {
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。'
     }
   ],
-  
+
   // ===== 行业关键词匹配 =====
   '游戏本地化': [
     {
@@ -127,8 +129,25 @@ const caseLibrary = {
 function getRelatedCases(job) {
   const cases = [];
   const existingUrls = new Set();
-  
-  // 1. 按公司名精确匹配
+
+  // 1. 优先读取后台配置的自定义案例链接
+  const customCases = job.caseStudies;
+  if (customCases && Array.isArray(customCases) && customCases.length > 0) {
+    for (const url of customCases) {
+      if (url && !existingUrls.has(url)) {
+        cases.push({
+          title: '相关案例',
+          author: '社群案例',
+          url: url,
+          summary: ''
+        });
+        existingUrls.add(url);
+      }
+    }
+    return cases;
+  }
+
+  // 2. 按公司名精确匹配
   if (job.company && caseLibrary[job.company]) {
     for (const c of caseLibrary[job.company]) {
       if (!existingUrls.has(c.url)) {
@@ -137,8 +156,8 @@ function getRelatedCases(job) {
       }
     }
   }
-  
-  // 2. 按行业关键词匹配
+
+  // 3. 按行业关键词匹配
   const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
   const keywords = [
     { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
@@ -147,7 +166,7 @@ function getRelatedCases(job) {
     { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
     { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
   ];
-  
+
   for (const { key, patterns } of keywords) {
     if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
       for (const kc of caseLibrary[key]) {
@@ -158,8 +177,8 @@ function getRelatedCases(job) {
       }
     }
   }
-  
-  // 3. 没有匹配时返回空数组，不再硬塞默认案例
+
+  // 4. 没有匹配时返回空数组，不再硬塞默认案例
   return cases;
 }
 
@@ -247,10 +266,10 @@ const JobDetail = () => {
             )}
 
             <div className="bg-gray-50 rounded-xl w-64 h-64 mx-auto flex items-center justify-center overflow-hidden">
-              <img 
-                src={job.id === 'recvjSpj8Lknld' ? '/images/funplus-english-expert-qr.jpg' : '/images/wechat-qr.png'} 
-                alt={job.id === 'recvjSpj8Lknld' ? 'FunPlus英语语言专家内推二维码' : '圈圈微信二维码'} 
-                className="w-full h-full object-contain" 
+              <img
+                src={job.id === 'recvjSpj8Lknld' ? '/images/funplus-english-expert-qr.jpg' : '/images/wechat-qr.png'}
+                alt={job.id === 'recvjSpj8Lknld' ? 'FunPlus英语语言专家内推二维码' : '圈圈微信二维码'}
+                className="w-full h-full object-contain"
               />
             </div>
 
@@ -403,10 +422,10 @@ const JobDetail = () => {
               <BookOpen className="w-4 h-4" />
               知识弹药库
             </h2>
-            
+
             <div className="space-y-4">
               {relatedCases.map((c, i) => (
-                <a 
+                <a
                   key={i}
                   href={c.url}
                   target="_blank"
@@ -427,14 +446,14 @@ const JobDetail = () => {
         {/* 底部 CTA */}
         <div className="bg-white rounded-xl border border-gray-100 p-6">
           <div className="flex flex-col gap-3">
-            <button 
+            <button
               onClick={() => setShowQrModal(true)}
               className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors flex items-center justify-center gap-2"
             >
               <MessageCircle className="w-4 h-4" />
               {isFullTime ? '简历内推' : '加入社群'}
             </button>
-            <a 
+            <a
               href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
               target="_blank"
               rel="noopener noreferrer"

@@ -738,6 +738,27 @@ const Admin = () => {
                                 className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 bg-yellow-50"
                                 placeholder="备注（仅后台可见）"
                               />
+                              <textarea
+                                value={overrides[job.id]?.caseStudies ? JSON.stringify(overrides[job.id].caseStudies) : (job.caseStudies ? JSON.stringify(job.caseStudies) : '')}
+                                onChange={e => {
+                                  try {
+                                    const val = e.target.value.trim();
+                                    if (!val) {
+                                      updateField(job.id, 'caseStudies', []);
+                                    } else {
+                                      const parsed = JSON.parse(val);
+                                      updateField(job.id, 'caseStudies', Array.isArray(parsed) ? parsed : [parsed]);
+                                    }
+                                  } catch {
+                                    // 如果不是合法 JSON，存为字符串数组（按行分割）
+                                    const lines = e.target.value.split('\n').map(s => s.trim()).filter(Boolean);
+                                    updateField(job.id, 'caseStudies', lines);
+                                  }
+                                }}
+                                rows={2}
+                                className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 bg-purple-50"
+                                placeholder='知识弹药库链接（JSON数组或每行一个URL）&#10;例：["https://mp.weixin.qq.com/s/xxx"]'
+                              />
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => setEditingId(null)}
