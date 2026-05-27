@@ -66,7 +66,7 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://mp.weixin.qq.com/s/F2VKs37QT2MGdy5_Twv40A',
+      url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。'
     }
   ],
@@ -76,7 +76,7 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://mp.weixin.qq.com/s/FKHpkPQjz8oUsK2EumWBeg',
+      url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）'
     },
     {
