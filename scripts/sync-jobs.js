@@ -87,21 +87,27 @@ const KNOWN_MAP = [
 ];
 
 function getFieldText(fields, name) {
+  // 清理目标名中的零宽空格和不可见字符
+  const cleanName = name.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '').trim();
   // 先尝试精确匹配
-  let val = fields[name];
+  let val = fields[cleanName];
   // 再尝试忽略大小写和空格匹配
   if (val === undefined) {
     const keys = Object.keys(fields);
-    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
-    const key = keys.find(k => k.toLowerCase().replace(/\s+/g, '') === lowerTarget);
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      return cleanK.toLowerCase().replace(/\s+/g, '') === lowerTarget;
+    });
     if (key) val = fields[key];
   }
-  // 最后尝试包含匹配（字段名包含目标名，或目标名包含字段名）
+  // 最后尝试包含匹配
   if (val === undefined) {
     const keys = Object.keys(fields);
-    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
     const key = keys.find(k => {
-      const lowerKey = k.toLowerCase().replace(/\s+/g, '');
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      const lowerKey = cleanK.toLowerCase().replace(/\s+/g, '');
       return lowerKey.includes(lowerTarget) || lowerTarget.includes(lowerKey);
     });
     if (key) {
@@ -115,18 +121,23 @@ function getFieldText(fields, name) {
 }
 
 function getFieldArray(fields, name) {
-  let val = fields[name];
+  const cleanName = name.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '').trim();
+  let val = fields[cleanName];
   if (val === undefined) {
     const keys = Object.keys(fields);
-    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
-    const key = keys.find(k => k.toLowerCase().replace(/\s+/g, '') === lowerTarget);
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      return cleanK.toLowerCase().replace(/\s+/g, '') === lowerTarget;
+    });
     if (key) val = fields[key];
   }
   if (val === undefined) {
     const keys = Object.keys(fields);
-    const lowerTarget = name.toLowerCase().replace(/\s+/g, '');
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
     const key = keys.find(k => {
-      const lowerKey = k.toLowerCase().replace(/\s+/g, '');
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      const lowerKey = cleanK.toLowerCase().replace(/\s+/g, '');
       return lowerKey.includes(lowerTarget) || lowerTarget.includes(lowerKey);
     });
     if (key) {
@@ -616,6 +627,12 @@ function processRecord(record, index) {
   const location = extractLocation(title, getFieldText(fields, '其他补充说明 Other comments'), formField, locationSupplement);
   const salary = salaryResult.salary;
   const salaryNote = salaryResult.salaryNote;
+  
+  // 原始薪资区间和结算周期（直接显示，不做解析）
+  const salaryRange = getFieldText(fields, '薪资区间（请标注按原文/译文千字/时薪/天/月等）Salary Bands (per word count/hour/day/month/project etc.)');
+  // 结算周期字段名包含零宽空格，用模糊匹配
+  const paymentCycle = getFieldText(fields, '结算周期 Payment Cycle') || getFieldText(fields, '结算周期\u200B\u200BPayment Cycle');
+  
   let comments = getFieldText(fields, '其他补充说明 Other comments');
   // 试译内容（如有）——追加到备注栏
   const referenceText = getFieldText(fields, '试译内容（如有）reference');
@@ -659,6 +676,8 @@ function processRecord(record, index) {
     location,
     salary,
     salaryNote,
+    salaryRange: salaryRange || salary || '',
+    paymentCycle,
     languagePair,
     gameType: null,
     description,
