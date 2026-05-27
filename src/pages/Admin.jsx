@@ -119,7 +119,8 @@ function parseDeadline(deadline, postedAt) {
   return { type: 'unknown' };
 }
 
-function getDeadlineStatus(deadline, postedAt) {
+function getDeadlineStatus(deadline, postedAt, forcedStatus) {
+  if (forcedStatus) return forcedStatus;
   const p = parseDeadline(deadline, postedAt);
   if (p.type === 'filled') return 'filled';
   if (p.type === 'expired') return 'expired';
@@ -369,28 +370,44 @@ const Admin = () => {
     } else if (filterStatus === 'hidden') {
       jobs = jobs.filter(j => overrides[j.id]?.hidden ?? j.hidden);
     } else if (filterStatus === 'filled') {
-      jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到');
+      jobs = jobs.filter(j => (overrides[j.id]?.status ?? '') === 'filled' || (overrides[j.id]?.deadline ?? j.deadline) === '已招到');
     } else if (filterStatus === 'expired') {
-      jobs = jobs.filter(j => getDeadlineStatus(j.deadline, j.postedAt) === 'expired');
+      jobs = jobs.filter(j => {
+        const st = overrides[j.id]?.status;
+        if (st === 'expired') return true;
+        return getDeadlineStatus(overrides[j.id]?.deadline ?? j.deadline, j.postedAt) === 'expired';
+      });
     } else if (filterStatus === 'urgent') {
-      jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '急招');
+      jobs = jobs.filter(j => {
+        const st = overrides[j.id]?.status;
+        if (st === 'urgent') return true;
+        return (overrides[j.id]?.deadline ?? j.deadline) === '急招';
+      });
     } else if (filterStatus === 'longterm') {
-      jobs = jobs.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '长期');
+      jobs = jobs.filter(j => {
+        const st = overrides[j.id]?.status;
+        if (st === 'longterm') return true;
+        return (overrides[j.id]?.deadline ?? j.deadline) === '长期';
+      });
     } else if (filterStatus === 'active') {
       jobs = jobs.filter(j => {
+        const st = overrides[j.id]?.status;
+        if (st === 'filled' || st === 'expired') return false;
         const d = overrides[j.id]?.deadline ?? j.deadline;
         return d !== '已招到' && !(overrides[j.id]?.hidden ?? j.hidden);
       });
     }
     jobs.sort((a, b) => {
+      const aStatus = overrides[a.id]?.status;
+      const bStatus = overrides[b.id]?.status;
       const aDeadline = overrides[a.id]?.deadline ?? a.deadline ?? '';
       const bDeadline = overrides[b.id]?.deadline ?? b.deadline ?? '';
-      const aStatus = getDeadlineStatus(aDeadline, a.postedAt);
-      const bStatus = getDeadlineStatus(bDeadline, b.postedAt);
+      const aSt = getDeadlineStatus(aDeadline, a.postedAt, aStatus);
+      const bSt = getDeadlineStatus(bDeadline, b.postedAt, bStatus);
 
       // 已招到/已到期 → 沉底（1），其余保持顶部（0）
-      const aClosed = aStatus === 'filled' || aStatus === 'expired' ? 1 : 0;
-      const bClosed = bStatus === 'filled' || bStatus === 'expired' ? 1 : 0;
+      const aClosed = aSt === 'filled' || aSt === 'expired' ? 1 : 0;
+      const bClosed = bSt === 'filled' || bSt === 'expired' ? 1 : 0;
       if (aClosed !== bClosed) return aClosed - bClosed;
 
       // 同一类内按 sortBy
@@ -405,9 +422,21 @@ const Admin = () => {
   const visibleCount = jobsData.filter(j => !(overrides[j.id]?.hidden ?? j.hidden)).length;
   const hiddenCount = jobsData.length - visibleCount;
   const filledCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到').length;
-  const expiredCount = jobsData.filter(j => getDeadlineStatus(j.deadline, j.postedAt) === 'expired').length;
-  const urgentCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '急招').length;
-  const longtermCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '长期').length;
+  const expiredCount = jobsData.filter(j => {
+    const st = overrides[j.id]?.status;
+    if (st === 'expired') return true;
+    return getDeadlineStatus(overrides[j.id]?.deadline ?? j.deadline, j.postedAt) === 'expired';
+  }).length;
+  const urgentCount = jobsData.filter(j => {
+    const st = overrides[j.id]?.status;
+    if (st === 'urgent') return true;
+    return (overrides[j.id]?.deadline ?? j.deadline) === '急招';
+  }).length;
+  const longtermCount = jobsData.filter(j => {
+    const st = overrides[j.id]?.status;
+    if (st === 'longterm') return true;
+    return (overrides[j.id]?.deadline ?? j.deadline) === '长期';
+  }).length;
 
   const handleExport = () => {
     const json = exportJobsJson(overrides);
@@ -581,7 +610,7 @@ const Admin = () => {
                 {sortedJobs.map(job => {
                   const isHidden = overrides[job.id]?.hidden ?? job.hidden ?? false;
                   const deadline = overrides[job.id]?.deadline ?? job.deadline ?? '';
-                  const isFilled = deadline === '已招到';
+                  const isFilled = (overrides[job.id]?.status ?? '') === 'filled' || deadline === '已招到';
                   const isSelected = selectedIds.has(job.id);
                   const isEditing = editingId === job.id;
 
@@ -608,7 +637,8 @@ const Admin = () => {
                         {/* 状态标签 */}
                         <div className="w-20 shrink-0">
                           {(() => {
-                            if (isFilled) return (
+                            const forcedStatus = overrides[job.id]?.status;
+                            if (forcedStatus === 'filled' || (!forcedStatus && isFilled)) return (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
                                 ✅ 已招到
                               </span>
@@ -618,7 +648,7 @@ const Admin = () => {
                                 🫥 隐藏
                               </span>
                             );
-                            const status = getDeadlineStatus(deadline, job.postedAt);
+                            const status = getDeadlineStatus(deadline, job.postedAt, forcedStatus);
                             if (status === 'expired') return (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400">
                                 ● 已到期
@@ -775,23 +805,15 @@ const Admin = () => {
                           {isEditing ? (
                             <div className="space-y-1">
                               <select
-                                value={(() => {
+                                value={overrides[job.id]?.status ?? (() => {
                                   const d = overrides[job.id]?.deadline ?? job.deadline ?? '';
                                   if (d === '已招到') return 'filled';
                                   if (d === '已到期') return 'expired';
                                   if (d === '长期') return 'longterm';
                                   if (d === '急招') return 'urgent';
-                                  if (d && !['已招到','已到期','长期','急招'].includes(d)) return 'custom';
                                   return 'open';
                                 })()}
-                                onChange={e => {
-                                  const v = e.target.value;
-                                  if (v === 'open') updateField(job.id, 'deadline', '');
-                                  else if (v === 'urgent') updateField(job.id, 'deadline', '急招');
-                                  else if (v === 'longterm') updateField(job.id, 'deadline', '长期');
-                                  else if (v === 'filled') updateField(job.id, 'deadline', '已招到');
-                                  else if (v === 'expired') updateField(job.id, 'deadline', '已到期');
-                                }}
+                                onChange={e => updateField(job.id, 'status', e.target.value)}
                                 className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
                               >
                                 <option value="open">在招</option>
@@ -799,17 +821,14 @@ const Admin = () => {
                                 <option value="longterm">📌 长期</option>
                                 <option value="filled">✅ 已招到</option>
                                 <option value="expired">⏰ 已到期</option>
-                                <option value="custom">自定义日期</option>
                               </select>
-                              {(overrides[job.id]?.deadline ?? job.deadline ?? '') === 'custom' && (
-                                <input
-                                  type="text"
-                                  value={overrides[job.id]?.deadline ?? job.deadline ?? ''}
-                                  onChange={e => updateField(job.id, 'deadline', e.target.value)}
-                                  className="w-full px-2 py-1 border border-gray-200 rounded text-xs outline-none focus:border-gray-400"
-                                  placeholder="例：2026-06-15"
-                                />
-                              )}
+                              <input
+                                type="text"
+                                value={overrides[job.id]?.deadline ?? job.deadline ?? ''}
+                                onChange={e => updateField(job.id, 'deadline', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-200 rounded text-xs outline-none focus:border-gray-400"
+                                placeholder="截止日期（如 2026-06-15）"
+                              />
                             </div>
                           ) : (
                             <span className={`text-xs ${isFilled ? 'text-gray-400' : 'text-gray-600'}`}>

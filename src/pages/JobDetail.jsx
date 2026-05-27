@@ -26,6 +26,7 @@ function applyOverrides(jobs) {
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
       ...(o.requirements !== undefined && { requirements: o.requirements }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
+      ...(o.status !== undefined && { status: o.status }),
     };
   });
 }
@@ -128,7 +129,7 @@ const JobDetail = () => {
   }
 
   // 已过期岗位不可查看
-  const isExpired = job.deadline === '已到期' || job.deadline === '已过期' || job.deadline === '已截止';
+  const isExpired = job.status === 'expired' || job.deadline === '已到期' || job.deadline === '已过期' || job.deadline === '已截止';
   if (isExpired) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">

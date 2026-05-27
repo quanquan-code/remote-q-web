@@ -25,6 +25,7 @@ function applyOverrides(jobs) {
       ...(o.location !== undefined && { location: o.location }),
       ...(o.type !== undefined && { type: o.type }),
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
+      ...(o.status !== undefined && { status: o.status }),
     };
   });
 }
@@ -116,7 +117,8 @@ function parseDeadline(deadline, postedAt) {
   return { type: 'unknown' };
 }
 
-function getDeadlineStatus(deadline, postedAt) {
+function getDeadlineStatus(deadline, postedAt, forcedStatus) {
+  if (forcedStatus) return forcedStatus;
   const p = parseDeadline(deadline, postedAt);
   if (p.type === 'filled') return 'filled';
   if (p.type === 'expired') return 'expired';
@@ -195,8 +197,8 @@ const Jobs = () => {
     
     // 过期岗位和已招到自动沉底，其余按发布日期从新到旧
     jobs.sort((a, b) => {
-      const sa = getDeadlineStatus(a.deadline, a.postedAt);
-      const sb = getDeadlineStatus(b.deadline, b.postedAt);
+      const sa = getDeadlineStatus(a.deadline, a.postedAt, a.status);
+      const sb = getDeadlineStatus(b.deadline, b.postedAt, b.status);
       // 已招到和已过期沉底
       const aClosed = ['filled', 'expired'].includes(sa);
       const bClosed = ['filled', 'expired'].includes(sb);
@@ -416,7 +418,7 @@ const Jobs = () => {
               {filteredJobs.length > 0 ? (
                 <div className="divide-y divide-gray-100">
                   {filteredJobs.map(job => {
-                    const jobStatus = getDeadlineStatus(job.deadline, job.postedAt);
+                    const jobStatus = getDeadlineStatus(job.deadline, job.postedAt, job.status);
                     const isClosed = jobStatus === 'expired' || jobStatus === 'filled';
                     return (
                       <div
@@ -491,7 +493,7 @@ const Jobs = () => {
                           {job.postedAt}
                         </div>
                         {(() => {
-                          const status = getDeadlineStatus(job.deadline, job.postedAt);
+                          const status = getDeadlineStatus(job.deadline, job.postedAt, job.status);
 
                           // 已招到：✅
                           if (status === 'filled') {
