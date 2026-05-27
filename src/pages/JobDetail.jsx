@@ -221,7 +221,8 @@ function getRelatedCases(job) {
 
   for (const { case: c } of topCases) {
     if (!existingUrls.has(c.url)) {
-      // 标题：优先取 careerPath 中 " | " 前面的概括短句；否则用 careerName；最后截断 careerPath
+      // 标题：优先取 careerPath 中 " | " 前面的概括短句；
+      // 有 "→" 时取最后一段 + careerName；否则用 careerName；最后截断 careerPath
       let title = '';
       let summary = '';
       const pathText = c.careerPath || '';
@@ -229,11 +230,23 @@ function getRelatedCases(job) {
         const parts = pathText.split(' | ');
         title = parts[0].trim();
         summary = parts.slice(1).join(' | ').trim();
+      } else if (pathText.includes('→')) {
+        const segments = pathText.split(/[→→]/);
+        let lastSegment = segments[segments.length - 1].trim();
+        // 去掉开头年份如"2024年7月"
+        lastSegment = lastSegment.replace(/^\d{4}年\d{1,2}月/, '').trim();
+        if (c.careerName && lastSegment && !lastSegment.includes(c.careerName)) {
+          title = `${lastSegment} · ${c.careerName}`;
+        } else {
+          title = lastSegment || c.careerName || '社群就业案例';
+        }
+        summary = pathText.trim();
       } else if (c.careerName) {
         title = c.careerName;
         summary = pathText.trim();
       } else {
         title = pathText.trim();
+        summary = '';
       }
       if (!title) title = '社群就业案例';
       if (title.length > 30) title = title.slice(0, 28) + '...';
