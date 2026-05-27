@@ -343,7 +343,13 @@ const JobDetail = () => {
             onClick={() => setShowQrModal(true)}
             className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors"
           >
-            {isFullTime ? '简历内推' : '加入社群'}
+            {/* 优先使用后台设置的 referralType，否则根据全职/兼职判断 */}
+            {(() => {
+              const rt = job.referralType;
+              if (rt === 'neitui') return '简历内推';
+              if (rt === 'internal') return '加入社群';
+              return isFullTime ? '简历内推' : '加入社群';
+            })()}
           </button>
           {/* 我也要发布 */}
           <a
