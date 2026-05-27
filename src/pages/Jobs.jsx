@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import rawJobsData from '../data/jobs.json';
+import rawData from '../data/jobs.json';
+const rawJobsData = rawData.jobs || rawData;
 
 // ===== localStorage 覆盖（管理后台写入） =====
 const STORAGE_KEY = 'remote_q_admin_overrides';

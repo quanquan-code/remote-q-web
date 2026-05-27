@@ -844,17 +844,20 @@ async function main() {
   const jobs = records.map((r, i) => processRecord(r, i));
   jobs.sort((a, b) => b.postedAt.localeCompare(a.postedAt));
 
-  // 写入岗位数据
-  const outPath = path.join(__dirname, '..', 'src', 'data', 'jobs.json');
-  fs.writeFileSync(outPath, JSON.stringify(jobs, null, 2), 'utf-8');
-
-  // 写入案例数据
-  const caseOutPath = path.join(__dirname, '..', 'src', 'data', 'cases.json');
-  fs.writeFileSync(caseOutPath, JSON.stringify(cases, null, 2), 'utf-8');
+  // 写入岗位数据（包含案例库）
+  const output = {
+    jobs,
+    caseLibrary: cases,
+    _meta: {
+      syncedAt: new Date().toISOString(),
+      jobCount: jobs.length,
+      caseCount: cases.length,
+    }
+  };
+  fs.writeFileSync(outPath, JSON.stringify(output, null, 2), 'utf-8');
 
   const internalCount = jobs.filter(j => j.internalOnly).length;
-  console.log(`✅ Written ${jobs.length} jobs to ${outPath}`);
-  console.log(`✅ Written ${cases.length} cases to ${caseOutPath}`);
+  console.log(`✅ Written ${jobs.length} jobs + ${cases.length} cases to ${outPath}`);
   console.log(`   Public: ${jobs.length - internalCount}`);
   console.log(`   Internal (anonymized): ${internalCount}`);
 }

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
-import rawJobsData from '../data/jobs.json';
-import rawCasesData from '../data/cases.json';
+import rawData from '../data/jobs.json';
+
+const rawJobsData = rawData.jobs || rawData;
+const rawCasesData = rawData.caseLibrary || [];
 
 // ===== localStorage 覆盖（管理后台写入） =====
 const STORAGE_KEY = 'remote_q_admin_overrides';

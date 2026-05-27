@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, Download, Upload, CheckSquare, Square, BarChart3, Users, Briefcase, Settings, Globe, Tag, MapPin, LayoutDashboard, ExternalLink, Search, Filter, X, XCircle, Save, TrendingUp } from 'lucide-react';
-import jobsData from '../data/jobs.json';
+import rawData from '../data/jobs.json';
+const jobsData = (rawData.jobs || rawData);
 
 const STORAGE_KEY = 'remote_q_admin_overrides';
 const TOKEN_KEY = 'remote_q_github_token';
