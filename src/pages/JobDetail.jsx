@@ -127,6 +127,19 @@ const JobDetail = () => {
     );
   }
 
+  // 已过期岗位不可查看
+  const isExpired = job.deadline === '已到期' || job.deadline === '已过期' || job.deadline === '已截止';
+  if (isExpired) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-500 mb-4">该岗位已过期，不可查看</p>
+          <Link to="/" className="text-sm text-gray-900 underline">返回岗位列表</Link>
+        </div>
+      </div>
+    );
+  }
+
   const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
   const relatedCases = getRelatedCases(job);
 
