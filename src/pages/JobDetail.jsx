@@ -288,6 +288,15 @@ const JobDetail = () => {
                   <Calendar className="w-3.5 h-3.5" />
                   {job.postedAt}
                 </span>
+                {job.salary && (
+                  <>
+                    <span className="text-gray-300">·</span>
+                    <span className="flex items-center gap-1 text-gray-700 font-medium">
+                      <Globe className="w-3.5 h-3.5" />
+                      {job.salary}
+                    </span>
+                  </>
+                )}
               </div>
               <div className="flex flex-wrap gap-2 mt-3">
                 {job.type?.map(t => (
@@ -344,36 +353,31 @@ const JobDetail = () => {
           </div>
         )}
 
-        {/* 薪资 */}
+        {/* 关键信息 */}
         <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
           <h2 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <Globe className="w-4 h-4" />
-            薪资 & 工作方式
+            关键信息
           </h2>
           <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">薪资：</span>
-              <span className="font-medium text-gray-900">{job.salary}</span>
-              {job.salaryNote && job.salaryNote !== job.salary && !job.salary?.includes(job.salaryNote) && (
-                <span className="text-xs text-gray-400">（{job.salaryNote}）</span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">工作方式：</span>
-              <span className="text-gray-700">{job.type?.join('、') || '未指定'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">工作地点：</span>
-              <span className="text-gray-700">{job.location || '未指定'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">语言对：</span>
-              <span className="text-gray-700">{job.languagePair || '未指定'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">截止日期：</span>
-              <span className="text-gray-700">{job.deadline || '未指定'}</span>
-            </div>
+            {job.languagePair && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">语言对：</span>
+                <span className="text-gray-700">{job.languagePair}</span>
+              </div>
+            )}
+            {job.deadline && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">截止日期：</span>
+                <span className="text-gray-700">{job.deadline}</span>
+              </div>
+            )}
+            {job.salaryNote && job.salaryNote !== job.salary && !job.salary?.includes(job.salaryNote) && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">薪资说明：</span>
+                <span className="text-gray-700">{job.salaryNote}</span>
+              </div>
+            )}
           </div>
         </div>
 
