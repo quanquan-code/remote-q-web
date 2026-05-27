@@ -474,18 +474,17 @@ const Jobs = () => {
                         </div>
                         
                         <div className="min-w-0 flex-1">
-                          <h3 className="text-base font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate">
-                            <Link to={`/job/${job.id}`} className="hover:underline">
-                              {job.title?.length > 30 ? job.title.slice(0, 30) + '...' : job.title}
-                            </Link>
-                          </h3>
-                          {/* 推动转化标签：跟职位标题对齐 */}
-                          <div className="flex items-center gap-2 mt-1">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-base font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate">
+                              <Link to={`/job/${job.id}`} className="hover:underline">
+                                {job.title?.length > 30 ? job.title.slice(0, 30) + '...' : job.title}
+                              </Link>
+                            </h3>
                             {(job.company?.includes('EA') || job.company?.includes('沐瞳')) && (
-                              <span className="text-xs">💚 加班少</span>
+                              <span className="text-xs shrink-0">💚 加班少</span>
                             )}
                             {(job.company?.includes('沐瞳') || job.company?.includes('趣加')) && (
-                              <span className="text-xs">❤️ 在职群友可咨询</span>
+                              <span className="text-xs shrink-0">❤️ 在职群友可咨询</span>
                             )}
                           </div>
                           
