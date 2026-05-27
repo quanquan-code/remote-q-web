@@ -273,7 +273,7 @@ const Jobs = () => {
     '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
     '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
     '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '内部': 'border border-orange-400 bg-orange-50 text-orange-700',
+    '内部': 'bg-orange-500 text-white',
     '公开': 'border border-green-200 bg-green-50 text-green-600'
   };
 
