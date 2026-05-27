@@ -10,6 +10,10 @@ const APP_SECRET = process.env.FEISHU_APP_SECRET || '';
 const APP_TOKEN = process.env.FEISHU_APP_TOKEN || 'YRafbYwZdamWrbs3Tf1cfzCjngh';
 const TABLE_ID = process.env.FEISHU_TABLE_ID || 'tblwTldArcyMpOOP';
 
+// 案例库配置
+const CASE_APP_TOKEN = 'C1xzbZv7NaOrEwsZdFCcgj8jnxb';
+const CASE_TABLE_ID = 'tbldc7Z9zwhSx7T2';
+
 if (!APP_ID || !APP_SECRET) {
   console.error('❌ 缺少 FEISHU_APP_ID 或 FEISHU_APP_SECRET 环境变量');
   process.exit(1);
@@ -43,7 +47,122 @@ async function fetchRecords(token) {
   return records;
 }
 
-// ========== 处理逻辑（复用 github-sync.js 核心逻辑）==========
+async function fetchCaseRecords(token) {
+  const records = [];
+  let pageToken = null;
+  while (true) {
+    const url = new URL(`https://open.feishu.cn/open-apis/bitable/v1/apps/${CASE_APP_TOKEN}/tables/${CASE_TABLE_ID}/records`);
+    url.searchParams.set('page_size', '500');
+    if (pageToken) url.searchParams.set('page_token', pageToken);
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.code !== 0) throw new Error(`Fetch case error: ${JSON.stringify(data)}`);
+    records.push(...(data.data?.items || []));
+    if (!data.data?.has_more) break;
+    pageToken = data.data.page_token;
+  }
+  return records;
+}
+
+// 辅助函数：读取案例库的文本字段（兼容零宽空格）
+function getCaseField(fields, name) {
+  const cleanName = name.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '').trim();
+  let val = fields[cleanName];
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      return cleanK.toLowerCase().replace(/\s+/g, '') === lowerTarget;
+    });
+    if (key) val = fields[key];
+  }
+  if (typeof val === 'string') return val;
+  if (val && typeof val === 'object' && val.text) return val.text;
+  return '';
+}
+
+// 辅助函数：读取案例库的超链接字段 URL
+function getCaseLink(fields, name) {
+  const cleanName = name.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '').trim();
+  let val = fields[cleanName];
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      return cleanK.toLowerCase().replace(/\s+/g, '') === lowerTarget;
+    });
+    if (key) val = fields[key];
+  }
+  if (val && typeof val === 'object' && val.link) return val.link;
+  return '';
+}
+
+// 辅助函数：读取多选字段
+function getCaseMultiSelect(fields, name) {
+  const cleanName = name.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '').trim();
+  let val = fields[cleanName];
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      return cleanK.toLowerCase().replace(/\s+/g, '') === lowerTarget;
+    });
+    if (key) val = fields[key];
+  }
+  if (Array.isArray(val)) return val;
+  return [];
+}
+
+// 辅助函数：读取单向关联字段
+function getCaseParentIds(fields, name) {
+  const cleanName = name.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '').trim();
+  let val = fields[cleanName];
+  if (val === undefined) {
+    const keys = Object.keys(fields);
+    const lowerTarget = cleanName.toLowerCase().replace(/\s+/g, '');
+    const key = keys.find(k => {
+      const cleanK = k.replace(/\u200B/g, '').replace(/\u200C/g, '').replace(/\u200D/g, '').replace(/\uFEFF/g, '');
+      return cleanK.toLowerCase().replace(/\s+/g, '') === lowerTarget;
+    });
+    if (key) val = fields[key];
+  }
+  if (val && typeof val === 'object' && Array.isArray(val.link_record_ids)) {
+    return val.link_record_ids;
+  }
+  return [];
+}
+
+function processCaseRecord(record) {
+  const fields = record.fields || {};
+  const name = getCaseField(fields, '人名');
+  const number = getCaseField(fields, '社群编号');
+  const careerName = getCaseField(fields, '职业名称');
+  const careerPath = getCaseField(fields, '职业路径');
+  const background = getCaseField(fields, '专业背景');
+  const summary = getCaseField(fields, '摘要');
+  const url = getCaseLink(fields, '经验分享链接');
+  const extraUrl = getCaseLink(fields, '补充链接');
+  const industries = getCaseMultiSelect(fields, '行业方向');
+  const parentIds = getCaseParentIds(fields, '父记录');
+
+  return {
+    id: record.record_id || '',
+    name,
+    number,
+    careerName,
+    careerPath,
+    background,
+    summary,
+    url,
+    extraUrl,
+    industries,
+    parentIds,
+    isChild: parentIds.length > 0,
+  };
+}
 
 const KNOWN_MAP = [
   ['网易', '知名游戏大厂（杭州）'],
@@ -706,16 +825,36 @@ function processRecord(record, index) {
 async function main() {
   const token = await getTenantToken();
   console.log('✅ Got tenant token');
+
+  // 读取岗位数据
   const records = await fetchRecords(token);
-  console.log(`📊 Fetched ${records.length} records`);
+  console.log(`📊 Fetched ${records.length} job records`);
+
+  // 读取案例库数据
+  let cases = [];
+  try {
+    const caseRecords = await fetchCaseRecords(token);
+    console.log(`📚 Fetched ${caseRecords.length} case records`);
+    cases = caseRecords.map(processCaseRecord).filter(c => c.url);
+    console.log(`📚 Processed ${cases.length} valid cases (with URL)`);
+  } catch (err) {
+    console.warn('⚠️ Failed to fetch case records:', err.message);
+  }
+
   const jobs = records.map((r, i) => processRecord(r, i));
   jobs.sort((a, b) => b.postedAt.localeCompare(a.postedAt));
 
+  // 写入岗位数据
   const outPath = path.join(__dirname, '..', 'src', 'data', 'jobs.json');
   fs.writeFileSync(outPath, JSON.stringify(jobs, null, 2), 'utf-8');
 
+  // 写入案例数据
+  const caseOutPath = path.join(__dirname, '..', 'src', 'data', 'cases.json');
+  fs.writeFileSync(caseOutPath, JSON.stringify(cases, null, 2), 'utf-8');
+
   const internalCount = jobs.filter(j => j.internalOnly).length;
   console.log(`✅ Written ${jobs.length} jobs to ${outPath}`);
+  console.log(`✅ Written ${cases.length} cases to ${caseOutPath}`);
   console.log(`   Public: ${jobs.length - internalCount}`);
   console.log(`   Internal (anonymized): ${internalCount}`);
 }

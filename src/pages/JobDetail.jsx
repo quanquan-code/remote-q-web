@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
 import rawJobsData from '../data/jobs.json';
+import rawCasesData from '../data/cases.json';
 
 // ===== localStorage 覆盖（管理后台写入） =====
 const STORAGE_KEY = 'remote_q_admin_overrides';
@@ -147,38 +148,111 @@ function getRelatedCases(job) {
     return cases;
   }
 
-  // 2. 按公司名精确匹配
-  if (job.company && caseLibrary[job.company]) {
-    for (const c of caseLibrary[job.company]) {
-      if (!existingUrls.has(c.url)) {
-        cases.push(c);
-        existingUrls.add(c.url);
+  // 2. 从 cases.json（飞书案例库）动态匹配
+  const jobText = `${job.title || ''} ${job.company || ''} ${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
+
+  const scoredCases = [];
+  for (const c of rawCasesData) {
+    if (!c.url) continue;
+
+    let score = 0;
+    const caseText = `${c.name || ''} ${c.careerName || ''} ${c.careerPath || ''} ${c.background || ''}`.toLowerCase();
+
+    // 公司名精确匹配（最高权重）
+    if (job.company && caseText.includes(job.company.toLowerCase())) {
+      score += 100;
+    }
+
+    // 行业方向匹配
+    if (c.industries && c.industries.length > 0) {
+      for (const ind of c.industries) {
+        if (ind === '游戏行业' && (jobText.includes('游戏') || jobText.includes('game'))) {
+          score += 50;
+        }
+        if (ind === '出海' && (jobText.includes('出海') || jobText.includes('海外') || jobText.includes('global'))) {
+          score += 50;
+        }
       }
+    }
+
+    // 关键词匹配
+    const keywordGroups = [
+      { words: ['本地化', 'localiz', 'lqa', '译员', '翻译'], weight: 40 },
+      { words: ['投放', '广告', 'marketing', '买量', 'ua'], weight: 40 },
+      { words: ['内容', '创作', '撰稿', '文案', '编辑', '博主'], weight: 30 },
+      { words: ['教培', '教师', '老师', '教学', '教育'], weight: 30 },
+      { words: ['项目管理', 'pm', '项目经理'], weight: 30 },
+      { words: ['运营', '社群', 'community'], weight: 20 },
+    ];
+
+    for (const { words, weight } of keywordGroups) {
+      const jobHasKeyword = words.some(w => jobText.includes(w));
+      const caseHasKeyword = words.some(w => caseText.includes(w));
+      if (jobHasKeyword && caseHasKeyword) {
+        score += weight;
+      }
+    }
+
+    // 职业名称匹配
+    if (c.careerName && jobText.includes(c.careerName.toLowerCase())) {
+      score += 30;
+    }
+
+    if (score > 0) {
+      scoredCases.push({ case: c, score });
     }
   }
 
-  // 3. 按行业关键词匹配
-  const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
-  const keywords = [
-    { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
-    { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
-    { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
-    { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
-    { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
-  ];
+  // 按分数排序，取前3
+  scoredCases.sort((a, b) => b.score - a.score);
+  const topCases = scoredCases.slice(0, 3);
 
-  for (const { key, patterns } of keywords) {
-    if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
-      for (const kc of caseLibrary[key]) {
-        if (!existingUrls.has(kc.url)) {
-          cases.push(kc);
-          existingUrls.add(kc.url);
+  for (const { case: c } of topCases) {
+    if (!existingUrls.has(c.url)) {
+      cases.push({
+        title: c.careerPath || c.summary || `${c.name}的职业路径`,
+        author: c.name + (c.number ? ` · 社群编号${c.number}` : ''),
+        url: c.url,
+        summary: c.summary || c.careerPath || ''
+      });
+      existingUrls.add(c.url);
+    }
+  }
+
+  // 3. 如果 cases.json 没有匹配到，使用硬编码 caseLibrary 作为后备
+  if (cases.length === 0) {
+    // 按公司名精确匹配
+    if (job.company && caseLibrary[job.company]) {
+      for (const c of caseLibrary[job.company]) {
+        if (!existingUrls.has(c.url)) {
+          cases.push(c);
+          existingUrls.add(c.url);
+        }
+      }
+    }
+
+    // 按行业关键词匹配
+    const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
+    const keywords = [
+      { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
+      { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
+      { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
+      { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
+      { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
+    ];
+
+    for (const { key, patterns } of keywords) {
+      if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
+        for (const kc of caseLibrary[key]) {
+          if (!existingUrls.has(kc.url)) {
+            cases.push(kc);
+            existingUrls.add(kc.url);
+          }
         }
       }
     }
   }
 
-  // 4. 没有匹配时返回空数组，不再硬塞默认案例
   return cases;
 }
 
