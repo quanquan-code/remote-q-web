@@ -211,11 +211,14 @@ function getRelatedCases(job) {
 
   for (const { case: c } of topCases) {
     if (!existingUrls.has(c.url)) {
+      const title = c.careerName
+        ? `${c.name} | ${c.careerName}`
+        : (c.name || '社群案例');
       cases.push({
-        title: c.careerPath || c.summary || `${c.name}的职业路径`,
+        title,
         author: c.name + (c.number ? ` · 社群编号${c.number}` : ''),
         url: c.url,
-        summary: c.summary || c.careerPath || ''
+        summary: c.careerPath || c.summary || ''
       });
       existingUrls.add(c.url);
     }
