@@ -34,7 +34,17 @@ function parseDeadline(deadline, postedAt) {
   if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
   const dl = deadline.toLowerCase();
 
-  // 急招类（最高优先级）
+  // 已招到（最高优先级，不再展示）
+  if (['已招到', '已录用', '已关闭', '已结束'].some(k => dl.includes(k))) {
+    return { type: 'filled' };
+  }
+
+  // 已到期
+  if (['已到期', '已截止', '已过期', 'expired'].some(k => dl.includes(k))) {
+    return { type: 'expired' };
+  }
+
+  // 急招类
   if (['急招', '急聘', '紧急招聘', 'urgent hiring'].some(k => dl.includes(k))) {
     return { type: 'urgent' };
   }
@@ -108,6 +118,8 @@ function parseDeadline(deadline, postedAt) {
 
 function getDeadlineStatus(deadline, postedAt) {
   const p = parseDeadline(deadline, postedAt);
+  if (p.type === 'filled') return 'filled';
+  if (p.type === 'expired') return 'expired';
   if (p.type === 'urgent') return 'urgent';
   if (p.type === 'longterm') return 'longterm';
   if (p.type === 'date') {
@@ -182,17 +194,23 @@ const Jobs = () => {
       jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
     }
     
-    // 在招筛选
+    // 在招筛选（过滤已招到、已过期、内部）
     if (selectedStatus === '在招') {
-      jobs = jobs.filter(job => !job.internalOnly);
+      jobs = jobs.filter(job => {
+        const d = getDeadlineStatus(job.deadline, job.postedAt);
+        return d !== 'filled' && d !== 'expired' && !job.internalOnly;
+      });
     }
     
-    // 过期岗位自动沉底，其余按发布日期从新到旧
+    // 过期岗位和已招到自动沉底，其余按发布日期从新到旧
     jobs.sort((a, b) => {
       const sa = getDeadlineStatus(a.deadline, a.postedAt);
       const sb = getDeadlineStatus(b.deadline, b.postedAt);
-      if (sa === 'expired' && sb !== 'expired') return 1;
-      if (sa !== 'expired' && sb === 'expired') return -1;
+      // 已招到和已过期沉底
+      const aClosed = ['filled', 'expired'].includes(sa);
+      const bClosed = ['filled', 'expired'].includes(sb);
+      if (aClosed && !bClosed) return 1;
+      if (!aClosed && bClosed) return -1;
       return b.postedAt.localeCompare(a.postedAt);
     });
     
@@ -498,22 +516,20 @@ const Jobs = () => {
                           {job.postedAt}
                         </div>
                         {(() => {
-                          const p = parseDeadline(job.deadline, job.postedAt);
-                          const today = new Date();
-                          today.setHours(0,0,0,0);
+                          const status = getDeadlineStatus(job.deadline, job.postedAt);
 
-                          // 急招：火焰图标
-                          if (p.type === 'urgent') {
+                          // 已招到：灰点 + 已招到
+                          if (status === 'filled') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span>🔥</span>
-                                <span className="text-orange-600 font-medium">急招</span>
+                                <span className="w-2 h-2 rounded-full bg-gray-400"></span>
+                                <span className="text-gray-500">已招到</span>
                               </div>
                             );
                           }
 
-                          // 有明确日期且已过期：红点 + 已过期
-                          if (p.type === 'date' && p.date < today) {
+                          // 已过期：红点 + 已过期
+                          if (status === 'expired') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
                                 <span className="w-2 h-2 rounded-full bg-red-500"></span>
@@ -522,27 +538,27 @@ const Jobs = () => {
                             );
                           }
 
-                          // 有明确日期且未过期：绿点 + 日期
-                          if (p.type === 'date' && p.date >= today) {
+                          // 急招：火焰图标
+                          if (status === 'urgent') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                <span className="text-green-600">{formatDate(p.date)}</span>
+                                <span>🔥</span>
+                                <span className="text-orange-600 font-medium">急招</span>
                               </div>
                             );
                           }
 
-                          // 长期：绿点 + 长期
-                          if (p.type === 'longterm') {
+                          // 长期：蓝点 + 长期
+                          if (status === 'longterm') {
                             return (
                               <div className="mt-1 flex items-center justify-end gap-1 text-xs">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                <span className="text-green-600">长期</span>
+                                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span className="text-blue-600">长期</span>
                               </div>
                             );
                           }
 
-                          // 无截止日期/招到即止/尽快/open/unknown：绿点 + 在招
+                          // 在招：绿点 + 在招
                           return (
                             <div className="mt-1 flex items-center justify-end gap-1 text-xs">
                               <span className="w-2 h-2 rounded-full bg-green-500"></span>
