@@ -150,7 +150,16 @@ function getRelatedCases(job) {
     return cases;
   }
 
-  // 2. 从 cases.json（飞书案例库）动态匹配
+  // 2. 硬编码案例库（公司名精确匹配 + 岗位名称模糊匹配，高优先级）
+  const hardcodedCases = getHardcodedCases(job);
+  for (const c of hardcodedCases) {
+    if (!existingUrls.has(c.url)) {
+      cases.push(c);
+      existingUrls.add(c.url);
+    }
+  }
+
+  // 3. 从飞书案例库动态匹配（岗位名称 + 公司名 + 行业方向，补充）
   const jobText = `${job.title || ''} ${job.company || ''} ${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
 
   const scoredCases = [];
@@ -165,6 +174,25 @@ function getRelatedCases(job) {
       score += 100;
     }
 
+    // 岗位名称模糊匹配（次高权重）
+    if (job.title) {
+      const titleLower = job.title.toLowerCase();
+      const jobTitleKeywords = [
+        { words: ['本地化', 'localiz', 'lqa', '译员', '翻译'], weight: 60 },
+        { words: ['投放', '广告', 'marketing', '买量', 'ua'], weight: 60 },
+        { words: ['内容', '创作', '撰稿', '文案', '编辑', '博主'], weight: 50 },
+        { words: ['教培', '教师', '老师', '教学', '教育'], weight: 50 },
+        { words: ['项目管理', 'pm', '项目经理'], weight: 50 },
+        { words: ['运营', '社群', 'community'], weight: 40 },
+      ];
+      for (const { words, weight } of jobTitleKeywords) {
+        const caseHasKeyword = words.some(w => caseText.includes(w));
+        if (caseHasKeyword && words.some(w => titleLower.includes(w))) {
+          score += weight;
+        }
+      }
+    }
+
     // 行业方向匹配
     if (c.industries && c.industries.length > 0) {
       for (const ind of c.industries) {
@@ -174,24 +202,6 @@ function getRelatedCases(job) {
         if (ind === '出海' && (jobText.includes('出海') || jobText.includes('海外') || jobText.includes('global'))) {
           score += 50;
         }
-      }
-    }
-
-    // 关键词匹配
-    const keywordGroups = [
-      { words: ['本地化', 'localiz', 'lqa', '译员', '翻译'], weight: 40 },
-      { words: ['投放', '广告', 'marketing', '买量', 'ua'], weight: 40 },
-      { words: ['内容', '创作', '撰稿', '文案', '编辑', '博主'], weight: 30 },
-      { words: ['教培', '教师', '老师', '教学', '教育'], weight: 30 },
-      { words: ['项目管理', 'pm', '项目经理'], weight: 30 },
-      { words: ['运营', '社群', 'community'], weight: 20 },
-    ];
-
-    for (const { words, weight } of keywordGroups) {
-      const jobHasKeyword = words.some(w => jobText.includes(w));
-      const caseHasKeyword = words.some(w => caseText.includes(w));
-      if (jobHasKeyword && caseHasKeyword) {
-        score += weight;
       }
     }
 
@@ -211,59 +221,65 @@ function getRelatedCases(job) {
 
   for (const { case: c } of topCases) {
     if (!existingUrls.has(c.url)) {
-      // 标题：从职业路径提炼，截断到30字确保一行，去掉人名避免与下方重复
-      let title = c.careerPath || c.careerName || c.summary || '';
-      // 如果标题里包含人名，尝试去掉开头的人名部分（常见格式："人名 | ..."）
-      if (title.includes(' | ')) {
-        title = title.split(' | ').slice(1).join(' | '); // 取" | "后面的内容
+      // 标题：优先取 careerPath 中 " | " 前面的概括短句；否则用 careerName；最后截断 careerPath
+      let title = '';
+      let summary = '';
+      const pathText = c.careerPath || '';
+      if (pathText.includes(' | ')) {
+        const parts = pathText.split(' | ');
+        title = parts[0].trim();
+        summary = parts.slice(1).join(' | ').trim();
+      } else if (c.careerName) {
+        title = c.careerName;
+        summary = pathText.trim();
+      } else {
+        title = pathText.trim();
       }
-      // 截断到30字符，确保一行
-      if (title.length > 30) {
-        title = title.slice(0, 28) + '...';
-      }
-      // 兜底：如果提炼完为空，用职业名称
-      if (!title.trim()) {
-        title = c.careerName || '社群就业案例';
-      }
+      if (!title) title = '社群就业案例';
+      if (title.length > 30) title = title.slice(0, 28) + '...';
       cases.push({
         title,
-        author: c.name + (c.number ? ` · 社群编号${c.number}` : ''),
+        author: (c.name || '社群成员') + (c.number ? ` · 社群编号${c.number}` : ''),
         url: c.url,
-        summary: '' // 标题已经是路径提炼，summary不再重复显示
+        summary
       });
       existingUrls.add(c.url);
     }
   }
 
-  // 3. 如果 cases.json 没有匹配到，使用硬编码 caseLibrary 作为后备
-  if (cases.length === 0) {
-    // 按公司名精确匹配
-    if (job.company && caseLibrary[job.company]) {
-      for (const c of caseLibrary[job.company]) {
-        if (!existingUrls.has(c.url)) {
-          cases.push(c);
-          existingUrls.add(c.url);
-        }
+  return cases;
+}
+
+function getHardcodedCases(job) {
+  const cases = [];
+  const existingUrls = new Set();
+
+  // 按公司名精确匹配
+  if (job.company && caseLibrary[job.company]) {
+    for (const c of caseLibrary[job.company]) {
+      if (!existingUrls.has(c.url)) {
+        cases.push(c);
+        existingUrls.add(c.url);
       }
     }
+  }
 
-    // 按行业关键词匹配
-    const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
-    const keywords = [
-      { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
-      { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
-      { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
-      { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
-      { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
-    ];
+  // 按行业关键词匹配
+  const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
+  const keywords = [
+    { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
+    { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
+    { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
+    { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
+    { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
+  ];
 
-    for (const { key, patterns } of keywords) {
-      if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
-        for (const kc of caseLibrary[key]) {
-          if (!existingUrls.has(kc.url)) {
-            cases.push(kc);
-            existingUrls.add(kc.url);
-          }
+  for (const { key, patterns } of keywords) {
+    if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
+      for (const kc of caseLibrary[key]) {
+        if (!existingUrls.has(kc.url)) {
+          cases.push(kc);
+          existingUrls.add(kc.url);
         }
       }
     }
