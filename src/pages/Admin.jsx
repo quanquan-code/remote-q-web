@@ -40,6 +40,100 @@ function loadStats() {
   };
 }
 
+/* ===== 截止日期解析（与 Jobs.jsx 同步） ===== */
+function parseDeadline(deadline, postedAt) {
+  if (!deadline || deadline.trim() === '' || deadline === '-') return { type: 'open' };
+  const dl = deadline.toLowerCase();
+
+  // 已招到（最高优先级）
+  if (['已招到', '已录用', '已关闭', '已结束'].some(k => dl.includes(k))) {
+    return { type: 'filled' };
+  }
+
+  // 已到期
+  if (['已到期', '已截止', '已过期', 'expired'].some(k => dl.includes(k))) {
+    return { type: 'expired' };
+  }
+
+  // 急招类
+  if (['急招', '急聘', '紧急招聘', 'urgent hiring'].some(k => dl.includes(k))) {
+    return { type: 'urgent' };
+  }
+
+  // 长期类
+  if (['长期', 'long term', 'longterm', 'no time limitation', 'until we hired'].some(k => dl.includes(k))) {
+    return { type: 'longterm' };
+  }
+
+  // 尽快/招到即止
+  if (['尽快', '招到即止', '招到为止', '找到合适的即止', 'asap', '不定', '待定'].some(k => dl.includes(k))) {
+    return { type: 'open' };
+  }
+
+  // 未提供
+  if (['未提供', '未明确', '无', 'undefined', 'n/a'].some(k => dl.includes(k))) {
+    return { type: 'longterm' };
+  }
+
+  // 尝试提取日期
+  let m;
+  m = deadline.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  m = deadline.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  m = deadline.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  m = deadline.match(/(\d{4})年(\d{1,2})\.(\d{1,2})/);
+  if (m) return { type: 'date', date: new Date(`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`) };
+
+  m = deadline.match(/(\d{4})年(\d{1,2})月/);
+  if (m) {
+    const d = new Date(parseInt(m[1]), parseInt(m[2])-1, 1);
+    d.setMonth(d.getMonth() + 1, 0);
+    return { type: 'date', date: d };
+  }
+
+  m = deadline.match(/(\d{1,2})月(\d{1,2})日/);
+  if (m && postedAt) {
+    const year = postedAt.match(/(\d{4})/)?.[1] || new Date().getFullYear().toString();
+    return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+  }
+
+  m = deadline.match(/(\d{1,2})\/(\d{1,2})/);
+  if (m && postedAt) {
+    const year = postedAt.match(/(\d{4})/)?.[1] || new Date().getFullYear().toString();
+    return { type: 'date', date: new Date(`${year}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`) };
+  }
+
+  m = deadline.match(/(\d{1,2})月/);
+  if (m && postedAt) {
+    const year = postedAt.match(/(\d{4})/)?.[1] || new Date().getFullYear().toString();
+    const d = new Date(parseInt(year), parseInt(m[1])-1, 1);
+    d.setMonth(d.getMonth() + 1, 0);
+    return { type: 'date', date: d };
+  }
+
+  return { type: 'unknown' };
+}
+
+function getDeadlineStatus(deadline, postedAt) {
+  const p = parseDeadline(deadline, postedAt);
+  if (p.type === 'filled') return 'filled';
+  if (p.type === 'expired') return 'expired';
+  if (p.type === 'urgent') return 'urgent';
+  if (p.type === 'longterm') return 'longterm';
+  if (p.type === 'date') {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    if (p.date < today) return 'expired';
+    return 'open';
+  }
+  return 'open';
+}
+
 function exportJobsJson(overrides) {
   const merged = jobsData.map(job => {
     const ov = overrides[job.id] || {};
