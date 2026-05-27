@@ -4,6 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import rawData from '../data/jobs.json';
 const rawJobsData = rawData.jobs || rawData;
 
+// 手动新增的岗位（后台写入）
+const MANUAL_JOBS_KEY = 'remote_q_manual_jobs';
+function getManualJobs() {
+  try { return JSON.parse(localStorage.getItem(MANUAL_JOBS_KEY) || '[]'); }
+  catch { return []; }
+}
+
 // ===== localStorage 覆盖（管理后台写入） =====
 const STORAGE_KEY = 'remote_q_admin_overrides';
 function getOverrides() {
@@ -162,7 +169,7 @@ function extractLanguages(job) {
   return langs.length > 0 ? langs : ['其他'];
 }
 
-const jobsData = applyOverrides(rawJobsData);
+const jobsData = applyOverrides([...rawJobsData, ...getManualJobs()]);
 
 const Jobs = () => {
   const navigate = useNavigate();

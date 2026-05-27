@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Eye, EyeOff, Download, Upload, CheckSquare, Square, BarChart3, Users, Briefcase, Settings, Globe, Tag, MapPin, LayoutDashboard, ExternalLink, Search, Filter, X, XCircle, Save, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Download, Upload, CheckSquare, Square, BarChart3, Users, Briefcase, Settings, Globe, Tag, MapPin, LayoutDashboard, ExternalLink, Search, Filter, X, XCircle, Save, TrendingUp, Plus } from 'lucide-react';
 import rawData from '../data/jobs.json';
 const jobsData = (rawData.jobs || rawData);
 
@@ -8,6 +8,7 @@ const STORAGE_KEY = 'remote_q_admin_overrides';
 const TOKEN_KEY = 'remote_q_github_token';
 const ADMIN_PASSWORD = 'quanquan2025';
 const STATS_KEY = 'remote_q_site_stats';
+const MANUAL_JOBS_KEY = 'remote_q_manual_jobs';
 
 /* ===== 工具函数 ===== */
 function loadOverrides() {
@@ -16,6 +17,13 @@ function loadOverrides() {
 }
 function saveOverrides(overrides) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
+}
+function loadManualJobs() {
+  try { return JSON.parse(localStorage.getItem(MANUAL_JOBS_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveManualJobs(jobs) {
+  localStorage.setItem(MANUAL_JOBS_KEY, JSON.stringify(jobs));
 }
 function getToken() {
   try { return localStorage.getItem(TOKEN_KEY) || ''; }
@@ -292,6 +300,8 @@ const Admin = () => {
   const [publishing, setPublishing] = useState(false);
   const [publishMsg, setPublishMsg] = useState(null);
   const [editingId, setEditingId] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [manualJobs, setManualJobs] = useState(loadManualJobs);
   const stats = useMemo(loadStats, []);
 
   const handleLogin = () => {
@@ -343,6 +353,29 @@ const Admin = () => {
     setSelectedIds(new Set());
   };
 
+  // 手动新增岗位
+  const addManualJob = (jobData) => {
+    const newJob = {
+      ...jobData,
+      id: jobData.id || `manual_${Date.now()}`,
+      postedAt: jobData.postedAt || new Date().toISOString().slice(0, 10),
+    };
+    setManualJobs(prev => {
+      const next = [...prev, newJob];
+      saveManualJobs(next);
+      return next;
+    });
+    setShowAddForm(false);
+  };
+
+  const deleteManualJob = (id) => {
+    setManualJobs(prev => {
+      const next = prev.filter(j => j.id !== id);
+      saveManualJobs(next);
+      return next;
+    });
+  };
+
   const toggleSelect = (id) => {
     setSelectedIds(prev => {
       const next = new Set(prev);
@@ -357,7 +390,7 @@ const Admin = () => {
   };
 
   const sortedJobs = useMemo(() => {
-    let jobs = [...jobsData];
+    let jobs = [...jobsData, ...manualJobs];
     if (search) {
       const q = search.toLowerCase();
       jobs = jobs.filter(j =>
@@ -420,20 +453,20 @@ const Admin = () => {
     return jobs;
   }, [search, filterStatus, sortBy, overrides]);
 
-  const visibleCount = jobsData.filter(j => !(overrides[j.id]?.hidden ?? j.hidden)).length;
-  const hiddenCount = jobsData.length - visibleCount;
-  const filledCount = jobsData.filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到').length;
-  const expiredCount = jobsData.filter(j => {
+  const visibleCount = [...jobsData, ...manualJobs].filter(j => !(overrides[j.id]?.hidden ?? j.hidden)).length;
+  const hiddenCount = jobsData.length + manualJobs.length - visibleCount;
+  const filledCount = [...jobsData, ...manualJobs].filter(j => (overrides[j.id]?.deadline ?? j.deadline) === '已招到').length;
+  const expiredCount = [...jobsData, ...manualJobs].filter(j => {
     const st = overrides[j.id]?.status;
     if (st === 'expired') return true;
     return getDeadlineStatus(overrides[j.id]?.deadline ?? j.deadline, j.postedAt) === 'expired';
   }).length;
-  const urgentCount = jobsData.filter(j => {
+  const urgentCount = [...jobsData, ...manualJobs].filter(j => {
     const st = overrides[j.id]?.status;
     if (st === 'urgent') return true;
     return (overrides[j.id]?.deadline ?? j.deadline) === '急招';
   }).length;
-  const longtermCount = jobsData.filter(j => {
+  const longtermCount = [...jobsData, ...manualJobs].filter(j => {
     const st = overrides[j.id]?.status;
     if (st === 'longterm') return true;
     return (overrides[j.id]?.deadline ?? j.deadline) === '长期';
@@ -483,13 +516,20 @@ const Admin = () => {
               </h2>
               {activeTab === 'jobs' && (
                 <span className="text-xs text-gray-400">
-                  显示 {visibleCount} / 隐藏 {hiddenCount} / 🔥急招 {urgentCount} / 📌长期 {longtermCount} / ✅已招到 {filledCount} / ⏰已到期 {expiredCount} / 共 {jobsData.length}
+                  显示 {visibleCount} / 隐藏 {hiddenCount} / 🔥急招 {urgentCount} / 📌长期 {longtermCount} / ✅已招到 {filledCount} / ⏰已到期 {expiredCount} / 共 {jobsData.length + manualJobs.length}
                 </span>
               )}
             </div>
             <div className="flex items-center gap-2">
               {activeTab === 'jobs' && (
                 <>
+                  <button
+                    onClick={() => setShowAddForm(!showAddForm)}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700"
+                  >
+                    <Plus className="w-4 h-4" />
+                    {showAddForm ? '取消新增' : '新增岗位'}
+                  </button>
                   <button onClick={handleExport} className="flex items-center gap-1 px-3 py-1.5 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800">
                     <Download className="w-4 h-4" />
                     导出 JSON
@@ -586,6 +626,14 @@ const Admin = () => {
                   </div>
                 )}
               </div>
+
+              {/* 新增岗位表单 */}
+              {showAddForm && (
+                <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">新增岗位</h3>
+                  <AddJobForm onSubmit={addManualJob} onCancel={() => setShowAddForm(false)} />
+                </div>
+              )}
 
               {/* 职位列表 - 卡片式 */}
               <div className="space-y-3">
@@ -1151,3 +1199,68 @@ const Admin = () => {
 };
 
 export default Admin;
+
+
+/* ===== 新增岗位表单 ===== */
+function AddJobForm({ onSubmit, onCancel }) {
+  const [form, setForm] = useState({
+    title: '',
+    company: '',
+    location: '',
+    type: '兼职',
+    salary: '',
+    deadline: '长期',
+    fullDescription: '',
+    comments: '',
+    adminNote: '',
+    languagePair: '',
+  });
+
+  const handleChange = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) { alert('请填写岗位名称'); return; }
+    if (!form.company.trim()) { alert('请填写公司名'); return; }
+    onSubmit({
+      ...form,
+      type: form.type ? [form.type] : ['兼职'],
+      postedAt: new Date().toISOString().slice(0, 10),
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="flex gap-2">
+        <input type="text" value={form.title} onChange={e => handleChange('title', e.target.value)} placeholder="岗位名称 *" className="flex-1 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+        <input type="text" value={form.company} onChange={e => handleChange('company', e.target.value)} placeholder="公司名 *" className="w-48 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+      </div>
+      <div className="flex gap-2">
+        <input type="text" value={form.location} onChange={e => handleChange('location', e.target.value)} placeholder="地点" className="w-32 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+        <select value={form.type} onChange={e => handleChange('type', e.target.value)} className="px-2 py-1.5 border border-gray-200 rounded text-sm outline-none">
+          <option value="兼职">兼职</option>
+          <option value="全职">全职</option>
+          <option value="外包">外包</option>
+          <option value="正编">正编</option>
+          <option value="实习">实习</option>
+        </select>
+        <input type="text" value={form.salary} onChange={e => handleChange('salary', e.target.value)} placeholder="薪资" className="flex-1 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+        <input type="text" value={form.deadline} onChange={e => handleChange('deadline', e.target.value)} placeholder="截止日期" className="w-40 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+      </div>
+      <textarea value={form.fullDescription} onChange={e => handleChange('fullDescription', e.target.value)} rows={4} placeholder="岗位描述" className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+      <div className="flex gap-2">
+        <textarea value={form.comments} onChange={e => handleChange('comments', e.target.value)} rows={2} placeholder="备注要求（前端可见）" className="flex-1 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 bg-blue-50" />
+        <textarea value={form.adminNote} onChange={e => handleChange('adminNote', e.target.value)} rows={2} placeholder="管理员备注" className="flex-1 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 bg-yellow-50" />
+      </div>
+      <div className="flex gap-2">
+        <input type="text" value={form.languagePair} onChange={e => handleChange('languagePair', e.target.value)} placeholder="语言对" className="w-40 px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400" />
+      </div>
+      <div className="flex gap-2 pt-2">
+        <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">保存新增</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200">取消</button>
+      </div>
+    </form>
+  );
+}
