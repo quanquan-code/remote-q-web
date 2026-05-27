@@ -698,7 +698,47 @@ const Admin = () => {
                         </div>
 
                         {/* 操作 */}
-                        <div className="w-32 shrink-0 flex items-center gap-1 flex-wrap">
+                        <div className="w-40 shrink-0 flex items-center gap-1 flex-wrap">
+                          {/* 快捷状态按钮 */}
+                          {!isEditing && (
+                            <>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'deadline', '已招到'); }}
+                                className="px-2 py-1 text-[10px] bg-green-50 text-green-700 rounded hover:bg-green-100"
+                                title="标记已招到"
+                              >
+                                ✅
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'deadline', '已到期'); }}
+                                className="px-2 py-1 text-[10px] bg-gray-100 text-gray-500 rounded hover:bg-gray-200"
+                                title="标记已到期"
+                              >
+                                ⏰
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'deadline', '长期'); }}
+                                className="px-2 py-1 text-[10px] bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
+                                title="标记长期"
+                              >
+                                📌
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'deadline', '急招'); }}
+                                className="px-2 py-1 text-[10px] bg-red-50 text-red-600 rounded hover:bg-red-100"
+                                title="标记急招"
+                              >
+                                🔥
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'hidden', !isHidden); }}
+                                className={`px-2 py-1 text-[10px] rounded ${isHidden ? 'bg-gray-200 text-gray-600' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                                title={isHidden ? '取消隐藏' : '隐藏'}
+                              >
+                                {isHidden ? '显示' : '隐藏'}
+                              </button>
+                            </>
+                          )}
                           <button
                             onClick={() => setEditingId(isEditing ? null : job.id)}
                             className="px-2 py-1.5 text-xs text-gray-500 hover:text-gray-900 rounded hover:bg-gray-100"
