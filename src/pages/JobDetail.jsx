@@ -352,7 +352,7 @@ const JobDetail = () => {
     '线下': 'border border-gray-200 bg-gray-50 text-gray-600',
     '实习': 'border border-gray-200 bg-gray-50 text-gray-600',
     '正编': 'border border-gray-200 bg-gray-50 text-gray-600',
-    '内部': 'border border-orange-400 bg-orange-50 text-orange-600'
+    '内部': 'border border-orange-400 bg-gray-50 text-gray-700'
   };
 
   return (
