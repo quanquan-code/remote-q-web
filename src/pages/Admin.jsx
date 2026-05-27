@@ -725,6 +725,13 @@ const Admin = () => {
                                 placeholder="岗位描述"
                               />
                               <textarea
+                                value={overrides[job.id]?.comments ?? job.comments ?? ''}
+                                onChange={e => updateField(job.id, 'comments', e.target.value)}
+                                rows={3}
+                                className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400 bg-blue-50"
+                                placeholder="备注要求（前端可见）"
+                              />
+                              <textarea
                                 value={overrides[job.id]?.adminNote ?? job.adminNote ?? ''}
                                 onChange={e => updateField(job.id, 'adminNote', e.target.value)}
                                 rows={2}

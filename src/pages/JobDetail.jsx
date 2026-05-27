@@ -25,6 +25,7 @@ function applyOverrides(jobs) {
       ...(o.salaryNote !== undefined && { salaryNote: o.salaryNote }),
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
       ...(o.requirements !== undefined && { requirements: o.requirements }),
+      ...(o.comments !== undefined && { comments: o.comments }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.status !== undefined && { status: o.status }),
     };
@@ -325,6 +326,21 @@ const JobDetail = () => {
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* 备注要求 */}
+        {job.comments && (
+          <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
+            <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              备注要求
+            </h2>
+            <div className="text-sm text-gray-700 space-y-3 leading-relaxed whitespace-pre-line">
+              {job.comments}
+            </div>
           </div>
         )}
 
