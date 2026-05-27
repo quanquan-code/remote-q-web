@@ -179,7 +179,7 @@ const Jobs = () => {
   // 筛选选项
   const locationFilters = ['全部', '远程', '线下'];
   const workModeFilters = ['全部', '远程', '线下'];
-  const typeFilters = ['全部', '兼职', '全职', '外包', '正编'];
+  const typeFilters = ['全部', '兼职', '全职', '外包', '正编', '内部', '公开'];
   const languageFilters = ['全部', '英', '日', '韩', '阿', '葡', '俄', '德', '法', '意', '其他'];
 
   const filteredJobs = useMemo(() => {
@@ -219,7 +219,13 @@ const Jobs = () => {
     
     // 兼职/全职/外包/正编筛选
     if (selectedType !== '全部') {
-      jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
+      if (selectedType === '内部') {
+        jobs = jobs.filter(job => job.type?.includes('内部'));
+      } else if (selectedType === '公开') {
+        jobs = jobs.filter(job => job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部'));
+      } else {
+        jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
+      }
     }
     
     // 语种筛选
