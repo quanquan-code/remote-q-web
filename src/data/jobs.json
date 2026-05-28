@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "rec27uci4xdmz0",
+      "title": "英文翻港繁兼职译者",
+      "company": "上海创凌翻译服务有限公司",
+      "type": [
+        "兼职"
+      ],
+      "location": "远程",
+      "salary": "可先自行报价",
+      "salaryNote": "可先自行报价",
+      "salaryRange": "可先自行报价",
+      "paymentCycle": "月结",
+      "languagePair": null,
+      "gameType": null,
+      "description": "需求人员：2-3位 项目领域：医学、医疗 任职要求： • 港繁水平接近母语 • 具备医学医药，生命科学领域翻译或审校经验 • 掌握CAT工具及自动质检工具者优先",
+      "fullDescription": "需求人员：2-3位\n项目领域：医学、医疗\n任职要求：\n•        港繁水平接近母语\n•        具备医学医药，生命科学领域翻译或审校经验\n•        掌握CAT工具及自动质检工具者优先",
+      "requirements": [],
+      "deadline": "6月30日",
+      "comments": "",
+      "contact": "感兴趣的译员欢迎将个人简历及以下服务报价发送至：carmen.chen.sh@linguitronics.com\n•        翻译单价（每字/每词）\n•        审校单价（每字/每词）\n•        小时单价\n将于收到申请后尽快回复，也可加QQ：3175468109",
+      "referralType": "circle",
+      "postedAt": "2026-05-28",
+      "internalOnly": false
+    },
+    {
       "id": "recvkOlZ5CiMxY",
       "title": "英中技术翻译 | 航空工程，航空发动机",
       "company": "社群内部需求",
@@ -2464,8 +2488,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-05-27T21:05:38.986Z",
-    "jobCount": 71,
+    "syncedAt": "2026-05-28T07:07:02.154Z",
+    "jobCount": 72,
     "caseCount": 49
   }
 }
