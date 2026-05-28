@@ -288,7 +288,7 @@ function getRelatedCases(job) {
     if (!existingUrls.has(c.url)) {
       // 推断类型：URL含 tenclass.cn 或在 careerPath 含"讲座""课程"等标记 → lecture
       const isLecture = (c.url && c.url.includes('tenclass.cn')) ||
-                        (c.careerPath && /讲座|课程|workshop|直播/.test(c.careerPath));
+                        (c.careerPath && /(?:线上|付费)?讲座|(?:线上|线下)?课程|workshop|webinar|公开课|分享会|大师课|Masterclass/.test(c.careerPath));
 
       // 标题生成：用 careerPath 提取「从 X 到 Y」的画面感
       let title = '';
