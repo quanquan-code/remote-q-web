@@ -46,7 +46,8 @@ const caseLibrary = {
       title: '沐瞳 | 从转行开始进入游戏本地化全攻略',
       author: '冬天吃西瓜 · 社群编号5710',
       url: 'https://mp.weixin.qq.com/s/j2YJeiiy88z5P9Bi5yi-ug',
-      summary: '2019年物联网工程毕业→教培愤而离职→B站字幕翻译起步→读圈圈公众号自学→火星测试→22-25年兼职翻译250万字→25年末沐瞳外包招募→投简历做题面试→入职上海'
+      summary: '2019年物联网工程毕业→教培愤而离职→B站字幕翻译起步→读圈圈公众号自学→火星测试→22-25年兼职翻译250万字→25年末沐瞳外包招募→投简历做题面试→入职上海',
+      category: 'case'
     }
   ],
   '网易': [
@@ -54,7 +55,8 @@ const caseLibrary = {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
       url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
-      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。CATTI二口二笔（大三）+一口（工作后），从0到1搭建本地化管线。'
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。CATTI二口二笔（大三）+一口（工作后），从0到1搭建本地化管线。',
+      category: 'case'
     }
   ],
   '米哈游': [
@@ -62,7 +64,8 @@ const caseLibrary = {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
       url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
-      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。米哈游一小时现场笔译+创译考核。'
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化（某未公开3A项目）→米哈游in-house口笔译员。米哈游一小时现场笔译+创译考核。',
+      category: 'case'
     }
   ],
   'FunPlus': [
@@ -70,7 +73,8 @@ const caseLibrary = {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
       url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
-      summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。'
+      summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。',
+      category: 'lecture'
     }
   ],
 
@@ -80,13 +84,15 @@ const caseLibrary = {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
       url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
-      summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）'
+      summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）',
+      category: 'lecture'
     },
     {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
       url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
-      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员'
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员',
+      category: 'case'
     }
   ],
   '广告投放': [
@@ -94,7 +100,8 @@ const caseLibrary = {
       title: '从零开始到游戏公司海外投放的全攻略',
       author: 'Roxy · 社群编号1688',
       url: 'https://mp.weixin.qq.com/s?__biz=MzU1OTk2MDQzMA==&mid=2247511995&idx=1&sn=c563965bfc8cde806b059db5877747b5',
-      summary: '普通院校英专→学生时代接翻译活→投500+份简历→游戏运营实习→海外广告投放（月入2.5万*14薪）→在职拿到英国市场营销硕士Offer。00后，3年年薪35万+。'
+      summary: '普通院校英专→学生时代接翻译活→投500+份简历→游戏运营实习→海外广告投放（月入2.5万*14薪）→在职拿到英国市场营销硕士Offer。00后，3年年薪35万+。',
+      category: 'case'
     }
   ],
   '翻译': [
@@ -102,13 +109,15 @@ const caseLibrary = {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
       url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink\u0026inviter_id=125279331',
-      summary: '汉语言文学→CATTI→自由译员→游戏公司译员→头部大厂本地化项目经理。3年走完全程。'
+      summary: '汉语言文学→CATTI→自由译员→游戏公司译员→头部大厂本地化项目经理。3年走完全程。',
+      category: 'lecture'
     },
     {
       title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
       author: 'James',
       url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
-      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员'
+      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员',
+      category: 'case'
     }
   ],
   '内容创作': [
@@ -116,7 +125,8 @@ const caseLibrary = {
     //   title: '审美是语言从业者最后的护城河 | 从英专到三联/芭莎撰稿人',
     //   author: '小季 Eloise Ji · 社群编号3050',
     //   url: '待补充',
-    //   summary: '本科英专→UCL社科硕士→小红书1.7万+粉娱乐影视博主→三联生活周刊19篇+芭莎1篇时尚撰稿人→时尚创译与本地化。99年INTJ，用"审美"作为核心护城河。'
+    //   summary: '本科英专→UCL社科硕士→小红书1.7万+粉娱乐影视博主→三联生活周刊19篇+芭莎1篇时尚撰稿人→时尚创译与本地化。99年INTJ，用"审美"作为核心护城河。',
+    //   category: 'case'
     // }
   ],
   '教培': [
@@ -124,43 +134,55 @@ const caseLibrary = {
       title: '法语本转NLP硕士，兼职教培走向AI产品经理',
       author: '神仙不留名 · 社群编号5610',
       url: 'https://mp.weixin.qq.com/s/vSpzeD04EzwHQq9NL1l3YA',
-      summary: '法语本科→法国交换→索邦大学NLP硕士→兼职法语教培（目标AI产品经理）'
+      summary: '法语本科→法国交换→索邦大学NLP硕士→兼职法语教培（目标AI产品经理）',
+      category: 'case'
     }
   ]
 };
 
 function getRelatedCases(job) {
-  const cases = [];
+  const lectureCases = [];
+  const careerCases = [];
   const existingUrls = new Set();
+
+  function dedupPush(c, arr) {
+    if (c.url && !existingUrls.has(c.url)) {
+      arr.push(c);
+      existingUrls.add(c.url);
+    }
+  }
 
   // 1. 优先读取后台配置的自定义案例链接
   const customCases = job.caseStudies;
   if (customCases && Array.isArray(customCases) && customCases.length > 0) {
     for (const url of customCases) {
       if (url && !existingUrls.has(url)) {
-        cases.push({
+        // 后台自定义链接无法推断类型，默认放进职业案例
+        careerCases.push({
           title: '相关案例',
           author: '社群案例',
           url: url,
-          summary: ''
+          summary: '',
+          category: 'case'
         });
         existingUrls.add(url);
       }
     }
-    return cases;
+    return { lectureCases, careerCases };
   }
 
   // 2. 硬编码案例库（公司名精确匹配 + 岗位名称模糊匹配，高优先级）
   const hardcodedCases = getHardcodedCases(job);
   for (const c of hardcodedCases) {
-    if (!existingUrls.has(c.url)) {
-      cases.push(c);
-      existingUrls.add(c.url);
-    }
+    dedupPush(c, c.category === 'lecture' ? lectureCases : careerCases);
   }
 
   // 3. 从飞书案例库动态匹配（岗位名称 + 公司名 + 行业方向，补充）
   const jobText = `${job.title || ''} ${job.company || ''} ${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
+
+  // 领域优先级：如果岗位含医学/医疗关键词，跳过游戏本地化硬编码匹配
+  const isMedical = ['医学', '医疗', '生命科学', '医药', '医疗器械', '生物医药'].some(k => jobText.includes(k));
+  const isGame = !isMedical && (jobText.includes('游戏') || jobText.includes('game'));
 
   const scoredCases = [];
   for (const c of rawCasesData) {
@@ -175,37 +197,49 @@ function getRelatedCases(job) {
       score += 100;
     }
 
-    // 岗位名称模糊匹配 —— 优先匹配最终职业（careerName），次匹配历史路径（careerPath）
-    if (job.title) {
-      const titleLower = job.title.toLowerCase();
-      const jobTitleKeywords = [
-        { words: ['本地化', 'localiz', 'lqa', '译员', '翻译'], weight: 60 },
-        { words: ['投放', '广告', 'marketing', '买量', 'ua'], weight: 60 },
-        { words: ['内容', '创作', '撰稿', '文案', '编辑', '博主'], weight: 50 },
-        { words: ['教培', '教师', '老师', '教学', '教育'], weight: 50 },
-        { words: ['项目管理', 'pm', '项目经理'], weight: 50 },
-        { words: ['运营', '社群', 'community'], weight: 40 },
-      ];
-      for (const { words, weight } of jobTitleKeywords) {
-        const careerHasKeyword = words.some(w => caseText.includes(w));
-        const historyHasKeyword = words.some(w => caseHistoryText.includes(w));
-        const jobHasKeyword = words.some(w => titleLower.includes(w));
-        if (jobHasKeyword) {
-          if (careerHasKeyword) score += weight;      // 最终职业匹配 → 全权重
-          else if (historyHasKeyword) score += weight * 0.3; // 仅历史路径匹配 → 30%权重
-        }
+    // 岗位名称模糊匹配 —— 扩展检查范围到 title + description + fullDescription
+    const jobTitleLower = (job.title || '').toLowerCase();
+    const jobDescLower = `${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
+    const allJobText = `${jobTitleLower} ${jobDescLower}`;
+
+    const jobTitleKeywords = [
+      { words: ['本地化', 'localiz', 'lqa', '译员', '译者', '翻译'], weight: 60 },
+      { words: ['投放', '广告', 'marketing', '买量', 'ua'], weight: 60 },
+      { words: ['内容', '创作', '撰稿', '文案', '编辑', '博主'], weight: 50 },
+      { words: ['教培', '教师', '老师', '教学', '教育'], weight: 50 },
+      { words: ['项目管理', 'pm', '项目经理'], weight: 50 },
+      { words: ['运营', '社群', 'community'], weight: 40 },
+      { words: ['医学', '医疗', '生命科学', '医药'], weight: 80 },
+    ];
+
+    for (const { words, weight } of jobTitleKeywords) {
+      const careerHasKeyword = words.some(w => caseText.includes(w));
+      const historyHasKeyword = words.some(w => caseHistoryText.includes(w));
+      const jobHasKeyword = words.some(w => allJobText.includes(w));
+      if (jobHasKeyword) {
+        if (careerHasKeyword) score += weight;      // 最终职业匹配 → 全权重
+        else if (historyHasKeyword) score += weight * 0.3; // 仅历史路径匹配 → 30%权重
       }
     }
 
     // 行业方向匹配
     if (c.industries && c.industries.length > 0) {
       for (const ind of c.industries) {
-        if (ind === '游戏行业' && (jobText.includes('游戏') || jobText.includes('game'))) {
+        if (ind === '游戏行业' && isGame) {
           score += 50;
         }
         if (ind === '出海' && (jobText.includes('出海') || jobText.includes('海外') || jobText.includes('global'))) {
           score += 50;
         }
+      }
+    }
+
+    // 医学领域额外加分
+    if (isMedical) {
+      if (caseText.includes('医学') || caseHistoryText.includes('医学') ||
+          caseText.includes('医疗') || caseHistoryText.includes('医疗') ||
+          caseText.includes('生命科学') || caseHistoryText.includes('生命科学')) {
+        score += 70;
       }
     }
 
@@ -223,53 +257,87 @@ function getRelatedCases(job) {
   scoredCases.sort((a, b) => b.score - a.score);
   const topCases = scoredCases.slice(0, 3);
 
+  // 提取匹配关键词（用于前端加粗显示）
+  function extractMatchedKeywords(c, allJobText) {
+    const keywords = [];
+    const keywordGroups = [
+      ['本地化', 'localiz', 'lqa', '译员', '译者', '翻译'],
+      ['投放', '广告', 'marketing', '买量', 'ua'],
+      ['内容', '创作', '撰稿', '文案', '编辑', '博主'],
+      ['教培', '教师', '老师', '教学', '教育'],
+      ['项目管理', 'pm', '项目经理'],
+      ['运营', '社群', 'community'],
+      ['医学', '医疗', '生命科学', '医药'],
+      ['游戏', 'game'],
+      ['出海', '海外', 'global'],
+    ];
+    for (const group of keywordGroups) {
+      for (const kw of group) {
+        if (allJobText.includes(kw)) {
+          // 返回中文关键词作为显示标签
+          const displayKw = group.find(g => !/^[a-z]+$/.test(g)) || group[0];
+          if (!keywords.includes(displayKw)) keywords.push(displayKw);
+          break;
+        }
+      }
+    }
+    return keywords.slice(0, 3);
+  }
+
   for (const { case: c } of topCases) {
     if (!existingUrls.has(c.url)) {
-      // 标题：优先取 careerPath 中 " | " 前面的概括短句；
-      // 有 "→" 时取最后一段 + careerName；否则用 careerName；最后截断 careerPath
+      // 推断类型：URL含 tenclass.cn 或在 careerPath 含"讲座""课程"等标记 → lecture
+      const isLecture = (c.url && c.url.includes('tenclass.cn')) ||
+                        (c.careerPath && /讲座|课程|workshop|直播/.test(c.careerPath));
+
+      // 标题生成：用 careerPath 提取「从 X 到 Y」的画面感
       let title = '';
-      let summary = '';
       const pathText = c.careerPath || '';
-      if (pathText.includes(' | ')) {
-        const parts = pathText.split(' | ');
-        title = parts[0].trim();
-        summary = parts.slice(1).join(' | ').trim();
-      } else if (pathText.includes('→')) {
-        const segments = pathText.split(/[→→]/);
-        let lastSegment = segments[segments.length - 1].trim();
-        // 去掉开头年份如"2024年7月"
-        lastSegment = lastSegment.replace(/^\d{4}年\d{1,2}月/, '').trim();
-        if (c.careerName && lastSegment && !lastSegment.includes(c.careerName)) {
-          title = `${lastSegment} · ${c.careerName}`;
-        } else {
-          title = lastSegment || c.careerName || '社群就业案例';
+      if (pathText.includes('→')) {
+        const segments = pathText.split(/[→→]/).map(s => s.trim()).filter(Boolean);
+        if (segments.length >= 2) {
+          let first = segments[0].replace(/^\d{4}年\d{1,2}月/, '').trim();
+          let last = segments[segments.length - 1].replace(/^\d{4}年\d{1,2}月/, '').trim();
+          // 截断过长的片段
+          if (first.length > 14) first = first.slice(0, 12) + '...';
+          if (last.length > 16) last = last.slice(0, 14) + '...';
+          title = `从「${first}」到「${last}」`;
+        } else if (segments.length === 1) {
+          title = segments[0].replace(/^\d{4}年\d{1,2}月/, '').trim();
         }
-        summary = pathText.trim();
-      } else if (c.careerName) {
-        title = c.careerName;
-        summary = pathText.trim();
-      } else {
-        title = pathText.trim();
-        summary = '';
       }
-      if (!title) title = '社群就业案例';
-      if (title.length > 30) title = title.slice(0, 28) + '...';
-      cases.push({
-        title: c.careerName || title,
+      // 兜底：careerName 或 careerPath 原文
+      if (!title) {
+        title = c.careerName || pathText.trim() || '社群就业案例';
+      }
+      if (title.length > 36) title = title.slice(0, 34) + '...';
+
+      const matchedKeywords = extractMatchedKeywords(c, allJobText);
+
+      const item = {
+        title,
         author: (c.name || '社群成员') + (c.number ? ` · 社群编号${c.number}` : ''),
         url: c.url,
-        summary: ''
-      });
-      existingUrls.add(c.url);
+        summary: '',
+        category: isLecture ? 'lecture' : 'case',
+        matchedKeywords
+      };
+      dedupPush(item, isLecture ? lectureCases : careerCases);
     }
   }
 
-  return cases;
+  return { lectureCases, careerCases };
 }
 
 function getHardcodedCases(job) {
   const cases = [];
   const existingUrls = new Set();
+
+  const jobText = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
+
+  // 领域优先级判断
+  const isMedical = ['医学', '医疗', '生命科学', '医药', '医疗器械', '生物医药'].some(k => jobText.includes(k));
+  const isGame = !isMedical && (jobText.includes('游戏') || jobText.includes('game'));
 
   // 按公司名精确匹配
   if (job.company && caseLibrary[job.company]) {
@@ -281,10 +349,10 @@ function getHardcodedCases(job) {
     }
   }
 
-  // 按行业关键词匹配
+  // 按行业关键词匹配 —— 医学岗位跳过游戏本地化匹配
   const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
   const keywords = [
-    { key: '游戏本地化', patterns: ['游戏', 'Game', '本地化', 'LQA', 'localiz', 'translat', '译员', '翻译'] },
+    { key: '游戏本地化', patterns: ['游戏', 'Game', 'LQA', 'localiz', 'localisation'] },
     { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
     { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
     { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
@@ -292,6 +360,9 @@ function getHardcodedCases(job) {
   ];
 
   for (const { key, patterns } of keywords) {
+    // 医学岗位跳过游戏本地化匹配
+    if (isMedical && key === '游戏本地化') continue;
+
     if (caseLibrary[key] && patterns.some(p => text.toLowerCase().includes(p.toLowerCase()))) {
       for (const kc of caseLibrary[key]) {
         if (!existingUrls.has(kc.url)) {
@@ -346,7 +417,7 @@ const JobDetail = () => {
   }
 
   const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
-  const relatedCases = getRelatedCases(job);
+  const { lectureCases, careerCases } = getRelatedCases(job);
 
   const typeColorMap = {
     '全职': 'border border-gray-200 bg-gray-50 text-gray-600',
@@ -510,16 +581,57 @@ const JobDetail = () => {
           </div>
         )}
 
-        {/* 知识弹药库 */}
-        {relatedCases.length > 0 && (
+        {/* 知识弹药库 · 付费讲座 */}
+        {lectureCases.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
             <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
-              知识弹药库
+              知识弹药库 · 付费讲座
             </h2>
-
             <div className="space-y-3">
-              {relatedCases.map((c, i) => (
+              {lectureCases.map((c, i) => (
+                <a
+                  key={i}
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors group"
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-1.5 py-0.5 bg-amber-200 text-amber-700 text-[10px] rounded font-medium">
+                      讲座
+                    </span>
+                    <h3 className="text-sm font-medium text-gray-900 group-hover:text-[#fd8e2a] transition-colors">
+                      {c.title}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
+                  {c.matchedKeywords && c.matchedKeywords.length > 0 && (
+                    <p className="text-xs text-gray-400 mt-1">
+                      匹配关键词：
+                      {c.matchedKeywords.map((kw, ki) => (
+                        <span key={ki}>
+                          <strong className="text-gray-600">{kw}</strong>
+                          {ki < c.matchedKeywords.length - 1 && <span className="text-gray-300"> · </span>}
+                        </span>
+                      ))}
+                    </p>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 知识弹药库 · 职业案例 */}
+        {careerCases.length > 0 && (
+          <div className="bg-white rounded-xl border border-gray-100 p-6 mb-4">
+            <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              知识弹药库 · 职业案例
+            </h2>
+            <div className="space-y-3">
+              {careerCases.map((c, i) => (
                 <a
                   key={i}
                   href={c.url}
@@ -531,6 +643,17 @@ const JobDetail = () => {
                     {c.title}
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
+                  {c.matchedKeywords && c.matchedKeywords.length > 0 && (
+                    <p className="text-xs text-gray-400 mt-1">
+                      匹配关键词：
+                      {c.matchedKeywords.map((kw, ki) => (
+                        <span key={ki}>
+                          <strong className="text-gray-600">{kw}</strong>
+                          {ki < c.matchedKeywords.length - 1 && <span className="text-gray-300"> · </span>}
+                        </span>
+                      ))}
+                    </p>
+                  )}
                 </a>
               ))}
             </div>
