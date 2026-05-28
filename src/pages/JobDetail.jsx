@@ -72,7 +72,7 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
+      url: 'https://m.shifangwk.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）。本地化管理案例登上飞书官网。',
       category: 'lecture'
     }
@@ -83,7 +83,7 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
+      url: 'https://m.shifangwk.cn/lecture/33930891?st=sharelink&inviter_id=125279331',
       summary: '汉语言文学→自由译员→上海游戏公司英语本地化（半年转岗PM）→头部游戏大厂本地化项目经理（负责MMO旗舰产品，16薪起步）',
       category: 'lecture'
     },
@@ -108,7 +108,7 @@ const caseLibrary = {
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
-      url: 'https://m.tenclass.cn/lecture/33930891?st=sharelink\u0026inviter_id=125279331',
+      url: 'https://m.shifangwk.cn/lecture/33930891?st=sharelink\u0026inviter_id=125279331',
       summary: '汉语言文学→CATTI→自由译员→游戏公司译员→头部大厂本地化项目经理。3年走完全程。',
       category: 'lecture'
     },
