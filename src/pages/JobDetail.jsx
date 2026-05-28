@@ -111,13 +111,6 @@ const caseLibrary = {
       url: 'https://m.shifangwk.cn/lecture/33930891?st=sharelink\u0026inviter_id=125279331',
       summary: '汉语言文学→CATTI→自由译员→游戏公司译员→头部大厂本地化项目经理。3年走完全程。',
       category: 'lecture'
-    },
-    {
-      title: '从网易到米哈游：游戏本地化in-house译员的成长路径',
-      author: 'James',
-      url: 'https://mp.weixin.qq.com/s/wmuaJXaZu8qsf8ty_gH__Q',
-      summary: '武汉大学口笔译本科→巴斯大学硕士→网易游戏翻译兼本地化→米哈游in-house口笔译员',
-      category: 'case'
     }
   ],
   '内容创作': [
