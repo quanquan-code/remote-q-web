@@ -210,6 +210,7 @@ function getRelatedCases(job) {
       { words: ['项目管理', 'pm', '项目经理'], weight: 50 },
       { words: ['运营', '社群', 'community'], weight: 40 },
       { words: ['医学', '医疗', '生命科学', '医药'], weight: 80 },
+      { words: ['德语', '法语', '日语', '韩语', '西班牙语', '葡萄牙语', '俄语', '阿拉伯语', '泰语', '意大利语', '荷兰语', '小语种'], weight: 70 },
     ];
 
     for (const { words, weight } of jobTitleKeywords) {
