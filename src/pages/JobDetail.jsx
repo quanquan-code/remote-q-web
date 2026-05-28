@@ -541,7 +541,7 @@ const JobDetail = () => {
         <div className="bg-white rounded-xl p-6 mb-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
+              <h1 className="text-2xl font-bold text-[#fd8e2a] tracking-wide">{job.title}</h1>
               <div className="flex items-center gap-2 mt-2 text-sm text-gray-500 flex-wrap">
                 <span className="flex items-center gap-1">
                   <Building2 className="w-3.5 h-3.5" />
@@ -560,8 +560,8 @@ const JobDetail = () => {
                 {job.salaryRange && (
                   <>
                     <span className="text-gray-300">·</span>
-                    <span className="flex items-center gap-1 text-gray-700 font-medium">
-                      <Globe className="w-3.5 h-3.5" />
+                    <span className="flex items-center gap-1 text-[#fd8e2a] font-bold text-base">
+                      <Globe className="w-4 h-4" />
                       {job.salaryRange}
                     </span>
                   </>
