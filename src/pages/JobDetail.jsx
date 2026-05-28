@@ -104,7 +104,7 @@ const caseLibrary = {
       category: 'case'
     }
   ],
-  '翻译': [
+  '本地化': [
     {
       title: '本地化项目经理入门必读 | 从自由译员到T0游戏大厂本地化',
       author: 'Lucian · 社群编号3049',
@@ -401,7 +401,7 @@ function getHardcodedCases(job) {
   const keywords = [
     { key: '游戏本地化', patterns: ['游戏', 'Game', 'LQA', 'localiz', 'localisation'] },
     { key: '广告投放', patterns: ['投放', '广告', 'marketing', '增长', '买量', 'UA', '用户获取'] },
-    { key: '翻译', patterns: ['翻译', '译员', 'translat', '口译', '笔译', 'localiz', '审校'] },
+    { key: '本地化', patterns: ['本地化', 'localiz', 'lqa'] },
     { key: '内容创作', patterns: ['内容', '创作', '撰稿', '文案', '编辑', '新媒体', '博主', '自媒体'] },
     { key: '教培', patterns: ['教师', '老师', '教培', '教学', '家教', '辅导', '教育'] }
   ];
