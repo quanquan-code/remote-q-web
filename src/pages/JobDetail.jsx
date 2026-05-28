@@ -255,22 +255,28 @@ function getRelatedCases(job) {
   function extractMatchedKeywords(c, allJobText) {
     const keywords = [];
     const keywordGroups = [
-      ['本地化', 'localiz', 'lqa', '译员', '译者', '翻译'],
-      ['投放', '广告', 'marketing', '买量', 'ua'],
-      ['内容', '创作', '撰稿', '文案', '编辑', '博主'],
-      ['教培', '教师', '老师', '教学', '教育'],
-      ['项目管理', 'pm', '项目经理'],
-      ['运营', '社群', 'community'],
-      ['医学', '医疗', '生命科学', '医药'],
-      ['游戏', 'game'],
-      ['出海', '海外', 'global'],
+      { group: ['本地化', 'localiz', 'lqa'], label: '本地化', domains: ['游戏', '翻译'] },
+      { group: ['投放', '广告', 'marketing', '买量', 'ua'], label: '投放', domains: ['营销'] },
+      { group: ['内容', '创作', '撰稿', '文案', '编辑', '博主'], label: '内容', domains: ['内容'] },
+      { group: ['教培', '教师', '老师', '教学', '教育'], label: '教培', domains: ['教育'] },
+      { group: ['项目管理', 'pm', '项目经理'], label: '项目管理', domains: ['管理'] },
+      { group: ['运营', '社群', 'community'], label: '运营', domains: ['运营'] },
+      { group: ['医学', '医疗', '生命科学', '医药'], label: '医学', domains: ['医学'] },
+      { group: ['游戏', 'game'], label: '游戏', domains: ['游戏'] },
+      { group: ['德语', '法语', '日语', '韩语', '西班牙语', '葡萄牙语', '俄语', '阿拉伯语', '泰语', '意大利语', '荷兰语', '小语种'], label: '小语种', domains: ['语言'] },
+      { group: ['出海', '海外', 'global'], label: '出海', domains: ['出海'] },
     ];
-    for (const group of keywordGroups) {
+    // 检测岗位所属领域
+    const isMedical = ['医学', '医疗', '生命科学', '医药'].some(k => allJobText.includes(k));
+    const isGame = ['游戏', 'game', '本地化'].some(k => allJobText.includes(k));
+    for (const { group, label } of keywordGroups) {
       for (const kw of group) {
         if (allJobText.includes(kw)) {
-          // 返回中文关键词作为显示标签
-          const displayKw = group.find(g => !/^[a-z]+$/.test(g)) || group[0];
-          if (!keywords.includes(displayKw)) keywords.push(displayKw);
+          // 医学岗位过滤：只显示医学/小语种相关，不显示游戏/本地化通用词
+          if (isMedical && !['医学', '医疗', '生命科学', '医药', '德语', '法语', '日语', '韩语', '西班牙语', '葡萄牙语', '俄语', '阿拉伯语', '泰语', '意大利语', '荷兰语', '小语种'].includes(kw)) {
+            continue;
+          }
+          if (!keywords.includes(label)) keywords.push(label);
           break;
         }
       }
@@ -296,14 +302,14 @@ function getRelatedCases(job) {
             // 括号内容超过8字时，仅保留括号前部分
             const m = s.match(/^([^（]+)（/);
             if (m && s.length > 14) s = m[1].trim();
-            if (s.length > 12) s = s.slice(0, 10) + '...';
+            if (s.length > 20) s = s.slice(0, 18) + '...';
             return s;
           }
           // 跳过开头平淡节点（毕业/学历等），找第一个有意义的转折点
           let startIdx = 0;
           while (startIdx < segments.length - 1) {
             const simplified = simplifySeg(segments[startIdx]);
-            if (simplified.length < 3 || /毕业$|硕士$|本科$|博士$/.test(simplified)) {
+            if (simplified.length < 3 || /毕业$|硕士$|本科$|博士$|学校$|大学$|学院$/.test(simplified)) {
               startIdx++;
             } else {
               break;
@@ -311,8 +317,12 @@ function getRelatedCases(job) {
           }
           let first = simplifySeg(segments[startIdx]);
           let last = simplifySeg(segments[segments.length - 1]);
-          if (first && last) {
+          // 如果起点终点太相似，改用「从X出发，现在是Y」或直接用 careerName
+          if (first && last && first !== last) {
             title = `从「${first}」到「${last}」`;
+          } else if (first && last && first === last) {
+            // 起点终点相同，改用 careerName 或「现在的成就」格式
+            title = c.careerName || `「${first}」从业者`;
           }
         } else if (segments.length === 1) {
           title = segments[0].replace(/^\d{4}年\d{1,2}月/, '').trim();
@@ -322,8 +332,7 @@ function getRelatedCases(job) {
       if (!title) {
         title = c.careerName || pathText.trim() || '社群就业案例';
       }
-      if (title.length > 36) title = title.slice(0, 34) + '...';
-
+      
       const matchedKeywords = extractMatchedKeywords(c, allJobText);
 
       const item = {
@@ -396,7 +405,7 @@ function getHardcodedCases(job) {
     }
   }
 
-  // 按行业关键词匹配 —— 医学岗位跳过游戏本地化匹配
+  // 按行业关键词匹配 -- 医学岗位跳过游戏本地化匹配
   const text = `${job.title || ''} ${job.description || ''} ${job.fullDescription || ''}`;
   const keywords = [
     { key: '游戏本地化', patterns: ['游戏', 'Game', 'LQA', 'localiz', 'localisation'] },
@@ -655,7 +664,7 @@ const JobDetail = () => {
                   <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
                   {c.matchedKeywords && c.matchedKeywords.length > 0 && (
                     <p className="text-xs text-gray-400 mt-1">
-                      匹配关键词：
+                      关键词：
                       {c.matchedKeywords.map((kw, ki) => (
                         <span key={ki}>
                           <strong className="text-gray-600">{kw}</strong>
@@ -692,7 +701,7 @@ const JobDetail = () => {
                   <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
                   {c.matchedKeywords && c.matchedKeywords.length > 0 && (
                     <p className="text-xs text-gray-400 mt-1">
-                      匹配关键词：
+                      关键词：
                       {c.matchedKeywords.map((kw, ki) => (
                         <span key={ki}>
                           <strong className="text-gray-600">{kw}</strong>
