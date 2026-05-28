@@ -184,6 +184,11 @@ function getRelatedCases(job) {
   const isMedical = ['医学', '医疗', '生命科学', '医药', '医疗器械', '生物医药'].some(k => jobText.includes(k));
   const isGame = !isMedical && (jobText.includes('游戏') || jobText.includes('game'));
 
+  // 岗位文本（title + description），提前计算供循环内外使用
+  const jobTitleLower = (job.title || '').toLowerCase();
+  const jobDescLower = `${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
+  const allJobText = `${jobTitleLower} ${jobDescLower}`;
+
   const scoredCases = [];
   for (const c of rawCasesData) {
     if (!c.url) continue;
@@ -196,11 +201,6 @@ function getRelatedCases(job) {
     if (job.company && caseText.includes(job.company.toLowerCase())) {
       score += 100;
     }
-
-    // 岗位名称模糊匹配 —— 扩展检查范围到 title + description + fullDescription
-    const jobTitleLower = (job.title || '').toLowerCase();
-    const jobDescLower = `${job.description || ''} ${job.fullDescription || ''}`.toLowerCase();
-    const allJobText = `${jobTitleLower} ${jobDescLower}`;
 
     const jobTitleKeywords = [
       { words: ['本地化', 'localiz', 'lqa', '译员', '译者', '翻译'], weight: 60 },
@@ -296,12 +296,30 @@ function getRelatedCases(job) {
       if (pathText.includes('→')) {
         const segments = pathText.split(/[→→]/).map(s => s.trim()).filter(Boolean);
         if (segments.length >= 2) {
-          let first = segments[0].replace(/^\d{4}年\d{1,2}月/, '').trim();
-          let last = segments[segments.length - 1].replace(/^\d{4}年\d{1,2}月/, '').trim();
-          // 截断过长的片段
-          if (first.length > 14) first = first.slice(0, 12) + '...';
-          if (last.length > 16) last = last.slice(0, 14) + '...';
-          title = `从「${first}」到「${last}」`;
+          // 简化 segment：去掉年份前缀、过长括号
+          function simplifySeg(seg) {
+            let s = seg.replace(/^\d{4}年\d{1,2}月/, '').replace(/^\d{4}年/, '').trim();
+            // 括号内容超过8字时，仅保留括号前部分
+            const m = s.match(/^([^（]+)（/);
+            if (m && s.length > 14) s = m[1].trim();
+            if (s.length > 12) s = s.slice(0, 10) + '...';
+            return s;
+          }
+          // 跳过开头平淡节点（毕业/学历等），找第一个有意义的转折点
+          let startIdx = 0;
+          while (startIdx < segments.length - 1) {
+            const simplified = simplifySeg(segments[startIdx]);
+            if (simplified.length < 3 || /毕业$|硕士$|本科$|博士$/.test(simplified)) {
+              startIdx++;
+            } else {
+              break;
+            }
+          }
+          let first = simplifySeg(segments[startIdx]);
+          let last = simplifySeg(segments[segments.length - 1]);
+          if (first && last) {
+            title = `从「${first}」到「${last}」`;
+          }
         } else if (segments.length === 1) {
           title = segments[0].replace(/^\d{4}年\d{1,2}月/, '').trim();
         }
@@ -327,6 +345,41 @@ function getRelatedCases(job) {
   }
 
   return { lectureCases, careerCases };
+}
+
+// 关键词高亮组件：把标题里匹配到的关键词加粗
+function HighlightedTitle({ title, keywords }) {
+  if (!keywords || keywords.length === 0 || !title) {
+    return <span>{title || ''}</span>;
+  }
+  // 按长度降序，优先匹配长关键词（避免"游戏"先被匹配而破坏"游戏本地化"）
+  const sorted = [...keywords].sort((a, b) => b.length - a.length);
+  let result = [{ text: title, highlight: false }];
+  for (const kw of sorted) {
+    if (!kw) continue;
+    const newResult = [];
+    for (const seg of result) {
+      if (seg.highlight) {
+        newResult.push(seg);
+        continue;
+      }
+      const parts = seg.text.split(kw);
+      for (let i = 0; i < parts.length; i++) {
+        if (parts[i]) newResult.push({ text: parts[i], highlight: false });
+        if (i < parts.length - 1) newResult.push({ text: kw, highlight: true });
+      }
+    }
+    result = newResult;
+  }
+  return (
+    <>
+      {result.map((seg, i) =>
+        seg.highlight
+          ? <strong key={i} className="font-bold text-gray-900">{seg.text}</strong>
+          : <span key={i}>{seg.text}</span>
+      )}
+    </>
+  );
 }
 
 function getHardcodedCases(job) {
@@ -602,7 +655,7 @@ const JobDetail = () => {
                       讲座
                     </span>
                     <h3 className="text-sm font-medium text-gray-900 group-hover:text-[#fd8e2a] transition-colors">
-                      {c.title}
+                      <HighlightedTitle title={c.title} keywords={c.matchedKeywords} />
                     </h3>
                   </div>
                   <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
@@ -640,7 +693,7 @@ const JobDetail = () => {
                   className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
                 >
                   <h3 className="text-sm font-medium text-gray-900 group-hover:text-[#fd8e2a] transition-colors">
-                    {c.title}
+                    <HighlightedTitle title={c.title} keywords={c.matchedKeywords} />
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">{c.author}</p>
                   {c.matchedKeywords && c.matchedKeywords.length > 0 && (
