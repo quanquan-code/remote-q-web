@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Globe, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
 import rawData from '../data/jobs.json';
 
 const rawJobsData = rawData.jobs || rawData;
@@ -541,7 +541,15 @@ const JobDetail = () => {
         <div className="bg-white rounded-xl p-6 mb-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-[#fd8e2a] tracking-wide">{job.title}</h1>
+              <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
+              {job.salaryRange && (
+                <div className="mt-1 text-sm font-bold text-gray-900">
+                  {job.salaryRange}
+                  {job.paymentCycle && (
+                    <span className="font-normal text-gray-500 ml-1">{job.paymentCycle}</span>
+                  )}
+                </div>
+              )}
               <div className="flex items-center gap-2 mt-2 text-sm text-gray-500 flex-wrap">
                 <span className="flex items-center gap-1">
                   <Building2 className="w-3.5 h-3.5" />
@@ -557,24 +565,7 @@ const JobDetail = () => {
                   <Calendar className="w-3.5 h-3.5" />
                   {job.postedAt}
                 </span>
-                {job.salaryRange && (
-                  <>
-                    <span className="text-gray-300">·</span>
-                    <span className="flex items-center gap-1 text-[#fd8e2a] font-bold text-base">
-                      <Globe className="w-4 h-4" />
-                      {job.salaryRange}
-                    </span>
-                  </>
-                )}
-                {job.paymentCycle && (
-                  <>
-                    <span className="text-gray-300">·</span>
-                    <span className="flex items-center gap-1 text-gray-500">
-                      <Clock className="w-3.5 h-3.5" />
-                      {job.paymentCycle}
-                    </span>
-                  </>
-                )}
+
               </div>
               <div className="flex flex-wrap gap-2 mt-3">
                 {job.type?.map(t => (
