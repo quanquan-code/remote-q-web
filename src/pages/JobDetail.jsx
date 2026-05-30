@@ -541,38 +541,46 @@ const JobDetail = () => {
         <div className="bg-white rounded-xl p-6 mb-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
+              <h1 className="text-xl font-bold text-[#fd8e2a]">{job.title}</h1>
               {job.salaryRange && (
-                <div className="mt-1 text-sm font-bold text-gray-900">
+                <div className="mt-2 text-sm font-bold text-gray-900">
                   {job.salaryRange}
-                  {job.paymentCycle && (
-                    <span className="font-normal text-gray-500 ml-1">{job.paymentCycle}</span>
-                  )}
                 </div>
               )}
-              <div className="flex items-center gap-2 mt-2 text-sm text-gray-500 flex-wrap">
-                <span className="flex items-center gap-1">
-                  <Building2 className="w-3.5 h-3.5" />
-                  {job.company}
-                </span>
-                <span className="text-gray-300">·</span>
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  {job.location}
-                </span>
+              <div className="flex items-center gap-2 mt-3 text-sm text-gray-500 flex-wrap">
+                {job.company && (
+                  <span className="flex items-center gap-1">
+                    <Building2 className="w-3.5 h-3.5" />
+                    {job.company}
+                  </span>
+                )}
                 <span className="text-gray-300">·</span>
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" />
-                  {job.postedAt}
+                  发布日期：{job.postedAt}
                 </span>
-
               </div>
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="flex flex-wrap gap-2 mt-4">
+                {job.location && (
+                  <span className="px-2 py-1 rounded-md text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
+                    {job.location}
+                  </span>
+                )}
                 {job.type?.map(t => (
                   <span key={t} className={`px-2 py-1 rounded-md text-xs font-medium ${typeColorMap[t] || 'border border-gray-200 bg-gray-50 text-gray-600'}`}>
                     {t}
                   </span>
                 ))}
+                {job.paymentCycle && (
+                  <span className="px-2 py-1 rounded-md text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
+                    {job.paymentCycle}
+                  </span>
+                )}
+                {!job.deadline && (
+                  <span className="px-2 py-1 rounded-md text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
+                    长期招募
+                  </span>
+                )}
                 {/* 全职/正编且非内部 → 公开标签 */}
                 {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
                   <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
