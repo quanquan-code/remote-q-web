@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "recvlbEv5uv6hH",
+      "title": "远程自由译者",
+      "company": "Level Infinite / Tencent ILC（腾讯无限本地化中心）",
+      "type": [
+        "兼职"
+      ],
+      "location": "远程",
+      "salary": "未注明（需投递后沟通）",
+      "salaryNote": "未注明（需投递后沟通）",
+      "salaryRange": "未注明（需投递后沟通）",
+      "paymentCycle": "未注明",
+      "languagePair": null,
+      "gameType": null,
+      "description": "游戏内容自由译者招募！无论你是希望高产量、深度参与团队，还是偶尔接活、低介入度，我们都需要这两种类型的译者！ 岗位：远程自由译者 公司：Level Infinite，腾讯 ILC（Infinite Localization Center） 语言对： • 简体中文 → 繁体中文（香港）/ 繁体中文（台...",
+      "fullDescription": "游戏内容自由译者招募！无论你是希望高产量、深度参与团队，还是偶尔接活、低介入度，我们都需要这两种类型的译者！\n\n岗位：远程自由译者\n公司：Level Infinite，腾讯 ILC（Infinite Localization Center）\n\n语言对：\n• 简体中文 → 繁体中文（香港）/ 繁体中文（台湾）/ 韩语 / 日语 / 泰语\n• 英语 → 阿拉伯语 / 简体中文 / 繁体中文（台湾）/ 法语 / 印尼语 / 意大利语 / 韩语 / 日语 / 马来语 / 波兰语 / 俄语 / 泰语 / 乌尔都语 / 乌兹别克语\n• 韩语 → 繁体中文（台湾）/ 英语 / 日语 / 简体中文\n• 日语 → 简体中文 / 繁体中文（台湾）\n\n职责：\n负责游戏内文本、对话、手册及其他内容的翻译/编辑，从源语言译入目标语言，确保准确性、流畅度和文化适配性。\n\n要求：\n- 至少2年翻译经验，有游戏本地化经验优先\n- 日产量2500字以上\n- 对游戏术语及相关文化现象有深入理解\n\n关于我们：\nILC是腾讯游戏全球的本地化中心，已完成50多个成功项目，覆盖全平台，包括《Call of Duty Mobile》《王者荣耀》《PUBG Mobile》《Nikke: Goddess of Victory》等知名作品。灵活性是我们最大的优势，如果你是优秀的译者，我们一定有适合你的位置。\n\n❗ 很遗憾，我们的自由译者平台目前不支持来自印度、缅甸、俄罗斯或中国大陆的银行账户。",
+      "requirements": [],
+      "deadline": "持续招募",
+      "comments": "简历投递邮箱：ilcfreelancer3@tencent.com\n注意：不接受印度、缅甸、俄罗斯、中国大陆银行账户\n原文来源：Training for Translators Newsletter（Corinne McKay）",
+      "contact": "",
+      "referralType": "circle",
+      "postedAt": "2026-05-31",
+      "internalOnly": false
+    },
+    {
       "id": "rec27uci4xdmz0",
       "title": "英文翻港繁兼职译者",
       "company": "上海创凌翻译服务有限公司",
@@ -2502,8 +2526,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-05-30T20:13:00.286Z",
-    "jobCount": 72,
+    "syncedAt": "2026-05-31T20:17:29.802Z",
+    "jobCount": 73,
     "caseCount": 50
   }
 }
