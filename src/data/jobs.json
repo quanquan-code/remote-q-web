@@ -1,6 +1,54 @@
 {
   "jobs": [
     {
+      "id": "rec27vN1bxcUTl",
+      "title": "兼职游戏本地化译员",
+      "company": "TransPerfect",
+      "type": [
+        "兼职"
+      ],
+      "location": "杭州",
+      "salary": "12k-17k per month",
+      "salaryNote": "12k-17k per month",
+      "salaryRange": "12k-17k per month",
+      "paymentCycle": "按项目结算，45天内",
+      "languagePair": null,
+      "gameType": null,
+      "description": "1. 职责： a. 擅长中文、英语，能够对游戏内多语言内容进行翻译及相关LQA，保证游戏多语言文本质量。 b. 能够与本地化团队和开发团队密切沟通，沟通翻译需求，协助处理翻译过程中的问题以及翻译库的维护。 2. 职位要求： a. 有5年及以上游戏行业工作经验，有游戏行业本地化和LQA工作经验、熟悉本...",
+      "fullDescription": "1. 职责：\na. 擅长中文、英语，能够对游戏内多语言内容进行翻译及相关LQA，保证游戏多语言文本质量。\nb. 能够与本地化团队和开发团队密切沟通，沟通翻译需求，协助处理翻译过程中的问题以及翻译库的维护。\n\n\n \n 2. 职位要求：\na. 有5年及以上游戏行业工作经验，有游戏行业本地化和LQA工作经验、熟悉本地化流程者优先。 b. 优秀的中文、英语专业能力，有日语、韩语等其他语言能力优先。 熟悉海外文化和热点。\nc. 细致认真，对翻译和测试中的细节问题敏感。\nd. 丰富的多语言游戏经历，熟悉游戏中的多语言内容设计。\ne. 良好的团队协作能力，善于沟通。",
+      "requirements": [],
+      "deadline": "7.1",
+      "comments": "兼职项目长期合作\n\n首先完成线下兼职项目 4-6个月\n后期其他线上远程项目优先派活\n\n\n\n【试译内容】\n有，需要签署保密协议后分享给测试人员",
+      "contact": "siyou.yu@transperfect.com",
+      "referralType": "circle",
+      "postedAt": "2026-06-01",
+      "internalOnly": false
+    },
+    {
+      "id": "rec27vNaC9PTMK",
+      "title": "游戏本地化译员",
+      "company": "lionbridge",
+      "type": [
+        "兼职"
+      ],
+      "location": "远程",
+      "salary": "按照源语言文字付费，不同项目不同语言薪资范围不一: 英语-简中: 千字150-250人民币 英语-繁中:千字180-300人民币 日语-简中:千字150-200人民币 日语-繁中:千字150-200人民币 可选择美金结算；支持Paypal以及国内银行卡.",
+      "salaryNote": "按照源语言文字付费，不同项目不同语言薪资范围不一: 英语-简中: 千字150-250人民币 英语-繁中:千字180-300人民币 日语-简中:千字150-200人民币 日语-繁中:千字150-200人民币 可选择美金结算；支持Paypal以及国内银行卡.",
+      "salaryRange": "按照源语言文字付费，不同项目不同语言薪资范围不一:\n英语-简中: 千字150-250人民币\n英语-繁中:千字180-300人民币\n日语-简中:千字150-200人民币\n日语-繁中:千字150-200人民币\n可选择美金结算；支持Paypal以及国内银行卡.",
+      "paymentCycle": "国际转账45-60天",
+      "languagePair": null,
+      "gameType": null,
+      "description": "· 以下语言对选择其一: 英文>简中（5人） 英文>繁中（10人） 日文>简中（8人） 日文>繁中（8人） ·至少两年以上游戏翻译经验； 英文语言对有Dead rising系列游戏经验最佳； 日文多Role playing games经验最佳 ·通过公司游戏测试-（测试难度中等偏上，不适合0游戏经验...",
+      "fullDescription": "· 以下语言对选择其一:\n英文>简中（5人）\n英文>繁中（10人）\n日文>简中（8人）\n日文>繁中（8人）\n·至少两年以上游戏翻译经验；\n英文语言对有Dead rising系列游戏经验最佳；\n日文多Role playing games经验最佳\n·通过公司游戏测试-（测试难度中等偏上，不适合0游戏经验译员）\n·工具MemoQ\n>请注意:由于各个渠道同时发布广告，申请者邮件联系时，请在邮件标题标注语言对以及申请平台，不符合条件者不一一回复，请谅解。\n>其他语言对有经验的游戏译员，也可发送简历，保留联系方式，以项目开始前联系入库\n",
+      "requirements": [],
+      "deadline": "6-30日",
+      "comments": "【试译内容】\n需签署保密协议后发送",
+      "contact": "Vicky.li@lionbridge.com\n请备注语言对以及圈圈社群",
+      "referralType": "circle",
+      "postedAt": "2026-06-01",
+      "internalOnly": false
+    },
+    {
       "id": "recvlbEv5uv6hH",
       "title": "远程自由译者",
       "company": "Level Infinite / Tencent ILC（腾讯无限本地化中心）",
@@ -2526,8 +2574,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-05-31T20:17:29.802Z",
-    "jobCount": 73,
+    "syncedAt": "2026-06-01T22:13:41.516Z",
+    "jobCount": 75,
     "caseCount": 50
   }
 }
