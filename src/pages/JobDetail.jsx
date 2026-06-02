@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Calendar, Building2, Briefcase, MessageCircle, BookOpen } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Calendar, Building2, Briefcase, MessageCircle, BookOpen, Share2 } from 'lucide-react';
 import rawData from '../data/jobs.json';
+import SharePoster from '../components/SharePoster';
 
 const rawJobsData = rawData.jobs || rawData;
 const rawCasesData = rawData.caseLibrary || [];
@@ -435,6 +436,9 @@ function getHardcodedCases(job) {
 const JobDetail = () => {
   const { id } = useParams();
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [posterLoading, setPosterLoading] = useState(false);
+  const posterRef = useRef(null);
 
   // 浏览计数
   useEffect(() => {
@@ -475,6 +479,14 @@ const JobDetail = () => {
   const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
   const { lectureCases, careerCases } = getRelatedCases(job);
 
+  const handleGeneratePoster = async () => {
+    if (posterRef.current) {
+      setPosterLoading(true);
+      await posterRef.current.generate();
+      setPosterLoading(false);
+    }
+  };
+
   const typeColorMap = {
     '全职': 'border border-gray-200 bg-gray-50 text-gray-600',
     '兼职': 'border border-gray-200 bg-gray-50 text-gray-600',
@@ -488,7 +500,10 @@ const JobDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 二维码弹窗 */}
+      {/* 隐藏的海报DOM */}
+      <SharePoster ref={posterRef} job={job} />
+
+      {/* 二维码弹窗 - 社群加入 */}
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
           <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative" onClick={e => e.stopPropagation()}>
@@ -530,12 +545,68 @@ const JobDetail = () => {
         </div>
       )}
 
+        {/* 支付宝付款弹窗 */}
+      {showPayModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4" onClick={() => setShowPayModal(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full relative" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setShowPayModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <h3 className="text-lg font-bold text-gray-900 mb-1 text-center">扫码支付 ¥299</h3>
+            <p className="text-sm text-gray-500 mb-5 text-center">圈圈翻译社群年度会员</p>
+
+            <div className="bg-gray-50 rounded-xl p-4 mb-4">
+              <img
+                src="/images/alipay-qr-299.jpg"
+                alt="支付宝收款码"
+                className="w-full rounded-lg"
+              />
+            </div>
+
+            <div className="space-y-2 text-sm text-gray-600">
+              <p className="flex items-start gap-2">
+                <span className="text-[#fd8e2a] font-bold">1</span>
+                <span>截图或长按识别二维码</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-[#fd8e2a] font-bold">2</span>
+                <span>支付宝付款 ¥299</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-[#fd8e2a] font-bold">3</span>
+                <span>添加圈圈微信，发送付款截图入群</span>
+              </p>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-gray-100 text-center">
+              <p className="text-xs text-gray-400">付款后请微信联系：圈圈的翻译之路</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-3xl mx-auto px-4 py-6">
-        {/* 返回按钮 */}
-        <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          返回岗位列表
-        </Link>
+        {/* 返回按钮 + 分享 */}
+        <div className="flex items-center justify-between mb-6">
+          <Link to="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            返回岗位列表
+          </Link>
+          <button
+            onClick={handleGeneratePoster}
+            disabled={posterLoading}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-orange-50 text-orange-600 rounded-lg border border-orange-200 active:bg-orange-100 transition-colors disabled:opacity-50"
+          >
+            <Share2 className="w-4 h-4" />
+            {posterLoading ? '生成中...' : '分享海报'}
+          </button>
+        </div>
 
         {/* 岗位标题卡 */}
         <div className="bg-white rounded-xl p-6 mb-4">
@@ -718,13 +789,66 @@ const JobDetail = () => {
         {/* 底部 CTA */}
         <div className="bg-white rounded-xl border border-gray-100 p-6">
           <div className="flex flex-col gap-3">
-            <button
-              onClick={() => setShowQrModal(true)}
-              className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl text-sm font-medium hover:bg-[#e57f1f] transition-colors flex items-center justify-center gap-2"
-            >
-              <MessageCircle className="w-4 h-4" />
-              {isFullTime ? '简历内推' : '加入社群'}
-            </button>
+            {/* 年度会员 - 主推 */}
+            <div className="bg-gradient-to-r from-[#fd8e2a] to-orange-500 rounded-xl p-5 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2 py-0.5 bg-white/20 rounded text-xs font-medium">推荐</span>
+                  <span className="text-sm opacity-80">社群年度会员</span>
+                </div>
+                <div className="flex items-baseline gap-1 mb-3">
+                  <span className="text-3xl font-bold">¥299</span>
+                  <span className="text-sm opacity-80">/年</span>
+                  <span className="text-sm line-through opacity-50 ml-2">¥599</span>
+                </div>
+                <ul className="space-y-1.5 text-sm opacity-90 mb-4">
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    无限解锁所有职位联系方式
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    5700+ 同行交流社群
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    内部招募信息优先推送
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    700+ 行业公司红黑榜
+                  </li>
+                </ul>
+                <button 
+                  onClick={() => setShowPayModal(true)}
+                  className="block w-full bg-white text-[#fd8e2a] py-3 rounded-xl font-semibold text-center hover:bg-gray-50 transition-colors"
+                >
+                  加入社群，解锁全部
+                </button>
+              </div>
+            </div>
+
+            {/* 单条解锁 - 次级 */}
+            <div className="bg-gradient-to-r from-orange-50 to-orange-50 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
+                <svg className="w-6 h-6 text-[#fd8e2a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              </div>
+              <h3 className="font-medium text-gray-900 mb-1">仅解锁本条</h3>
+              <p className="text-sm text-gray-500 mb-4">支付 ¥9.9 查看该职位联系方式</p>
+              
+              <button 
+                onClick={() => setShowQrModal(true)}
+                className="w-full bg-[#fd8e2a] text-white py-3 rounded-xl font-medium hover:bg-[#e57f1f] transition-colors"
+              >
+                立即解锁 ¥9.9
+              </button>
+              
+              <p className="text-xs text-gray-400 mt-3">已帮助 2,847 位译者成功对接项目</p>
+            </div>
+
             <a
               href="https://my.feishu.cn/share/base/form/shrcnQXQHrBLSUD39nqRWzTTGYg"
               target="_blank"
