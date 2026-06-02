@@ -309,32 +309,53 @@ const Jobs = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">加入圈圈社群</h3>
-            <div className="text-sm text-gray-600 space-y-2 mb-5">
-              <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业小伙伴。</p>
-              <p>推动外语人兼职实习就业找出路，定期分享行业资讯、岗位内推与职业成长案例。</p>
-            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">圈圈翻译与本地化社群</h3>
+            <p className="text-sm text-gray-500 text-center mb-4">个人会员权益</p>
 
             {/* 权益列表 */}
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#fd8e2a] font-bold">✓</span>
-                  <span>无限解锁所有职位联系方式</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#fd8e2a] font-bold">✓</span>
-                  <span>5700+ 同行交流社群</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#fd8e2a] font-bold">✓</span>
-                  <span>内部招募信息优先推送</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#fd8e2a] font-bold">✓</span>
-                  <span>700+ 行业公司红黑榜</span>
-                </li>
-              </ul>
+            <div className="bg-gray-50 rounded-lg p-4 mb-4 space-y-4">
+              {/* 更快对接客户 */}
+              <div>
+                <div className="inline-block px-3 py-1 bg-[#fd8e2a] text-white text-xs font-bold rounded-full mb-2">
+                  更快对接客户！
+                </div>
+                <p className="text-sm text-gray-700">
+                  行业红黑榜/Remote Q，涵盖700+国内外翻译与本地化公司红黑榜，包含联系渠道+价位参考+合作口碑
+                </p>
+              </div>
+
+              {/* 内部招募 & 内推 */}
+              <div>
+                <div className="inline-block px-3 py-1 bg-[#fd8e2a] text-white text-xs font-bold rounded-full mb-2">
+                  内部招募 & 内推
+                </div>
+                <p className="text-sm text-gray-700">
+                  优质直客与本地化公司内部招募，合作案例包括云鲸、科大讯飞、BLEND、创凌、舜禹、Langlink等
+                </p>
+                <p className="text-sm text-gray-700 mt-1">
+                  游戏公司内推，案例包括库洛、莉莉丝、西山居、叠纸、米哈游、悠星、鹰角等
+                </p>
+              </div>
+
+              {/* 本地化工具与资料 */}
+              <div>
+                <div className="inline-block px-3 py-1 bg-[#fd8e2a] text-white text-xs font-bold rounded-full mb-2">
+                  本地化工具与资料
+                </div>
+                <p className="text-sm text-gray-700">Trados、xbench等专业CAT&QA工具</p>
+                <p className="text-sm text-gray-700 mt-1">100+金融、医学、法律等行业术语库&记忆库+翻译书籍</p>
+                <p className="text-sm text-gray-700 mt-1">100+经验帖，覆盖翻译入门、海外客户获取维护，翻译与本地化技巧提升等</p>
+              </div>
+
+              {/* 行业交流圈 */}
+              <div>
+                <div className="inline-block px-3 py-1 bg-[#fd8e2a] text-white text-xs font-bold rounded-full mb-2">
+                  行业交流圈
+                </div>
+                <p className="text-sm text-gray-700">
+                  与兼职&自由译员、游戏公司本地化PM&语言专家、本地化技术专家、翻译公司代表交流
+                </p>
+              </div>
             </div>
 
             <button
