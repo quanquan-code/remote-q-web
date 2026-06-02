@@ -188,6 +188,7 @@ const Jobs = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('全部');
   const [showQrModal, setShowQrModal] = useState(false);
   const [showRemoteQModal, setShowRemoteQModal] = useState(false);
+  const [showPayModal, setShowPayModal] = useState(false);
 
   // 筛选选项
   const locationFilters = ['全部', '远程', '线下'];
@@ -296,8 +297,7 @@ const Jobs = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 二维码弹窗 */}
-      {/* 关于我们弹窗 */}
+      {/* 加入社群弹窗：权益说明 + 支付 */}
       {showQrModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowQrModal(false)}>
           <div className="bg-white rounded-xl p-6 max-w-sm mx-4 relative" onClick={e => e.stopPropagation()}>
@@ -309,16 +309,88 @@ const Jobs = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">关于我们</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">加入圈圈社群</h3>
             <div className="text-sm text-gray-600 space-y-2 mb-5">
               <p>圈圈翻译与本地化社群，运营5年+，汇聚5700+语言服务行业小伙伴。</p>
               <p>推动外语人兼职实习就业找出路，定期分享行业资讯、岗位内推与职业成长案例。</p>
             </div>
+
+            {/* 权益列表 */}
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <p className="text-xs text-gray-500 text-center mb-3">扫码添加圈圈微信，加入社群</p>
-              <div className="bg-gray-100 rounded-lg w-48 h-48 mx-auto flex items-center justify-center overflow-hidden">
-                <img src="/images/wechat-qr.png" alt="圈圈微信二维码" className="w-full h-full object-contain" />
-              </div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#fd8e2a] font-bold">✓</span>
+                  <span>无限解锁所有职位联系方式</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#fd8e2a] font-bold">✓</span>
+                  <span>5700+ 同行交流社群</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#fd8e2a] font-bold">✓</span>
+                  <span>内部招募信息优先推送</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#fd8e2a] font-bold">✓</span>
+                  <span>700+ 行业公司红黑榜</span>
+                </li>
+              </ul>
+            </div>
+
+            <button
+              onClick={() => {
+                setShowQrModal(false);
+                setShowPayModal(true);
+              }}
+              className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl font-semibold hover:bg-[#e57f1f] transition-colors"
+            >
+              立刻支付一年会费 ¥299
+            </button>
+            <p className="text-xs text-gray-400 text-center mt-3">付款后请添加圈圈微信，发送截图入群</p>
+          </div>
+        </div>
+      )}
+
+      {/* 支付宝付款弹窗 */}
+      {showPayModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPayModal(false)}>
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4 relative" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setShowPayModal(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-lg font-bold text-gray-900 mb-1 text-center">扫码支付 ¥299</h3>
+            <p className="text-sm text-gray-500 mb-5 text-center">圈圈翻译社群年度会员</p>
+
+            <div className="bg-gray-50 rounded-xl p-4 mb-4">
+              <img
+                src="/images/alipay-qr-299.jpg"
+                alt="支付宝收款码"
+                className="w-full rounded-lg"
+              />
+            </div>
+
+            <div className="space-y-2 text-sm text-gray-600">
+              <p className="flex items-start gap-2">
+                <span className="text-[#fd8e2a] font-bold">1</span>
+                <span>截图或长按识别二维码</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-[#fd8e2a] font-bold">2</span>
+                <span>支付宝付款 ¥299</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-[#fd8e2a] font-bold">3</span>
+                <span>添加圈圈微信，发送付款截图入群</span>
+              </p>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-gray-100 text-center">
+              <p className="text-xs text-gray-400">已帮助 2,847 位译者成功对接项目</p>
             </div>
           </div>
         </div>
