@@ -365,7 +365,7 @@ const Jobs = () => {
               }}
               className="w-full py-3 bg-[#fd8e2a] text-white rounded-xl font-semibold hover:bg-[#e57f1f] transition-colors"
             >
-              立刻支付一年会费 ¥299
+              支付会费299元/年
             </button>
             <p className="text-xs text-gray-400 text-center mt-3">付款后请添加圈圈微信，发送截图入群</p>
           </div>

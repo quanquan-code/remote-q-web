@@ -826,7 +826,7 @@ const JobDetail = () => {
                   onClick={() => setShowPayModal(true)}
                   className="block w-full bg-white text-[#fd8e2a] py-3 rounded-xl font-semibold text-center hover:bg-gray-50 transition-colors"
                 >
-                  加入社群，解锁全部
+                  支付会费299元/年
                 </button>
               </div>
             </div>
