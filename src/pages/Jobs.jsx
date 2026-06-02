@@ -367,7 +367,7 @@ const Jobs = () => {
             >
               支付会费299元/年
             </button>
-            <p className="text-xs text-gray-400 text-center mt-3">付款后请添加圈圈微信，发送截图入群</p>
+            <p className="text-xs text-gray-400 text-center mt-3">付款后请添加圈圈微信：quanquanfanyi，发送截图入群</p>
           </div>
         </div>
       )}

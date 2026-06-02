@@ -585,7 +585,7 @@ const JobDetail = () => {
             </div>
 
             <div className="mt-4 pt-4 border-t border-gray-100 text-center">
-              <p className="text-xs text-gray-400">付款后请微信联系：圈圈的翻译之路</p>
+              <p className="text-xs text-gray-400">付款后请微信联系：quanquanfanyi（圈圈的翻译之路）</p>
             </div>
           </div>
         </div>
