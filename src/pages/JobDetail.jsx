@@ -576,11 +576,11 @@ const JobDetail = () => {
               </p>
               <p className="flex items-start gap-2">
                 <span className="text-[#fd8e2a] font-bold">2</span>
-                <span>支付宝付款 ¥299</span>
+                <span>支付 ¥299</span>
               </p>
               <p className="flex items-start gap-2">
                 <span className="text-[#fd8e2a] font-bold">3</span>
-                <span>添加圈圈微信，发送付款截图入群</span>
+                <span>添加微信 quanquanfanyi，发送付款截图入群</span>
               </p>
             </div>
 
