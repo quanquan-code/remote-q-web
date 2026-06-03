@@ -1,6 +1,56 @@
 {
   "jobs": [
     {
+      "id": "rec27wComcDmf3",
+      "title": "驻场QA",
+      "company": "桔子本地化",
+      "type": [
+        "全职",
+        "外包"
+      ],
+      "location": "上海徐汇",
+      "salary": "15K",
+      "salaryNote": "",
+      "salaryRange": "15k-18k 每月",
+      "paymentCycle": "月结",
+      "languagePair": null,
+      "gameType": null,
+      "description": "本地化 LQA 测试员（短期驻场・上海） 项目概况 项目周期：1.5 个月，全程上海坐班驻场 源语言：简体中文 目标语种：英语、日语、韩语、繁体中文，每个语种 4 人，合计 16 人 用工形式：短期项目制用工，本地人 / 外籍母语人士均可入职 岗位职责 对照简体中文原文，完成对应语种游戏文本 LQA...",
+      "fullDescription": "本地化 LQA 测试员（短期驻场・上海）\n项目概况\n项目周期：1.5 个月，全程上海坐班驻场\n源语言：简体中文\n目标语种：英语、日语、韩语、繁体中文，每个语种 4 人，合计 16 人\n用工形式：短期项目制用工，本地人 / 外籍母语人士均可入职\n岗位职责\n对照简体中文原文，完成对应语种游戏文本 LQA 校验，核查译文错译、漏译、语法错误、UI 文字溢出、用词违和问题；\n核查本地化内容文化合规、地域习俗适配，修正不符合当地政策、玩家习惯的文案；\n整理问题清单、bug 台账，同步对接翻译与项目组跟进修改复测；\n配合项目进度，按时完成轮次验收。\n任职要求\n语言能力：目标语种母语水平或近母语精通，可流畅阅读、理解简体中文；\n有游戏本地化 LQA / 翻译实测相关从业经验，熟悉游戏黑话、UI 文案校验规范优先；\n能全周期在上海现场办公，到岗时间灵活，可快速入职；\n细心严谨，具备基础文档整理能力，能按规范输出质检报告。\n补充说明\n短期项目，项目结束劳务合作终止；\n薪资面议，根据语种、从业经验定价。",
+      "requirements": [],
+      "deadline": "6月15日",
+      "comments": "暂无\n\n【试译内容】\n暂时没有",
+      "contact": "wuhai@orangegame.net 13810641882",
+      "referralType": "circle",
+      "postedAt": "2026-06-03",
+      "internalOnly": false
+    },
+    {
+      "id": "rec27wFqNYZQkF",
+      "title": "德中汽车方面的本地化译员",
+      "company": "社群内部需求",
+      "type": [
+        "兼职",
+        "内部"
+      ],
+      "location": "",
+      "salary": "180-200 元/千原文词",
+      "salaryNote": "180-200 元/千原文词",
+      "salaryRange": "180-200 元/千原文词",
+      "paymentCycle": "次月底",
+      "languagePair": null,
+      "gameType": null,
+      "description": "由于我最近德语稿量激增，想寻找一到两名合作伙伴，需求如下： 1、具有多年汽车领域的德中本地化翻译经验； 2、熟练使用Trados 2022进行翻译和QA验证； 3、态度认真负责，能够及时交稿；",
+      "fullDescription": "由于我最近德语稿量激增，想寻找一到两名合作伙伴，需求如下：\n    1、具有多年汽车领域的德中本地化翻译经验；\n    2、熟练使用Trados 2022进行翻译和QA验证；\n    3、态度认真负责，能够及时交稿；",
+      "requirements": [],
+      "deadline": "长期",
+      "comments": "",
+      "contact": "微信：qy1595794787",
+      "referralType": "circle",
+      "postedAt": "2026-06-03",
+      "internalOnly": true
+    },
+    {
       "id": "rec27vN1bxcUTl",
       "title": "兼职游戏本地化译员",
       "company": "TransPerfect",
@@ -2574,8 +2624,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-06-02T21:54:22.537Z",
-    "jobCount": 75,
+    "syncedAt": "2026-06-03T21:55:55.277Z",
+    "jobCount": 77,
     "caseCount": 50
   }
 }
