@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "recvm2KM17PwOZ",
+      "title": "人才招聘专员 / Talent Acquisition Specialist",
+      "company": "Langlinking",
+      "type": [
+        "全职"
+      ],
+      "location": "苏州/成都",
+      "salary": "",
+      "salaryNote": "",
+      "salaryRange": "",
+      "paymentCycle": "",
+      "languagePair": null,
+      "gameType": null,
+      "description": "负责公司游戏本地化业务相关的兼职人才及供应商资源招聘、维护与管理，支持项目团队及时匹配合适资源，保障项目顺利交付。 工作内容： • 根据项目需求，招聘国内外翻译兼职、LQA 游戏测试兼职及相关供应商资源； • 进行简历初筛，安排试译、笔试或相关测试，并跟进完成情况； • 维护人才及供应商资源库，确保...",
+      "fullDescription": "负责公司游戏本地化业务相关的兼职人才及供应商资源招聘、维护与管理，支持项目团队及时匹配合适资源，保障项目顺利交付。\n\n工作内容：\n• 根据项目需求，招聘国内外翻译兼职、LQA 游戏测试兼职及相关供应商资源；\n• 进行简历初筛，安排试译、笔试或相关测试，并跟进完成情况；\n• 维护人才及供应商资源库，确保信息准确、完整；\n• 为项目团队提供合适的翻译、测试人员或供应商资源解决方案；\n• 跟进外部资源合作表现，开展资源质量评估与优胜劣汰管理；\n• 维护与兼职人才及供应商的长期合作关系。\n\n任职要求：\n• 本科及以上学历，英语六级以上；会日语、韩语者优先；\n• 1 年以上本地化行业供应商招聘及管理经验；\n• 了解游戏、游戏本地化、LQA 或翻译业务；\n• 具备较强的寻访能力、沟通能力、执行力和结果导向；\n• 能适应快节奏、跨文化的工作环境。",
+      "requirements": [],
+      "deadline": "",
+      "comments": "公司官网：www.langlinking.com",
+      "contact": "发送简历至 hr@langlinking.com",
+      "referralType": "circle",
+      "postedAt": "2026-06-09",
+      "internalOnly": false
+    },
+    {
       "id": "rec27wComcDmf3",
       "title": "驻场QA",
       "company": "桔子本地化",
@@ -2624,8 +2648,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-06-08T21:12:21.534Z",
-    "jobCount": 77,
+    "syncedAt": "2026-06-09T21:03:32.485Z",
+    "jobCount": 78,
     "caseCount": 50
   }
 }
