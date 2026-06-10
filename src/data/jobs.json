@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "rec27zrbKI8EZD",
+      "title": "游戏本地化译员",
+      "company": "TransPerfect",
+      "type": [
+        "兼职"
+      ],
+      "location": "上海",
+      "salary": "月薪：13-18k",
+      "salaryNote": "月薪：13-18k",
+      "salaryRange": "月薪：13-18k",
+      "paymentCycle": "完工结，45天内到账",
+      "languagePair": "简中↔日",
+      "gameType": null,
+      "description": "简中至日语/韩语-游戏本地化-base上海徐汇-邮箱联系 工作内容 1. 负责游戏内简中→日语/韩语文本的翻译与审校， 2. 依据测试用例对游戏日语/韩语本地化内容进行系统性LQA 测试，识别并记录语言问题（文本截断、语法错误、术语不一致、标点及文化适配等 3. 协助维护日语/韩语翻译记忆库与术语表...",
+      "fullDescription": "简中至日语/韩语-游戏本地化-base上海徐汇-邮箱联系\n\n工作内容\n1. 负责游戏内简中→日语/韩语文本的翻译与审校，\n2. 依据测试用例对游戏日语/韩语本地化内容进行系统性LQA 测试，识别并记录语言问题（文本截断、语法错误、术语不一致、标点及文化适配等\n3. 协助维护日语/韩语翻译记忆库与术语表，保障全局术语一致性\n4. 与本地化团队及开发团队保持沟通，协助处理翻译及流程中的疑难问题\n\n任职要求\n1. 3-5 年及以上游戏行业工作经验，有游戏本地化或 LQA测试项目经验者优先\n2. 中文母语水平；日语/韩语和英文优秀，能独立完成游戏文本翻译及bug 报告撰写\n3. 现居上海或可每日通勤至徐汇区，无需跨城出行者优先\n\n加分项\n1. 有担任本地化测试负责人（test lead）经验\n2. 本身为 ARPG 游戏玩家，对市面热门游戏有一定了解\n3. 可在10月中旬到岗\n\n项目说明\n1. 本项目为驻场兼职，需在客户上海徐汇区办公室现场办公\n2. 工作时间：周一至周五，每天 8 小时\n3. 本项目不提供工作签证\n4. 出于保密要求，客户公司名称及项目详情将在候选人完成相关协议签署后披露\n\n投递方式：\n• 邮件主题： 上海游戏本地化专员-日语/韩语\n• 邮件正文：注明期望月薪，简中至日语/韩语游戏本地化相关经验\n• 联系人：\n日语：siyou.yu@transperfect.com\n韩语：jliarokapi@transperfect.com",
+      "requirements": [],
+      "deadline": "2026年10月1",
+      "comments": "【试译内容】\n有 \n签署保密协议后可分享",
+      "contact": "日语：siyou.yu@transperfect.com\n韩语：jliarokapi@transperfect.com",
+      "referralType": "circle",
+      "postedAt": "2026-06-10",
+      "internalOnly": false
+    },
+    {
       "id": "recvm2KM17PwOZ",
       "title": "人才招聘专员 / Talent Acquisition Specialist",
       "company": "Langlinking",
@@ -2648,8 +2672,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-06-09T21:03:32.485Z",
-    "jobCount": 78,
+    "syncedAt": "2026-06-10T21:26:58.584Z",
+    "jobCount": 79,
     "caseCount": 50
   }
 }
