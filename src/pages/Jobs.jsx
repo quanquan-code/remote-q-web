@@ -518,15 +518,7 @@ const Jobs = () => {
         <div className={`flex gap-6 transition-all ${!isSidebarOpen ? 'justify-center' : ''}`}>
           {/* 左侧导航 */}
           <div className={`shrink-0 transition-all duration-300 ${isSidebarOpen ? 'w-64 space-y-4' : 'w-0 overflow-hidden'}`}>
-            {/* 收起/展开按钮（在导航顶部） */}
             <div className="bg-white rounded-xl overflow-hidden relative">
-              <button
-                onClick={() => setIsSidebarOpen(false)}
-                className={`absolute top-2 right-2 z-10 p-1 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-all ${!isSidebarOpen ? 'hidden' : ''}`}
-                title="收起导航"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
               {/* 导航项 */}
               {navItems.map(item => (
                 <button
@@ -570,6 +562,16 @@ const Jobs = () => {
               >
                 <span>Remote Q</span>
                 <span className="text-xs text-gray-400">远程工作的大众点评</span>
+              </button>
+            </div>
+            {/* 收起按钮（导航栏下方居中） */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                title="收起导航"
+              >
+                <ChevronLeft className="w-4 h-4" />
               </button>
             </div>
           </div>
