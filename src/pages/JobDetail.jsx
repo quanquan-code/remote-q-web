@@ -32,6 +32,7 @@ function applyOverrides(jobs) {
       ...(o.comments !== undefined && { comments: o.comments }),
       ...(o.deadline !== undefined && { deadline: o.deadline }),
       ...(o.status !== undefined && { status: o.status }),
+      ...(o.visibility !== undefined && { visibility: o.visibility }),
       ...(o.caseStudies !== undefined && { caseStudies: o.caseStudies }),
       ...(o.adminNote !== undefined && { adminNote: o.adminNote }),
     };
@@ -463,6 +464,19 @@ const JobDetail = () => {
     );
   }
 
+  // 已下架岗位不可查看
+  const isHidden = job.visibility === 'hidden' || job.hidden;
+  if (isHidden) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-500 mb-4">该岗位已下架</p>
+          <Link to="/" className="text-sm text-gray-900 underline">返回岗位列表</Link>
+        </div>
+      </div>
+    );
+  }
+
   // 已过期岗位不可查看
   const isExpired = job.status === 'expired' || job.deadline === '已到期' || job.deadline === '已过期' || job.deadline === '已截止';
   if (isExpired) {
@@ -652,12 +666,37 @@ const JobDetail = () => {
                     长期招募
                   </span>
                 )}
-                {/* 全职/正编且非内部 → 公开标签 */}
-                {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
-                  <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
-                    公开
-                  </span>
-                )}
+                {/* visibility 标签 */}
+                {(() => {
+                  const vis = job.visibility ?? 'auto';
+                  if (vis === 'public') return (
+                    <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                      公开
+                    </span>
+                  );
+                  if (vis === 'internal') return (
+                    <span className="px-2 py-1 rounded-md text-xs font-medium bg-orange-500 text-white">
+                      内部
+                    </span>
+                  );
+                  if (vis === 'hidden') return (
+                    <span className="px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-400">
+                      不显示
+                    </span>
+                  );
+                  // auto: 兼职=内部 / 全职=公开
+                  const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
+                  if (isFullTime) return (
+                    <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                      公开
+                    </span>
+                  );
+                  return (
+                    <span className="px-2 py-1 rounded-md text-xs font-medium bg-orange-500 text-white">
+                      内部
+                    </span>
+                  );
+                })()}
               </div>
             </div>
           </div>

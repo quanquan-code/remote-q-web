@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText } from 'lucide-react';
+import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import rawData from '../data/jobs.json';
 const rawJobsData = rawData.jobs || rawData;
@@ -33,8 +33,10 @@ function applyOverrides(jobs) {
       ...(o.location !== undefined && { location: o.location }),
       ...(o.type !== undefined && { type: o.type }),
       ...(o.referralType !== undefined && { referralType: o.referralType }),
+      ...(o.visibility !== undefined && { visibility: o.visibility }),
       ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
       ...(o.status !== undefined && { status: o.status }),
+      ...(o.visibility !== undefined && { visibility: o.visibility }),
     };
     // referralType 选「仅限内部」时，自动补上「内部」标签
     if (result.referralType === 'internal' && !result.type?.includes('内部')) {
@@ -189,6 +191,7 @@ const Jobs = () => {
   const [showQrModal, setShowQrModal] = useState(false);
   const [showRemoteQModal, setShowRemoteQModal] = useState(false);
   const [showPayModal, setShowPayModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // 筛选选项
   const locationFilters = ['全部', '远程', '线下'];
@@ -199,8 +202,8 @@ const Jobs = () => {
   const filteredJobs = useMemo(() => {
     let jobs = jobsData;
     
-    // 过滤已隐藏岗位
-    jobs = jobs.filter(job => !job.hidden);
+    // 过滤已隐藏岗位（hidden 或 visibility === 'hidden'）
+    jobs = jobs.filter(job => !job.hidden && (job.visibility !== 'hidden'));
     
     // 左侧导航筛选
     if (selectedNav === '远程工作') {
@@ -231,12 +234,28 @@ const Jobs = () => {
       }
     }
     
-    // 兼职/全职/外包/正编筛选
+    // 兼职/全职/外包/正编/内部/公开筛选
     if (selectedType !== '全部') {
       if (selectedType === '内部') {
-        jobs = jobs.filter(job => job.type?.includes('内部'));
+        jobs = jobs.filter(job => {
+          const vis = job.visibility ?? 'auto';
+          if (vis === 'internal') return true;
+          if (vis === 'public') return false;
+          if (vis === 'hidden') return false;
+          // auto: 兼职=内部 / 全职=公开
+          const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
+          return !isFullTime;
+        });
       } else if (selectedType === '公开') {
-        jobs = jobs.filter(job => job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部'));
+        jobs = jobs.filter(job => {
+          const vis = job.visibility ?? 'auto';
+          if (vis === 'public') return true;
+          if (vis === 'internal') return false;
+          if (vis === 'hidden') return false;
+          // auto: 兼职=内部 / 全职=公开
+          const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
+          return isFullTime;
+        });
       } else {
         jobs = jobs.filter(job => job.type?.some(t => t.includes(selectedType)));
       }
@@ -497,11 +516,18 @@ const Jobs = () => {
           </p>
         </div>
 
-        <div className="flex gap-6">
+        <div className={`flex gap-6 transition-all ${!isSidebarOpen ? 'justify-center' : ''}`}>
           {/* 左侧导航 */}
-          <div className="w-64 shrink-0 space-y-4">
-            {/* 导航 + CTA 统一卡片 */}
-            <div className="bg-white rounded-xl overflow-hidden">
+          <div className={`shrink-0 transition-all duration-300 ${isSidebarOpen ? 'w-64 space-y-4' : 'w-0 overflow-hidden'}`}>
+            {/* 收起/展开按钮（在导航顶部） */}
+            <div className="bg-white rounded-xl overflow-hidden relative">
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className={`absolute top-2 right-2 z-10 p-1 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-all ${!isSidebarOpen ? 'hidden' : ''}`}
+                title="收起导航"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
               {/* 导航项 */}
               {navItems.map(item => (
                 <button
@@ -549,8 +575,21 @@ const Jobs = () => {
             </div>
           </div>
 
+          {/* 收起时的展开按钮 */}
+          {!isSidebarOpen && (
+            <div className="shrink-0 w-10 flex flex-col items-center py-4 transition-all duration-300">
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                title="展开导航"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+
           {/* 右侧职位列表 */}
-          <div className="flex-1">
+          <div className={`transition-all duration-300 ${isSidebarOpen ? 'flex-1' : 'max-w-4xl w-full'}`}>
             {/* 筛选标签 */}
             <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
               <div className="flex flex-wrap gap-4">
@@ -673,12 +712,37 @@ const Jobs = () => {
                                 正编
                               </span>
                             )}
-                            {/* 全职/正编岗位且非内部 → 公开标签 */}
-                            {job.type?.some(t => t.includes('全职') || t.includes('正编')) && !job.type?.includes('内部') && (
-                              <span className="px-2 py-0.5 rounded text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
-                                公开
-                              </span>
-                            )}
+                            {/* visibility 标签 */}
+                            {(() => {
+                              const vis = job.visibility ?? 'auto';
+                              if (vis === 'public') return (
+                                <span className="px-2 py-0.5 rounded text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                                  公开
+                                </span>
+                              );
+                              if (vis === 'internal') return (
+                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-orange-500 text-white">
+                                  内部
+                                </span>
+                              );
+                              if (vis === 'hidden') return (
+                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400">
+                                  不显示
+                                </span>
+                              );
+                              // auto: 兼职=内部 / 全职=公开
+                              const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
+                              if (isFullTime) return (
+                                <span className="px-2 py-0.5 rounded text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600">
+                                  公开
+                                </span>
+                              );
+                              return (
+                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-orange-500 text-white">
+                                  内部
+                                </span>
+                              );
+                            })()}
                             {/* 语种标签 */}
                             {extractLanguages(job).map(lang => (
                               <span key={lang} className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">

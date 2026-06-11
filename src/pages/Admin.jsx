@@ -160,6 +160,7 @@ function exportJobsJson(overrides) {
       ...(ov.fullDescription !== undefined && { fullDescription: ov.fullDescription }),
       ...(ov.requirements !== undefined && { requirements: ov.requirements }),
       ...(ov.referralType !== undefined && { referralType: ov.referralType }),
+      ...(ov.visibility !== undefined && { visibility: ov.visibility }),
     };
   });
   return JSON.stringify(merged, null, 2);
@@ -334,6 +335,10 @@ const Admin = () => {
   };
   const bulkShow = () => {
     selectedIds.forEach(id => updateField(id, 'hidden', false));
+    setSelectedIds(new Set());
+  };
+  const bulkVisibility = (val) => {
+    selectedIds.forEach(id => updateField(id, 'visibility', val));
     setSelectedIds(new Set());
   };
   const bulkFilled = () => {
@@ -608,6 +613,15 @@ const Admin = () => {
                     <button onClick={bulkShow} className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs hover:bg-gray-200">
                       批量显示
                     </button>
+                    <button onClick={() => bulkVisibility('public')} className="px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-xs hover:bg-green-100">
+                      批量公开
+                    </button>
+                    <button onClick={() => bulkVisibility('internal')} className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs hover:bg-orange-100">
+                      批量内部
+                    </button>
+                    <button onClick={() => bulkVisibility('hidden')} className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs hover:bg-gray-200">
+                      批量不显示
+                    </button>
                     <button onClick={bulkUrgent} className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs hover:bg-orange-100">
                       批量急招
                     </button>
@@ -718,6 +732,26 @@ const Admin = () => {
                                 ● 在招
                               </span>
                             );
+                          })()}
+                          {/* visibility 标签 */}
+                          {(() => {
+                            const vis = overrides[job.id]?.visibility ?? job.visibility ?? 'auto';
+                            if (vis === 'public') return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-600 mt-1">
+                                🟢 公开
+                              </span>
+                            );
+                            if (vis === 'internal') return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-600 mt-1">
+                                🟠 内部
+                              </span>
+                            );
+                            if (vis === 'hidden') return (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500 mt-1">
+                                ⚫ 不显示
+                              </span>
+                            );
+                            return null;
                           })()}
                         </div>
 
@@ -915,6 +949,16 @@ const Admin = () => {
                                 <option value="filled">✅ 已招到</option>
                                 <option value="expired">⏰ 已到期</option>
                               </select>
+                              <select
+                                value={overrides[job.id]?.visibility ?? job.visibility ?? 'auto'}
+                                onChange={e => updateField(job.id, 'visibility', e.target.value)}
+                                className="w-full px-2 py-1.5 border border-gray-200 rounded text-sm outline-none focus:border-gray-400"
+                              >
+                                <option value="auto">自动（兼职=内部 / 全职=公开）</option>
+                                <option value="public">🟢 公开</option>
+                                <option value="internal">🟠 内部</option>
+                                <option value="hidden">⚫ 不显示</option>
+                              </select>
                               <input
                                 type="text"
                                 value={overrides[job.id]?.deadline ?? job.deadline ?? ''}
@@ -935,6 +979,27 @@ const Admin = () => {
                           {/* 快捷状态按钮 */}
                           {!isEditing && (
                             <>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'visibility', 'public'); }}
+                                className="px-2 py-1 text-[10px] bg-green-50 text-green-700 rounded hover:bg-green-100"
+                                title="标记公开"
+                              >
+                                🟢
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'visibility', 'internal'); }}
+                                className="px-2 py-1 text-[10px] bg-orange-50 text-orange-700 rounded hover:bg-orange-100"
+                                title="标记内部"
+                              >
+                                🟠
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); updateField(job.id, 'visibility', 'hidden'); }}
+                                className="px-2 py-1 text-[10px] bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                                title="标记不显示"
+                              >
+                                ⚫
+                              </button>
                               <button
                                 onClick={(e) => { e.stopPropagation(); updateField(job.id, 'deadline', '已招到'); }}
                                 className="px-2 py-1 text-[10px] bg-green-50 text-green-700 rounded hover:bg-green-100"
