@@ -617,7 +617,7 @@ const Admin = () => {
                       批量公开
                     </button>
                     <button onClick={() => bulkVisibility('internal')} className="px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs hover:bg-orange-100">
-                      批量内部
+                      批量社群内部
                     </button>
                     <button onClick={() => bulkVisibility('hidden')} className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs hover:bg-gray-200">
                       批量不显示
@@ -737,13 +737,13 @@ const Admin = () => {
                           {(() => {
                             const vis = overrides[job.id]?.visibility ?? job.visibility ?? 'auto';
                             if (vis === 'public') return (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-600 mt-1">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-500 text-white mt-1">
                                 🟢 公开
                               </span>
                             );
                             if (vis === 'internal') return (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-600 mt-1">
-                                🟠 内部
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-orange-500 text-white mt-1">
+                                🟠 社群内部
                               </span>
                             );
                             if (vis === 'hidden') return (
@@ -956,7 +956,7 @@ const Admin = () => {
                               >
                                 <option value="auto">自动（兼职=内部 / 全职=公开）</option>
                                 <option value="public">🟢 公开</option>
-                                <option value="internal">🟠 内部</option>
+                                <option value="internal">🟠 社群内部</option>
                                 <option value="hidden">⚫ 不显示</option>
                               </select>
                               <input
@@ -989,7 +989,7 @@ const Admin = () => {
                               <button
                                 onClick={(e) => { e.stopPropagation(); updateField(job.id, 'visibility', 'internal'); }}
                                 className="px-2 py-1 text-[10px] bg-orange-50 text-orange-700 rounded hover:bg-orange-100"
-                                title="标记内部"
+                                title="标记社群内部"
                               >
                                 🟠
                               </button>

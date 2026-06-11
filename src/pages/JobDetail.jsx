@@ -651,7 +651,7 @@ const JobDetail = () => {
                     {job.location}
                   </span>
                 )}
-                {job.type?.map(t => (
+                {job.type?.filter(t => t !== '内部').map(t => (
                   <span key={t} className={`px-2 py-1 rounded-md text-xs font-medium ${typeColorMap[t] || 'border border-gray-200 bg-gray-50 text-gray-600'}`}>
                     {t}
                   </span>
@@ -666,17 +666,17 @@ const JobDetail = () => {
                     长期招募
                   </span>
                 )}
-                {/* visibility 标签 */}
+                {/* visibility 标签（统一控制公开/社群内部） */}
                 {(() => {
                   const vis = job.visibility ?? 'auto';
                   if (vis === 'public') return (
-                    <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                    <span className="px-2 py-1 rounded-md text-xs font-medium bg-green-500 text-white">
                       公开
                     </span>
                   );
                   if (vis === 'internal') return (
                     <span className="px-2 py-1 rounded-md text-xs font-medium bg-orange-500 text-white">
-                      内部
+                      社群内部
                     </span>
                   );
                   if (vis === 'hidden') return (
@@ -684,16 +684,16 @@ const JobDetail = () => {
                       不显示
                     </span>
                   );
-                  // auto: 兼职=内部 / 全职=公开
+                  // auto: 兼职=社群内部 / 全职=公开
                   const isFullTime = job.type?.some(t => t.includes('全职') || t.includes('正编'));
                   if (isFullTime) return (
-                    <span className="px-2 py-1 rounded-md text-xs font-medium border border-green-200 bg-green-50 text-green-600">
+                    <span className="px-2 py-1 rounded-md text-xs font-medium bg-green-500 text-white">
                       公开
                     </span>
                   );
                   return (
                     <span className="px-2 py-1 rounded-md text-xs font-medium bg-orange-500 text-white">
-                      内部
+                      社群内部
                     </span>
                   );
                 })()}
