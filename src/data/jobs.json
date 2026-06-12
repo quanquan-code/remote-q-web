@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "rec27Ah55W1hLO",
+      "title": "台繁/韩语游戏本地化",
+      "company": "吉比特新游，欧美未上线，严格保密",
+      "type": [
+        "兼职"
+      ],
+      "location": "远程",
+      "salary": "自报价",
+      "salaryNote": "自报价",
+      "salaryRange": "自报价",
+      "paymentCycle": "月结",
+      "languagePair": null,
+      "gameType": null,
+      "description": "工作类型：兼职（线上），长期合作 领域：游戏、修仙、仙侠 语言对：简体中文 - 台湾繁体 / 韩语 任务类型：翻译 CAT工具要求：memoQ/Trados/phrase 项目时间安排：长期项目，目前已在进行中 工作要求： 1. 英语/台繁/韩语母语者或语言专业背景 2. 3-5年游戏本地化经验 3...",
+      "fullDescription": "工作类型：兼职（线上），长期合作\n领域：游戏、修仙、仙侠\n语言对：简体中文 - 台湾繁体 / 韩语\n任务类型：翻译\nCAT工具要求：memoQ/Trados/phrase\n项目时间安排：长期项目，目前已在进行中\n \n工作要求：\n1. 英语/台繁/韩语母语者或语言专业背景\n2. 3-5年游戏本地化经验\n3. 熟悉修仙、仙侠或武侠等游戏小说，有相关领域翻译经验者优先\n4. 需通过免费测试（试译）\n5. 需与公司签署NDA协议\n \n如果您对此项目感兴趣，投递时请附一份近期更新的简历，如有相关语言或翻译类证书也一并附上。\n投递简历上请说明：\n1. 您在游戏领域的翻译经验/项目经历\n2. 您期望的费率（元/千字原文）\n3. 每日产能，以便我们评估工作时间\n \n",
+      "requirements": [],
+      "deadline": "银行转账",
+      "comments": "",
+      "contact": "简历投递邮箱：qiuty@g-bits.com（邮件主题请备注：语种+游戏本地化）\n投递后请关注邮箱，简历过筛后会通过邮件联系和安排测试，有任何疑问都可以在邮件中询问～",
+      "referralType": "circle",
+      "postedAt": "2026-06-12",
+      "internalOnly": false
+    },
+    {
       "id": "rec27zrbKI8EZD",
       "title": "游戏本地化译员",
       "company": "TransPerfect",
@@ -2672,8 +2696,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-06-11T21:26:48.480Z",
-    "jobCount": 79,
+    "syncedAt": "2026-06-12T21:03:56.689Z",
+    "jobCount": 80,
     "caseCount": 50
   }
 }
