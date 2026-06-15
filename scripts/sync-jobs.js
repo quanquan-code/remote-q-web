@@ -402,7 +402,7 @@ function extractSalary(salaryField, jobType, title, fullDesc) {
   const texts = salaryField.map(s => typeof s === 'string' ? s : s?.text || '').filter(Boolean);
   if (!texts.length) return { salary: '', benefits: '', salaryNote: '' };
   const raw = texts.join(' ').replace(/\s+/g, ' ').trim();
-  if (raw.includes('私聊') || raw.includes('面议') || raw.includes('详谈')) return { salary: '', benefits: '', salaryNote: raw };
+  if (raw.includes('私聊') || raw.includes('面议') || raw.includes('详谈') || raw.includes('自报价')) return { salary: '', benefits: '', salaryNote: raw };
 
   // 如果文本不含明显薪资关键词且过长，视为说明文字而非薪资
   const salaryKeywords = ['元', '¥', '$', 'usd', 'k/', '/月', '/小时', '/天', '/千字', '千字', '时薪', '日薪', '月薪', '底薪', '提成', '佣金', '薪', '元/', '块', 'rmb'];

@@ -757,7 +757,7 @@ const Jobs = () => {
                       <div className="text-right shrink-0 ml-4">
                         {job.salary && (
                           <div className="text-base font-semibold text-gray-900" title={job.salary}>
-                            {job.salary.length > 10 ? job.salary.slice(0, 10) + '…' : job.salary}
+                            {job.salary.length > 20 ? job.salary.slice(0, 20) + '…' : job.salary}
                           </div>
                         )}
                         <div className="flex items-center justify-end gap-1 mt-1 text-xs text-gray-400">
