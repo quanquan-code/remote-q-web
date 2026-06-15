@@ -8,7 +8,7 @@
         "兼职"
       ],
       "location": "远程",
-      "salary": "自报价",
+      "salary": "",
       "salaryNote": "自报价",
       "salaryRange": "自报价",
       "paymentCycle": "月结",
@@ -1318,7 +1318,7 @@
         "内部"
       ],
       "location": "",
-      "salary": "译员自报价",
+      "salary": "",
       "salaryNote": "译员自报价",
       "salaryRange": "译员自报价",
       "paymentCycle": "和对接人沟通",
@@ -2696,7 +2696,7 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-06-14T20:22:21.057Z",
+    "syncedAt": "2026-06-15T21:47:24.117Z",
     "jobCount": 80,
     "caseCount": 50
   }
