@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, MapPin, Clock, Globe, Building2, Briefcase, Users, Plus, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import rawData from '../data/jobs.json';
+import serverOverrides from '../data/overrides.json';
 const rawJobsData = rawData.jobs || rawData;
 
 // 手动新增的岗位（后台写入）
@@ -18,25 +19,26 @@ function getOverrides() {
   catch { return {}; }
 }
 function applyOverrides(jobs) {
-  const ov = getOverrides();
+  const localOv = getOverrides();
+  const serverOv = serverOverrides || {};
+
   return jobs.map(job => {
-    const o = ov[job.id];
-    if (!o) return job;
-    const result = {
-      ...job,
-      ...(o.hidden !== undefined && { hidden: o.hidden }),
-      ...(o.title !== undefined && { title: o.title }),
-      ...(o.company !== undefined && { company: o.company }),
-      ...(o.salary !== undefined && { salary: o.salary }),
-      ...(o.salaryNote !== undefined && { salaryNote: o.salaryNote }),
-      ...(o.deadline !== undefined && { deadline: o.deadline }),
-      ...(o.location !== undefined && { location: o.location }),
-      ...(o.type !== undefined && { type: o.type }),
-      ...(o.referralType !== undefined && { referralType: o.referralType }),
-      ...(o.fullDescription !== undefined && { fullDescription: o.fullDescription }),
-      ...(o.status !== undefined && { status: o.status }),
-      ...(o.visibility !== undefined && { visibility: o.visibility }),
-    };
+    const o = localOv[job.id];
+    const s = serverOv[job.id];
+    if (!o && !s) return job;
+
+    // 优先级：localStorage > serverOverrides > jobs.json
+    const result = { ...job };
+    if (s) {
+      Object.keys(s).forEach(key => {
+        if (s[key] !== undefined) result[key] = s[key];
+      });
+    }
+    if (o) {
+      Object.keys(o).forEach(key => {
+        if (o[key] !== undefined) result[key] = o[key];
+      });
+    }
     // referralType 选「仅限内部」时，自动补上「内部」标签
     if (result.referralType === 'internal' && !result.type?.includes('内部')) {
       result.type = [...(result.type || []), '内部'];

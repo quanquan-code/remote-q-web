@@ -166,9 +166,9 @@ function exportJobsJson(overrides) {
   return JSON.stringify(merged, null, 2);
 }
 
-async function publishToGitHub(token, contentJson) {
+async function publishToGitHub(token, overrides) {
   const repo = 'quanquan-code/remote-q-web';
-  const path = 'src/data/jobs.json';
+  const path = 'src/data/overrides.json';
   const apiBase = 'https://api.github.com';
 
   const getRes = await fetch(`${apiBase}/repos/${repo}/contents/${path}`, {
@@ -177,6 +177,7 @@ async function publishToGitHub(token, contentJson) {
   if (!getRes.ok) throw new Error('获取文件信息失败，请检查 Token 权限');
   const fileInfo = await getRes.json();
 
+  const contentJson = JSON.stringify(overrides, null, 2);
   const putRes = await fetch(`${apiBase}/repos/${repo}/contents/${path}`, {
     method: 'PUT',
     headers: {
@@ -184,7 +185,7 @@ async function publishToGitHub(token, contentJson) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      message: `admin: update jobs.json via dashboard`,
+      message: `admin: update overrides.json via dashboard`,
       content: btoa(unescape(encodeURIComponent(contentJson))),
       sha: fileInfo.sha,
     }),
@@ -493,9 +494,12 @@ const Admin = () => {
     setPublishing(true);
     setPublishMsg(null);
     try {
-      const json = exportJobsJson(overrides);
-      await publishToGitHub(token, json);
-      setPublishMsg({ type: 'success', text: '发布成功！Vercel 正在自动部署，约 1-2 分钟后生效' });
+      // 只发布 overrides.json（Admin 修改优先级高于飞书）
+      await publishToGitHub(token, overrides);
+      setPublishMsg({ type: 'success', text: '发布成功！overrides.json 已推送，Vercel 将自动部署，约 1-2 分钟后生效。下次飞书同步时，这些修改仍会保留。' });
+      // 发布后清空 localStorage overrides（已发布到服务器）
+      localStorage.removeItem(STORAGE_KEY);
+      setOverrides({});
     } catch (err) {
       setPublishMsg({ type: 'error', text: err.message });
     } finally {

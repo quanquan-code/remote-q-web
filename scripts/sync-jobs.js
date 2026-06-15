@@ -844,22 +844,41 @@ async function main() {
   const jobs = records.map((r, i) => processRecord(r, i));
   jobs.sort((a, b) => b.postedAt.localeCompare(a.postedAt));
 
+  // 读取 overrides.json（Admin 后台修改，优先级高于飞书）
+  let overrides = {};
+  try {
+    const overridesPath = path.join(__dirname, '..', 'src', 'data', 'overrides.json');
+    if (fs.existsSync(overridesPath)) {
+      overrides = JSON.parse(fs.readFileSync(overridesPath, 'utf-8'));
+      console.log(`📋 Loaded overrides for ${Object.keys(overrides).length} jobs`);
+    }
+  } catch (err) {
+    console.warn('⚠️ Failed to load overrides:', err.message);
+  }
+
+  // 应用 overrides（Admin 修改优先级高于飞书）
+  const mergedJobs = jobs.map(job => {
+    const ov = overrides[job.id];
+    if (!ov) return job;
+    return { ...job, ...ov };
+  });
+
   // 写入岗位数据（包含案例库）
   const outPath = path.join(__dirname, '..', 'src', 'data', 'jobs.json');
   const output = {
-    jobs,
+    jobs: mergedJobs,
     caseLibrary: cases,
     _meta: {
       syncedAt: new Date().toISOString(),
-      jobCount: jobs.length,
+      jobCount: mergedJobs.length,
       caseCount: cases.length,
     }
   };
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2), 'utf-8');
 
-  const internalCount = jobs.filter(j => j.internalOnly).length;
-  console.log(`✅ Written ${jobs.length} jobs + ${cases.length} cases to ${outPath}`);
-  console.log(`   Public: ${jobs.length - internalCount}`);
+  const internalCount = mergedJobs.filter(j => j.internalOnly).length;
+  console.log(`✅ Written ${mergedJobs.length} jobs + ${cases.length} cases to ${outPath}`);
+  console.log(`   Public: ${mergedJobs.length - internalCount}`);
   console.log(`   Internal (anonymized): ${internalCount}`);
 }
 
