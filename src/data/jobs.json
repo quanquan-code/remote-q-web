@@ -1,6 +1,31 @@
 {
   "jobs": [
     {
+      "id": "rec27EqxvWZEbi",
+      "title": "巴西ai短剧本土化翻译",
+      "company": "个人",
+      "type": [
+        "全职",
+        "外包"
+      ],
+      "location": "远程",
+      "salary": "100K",
+      "salaryNote": "",
+      "salaryRange": "100/条",
+      "paymentCycle": "月结",
+      "languagePair": null,
+      "gameType": null,
+      "description": "懂巴西的葡萄牙语，中文ai短剧剧本的巴西本土化改编、转译后视频的语言内容把关",
+      "fullDescription": "懂巴西的葡萄牙语，中文ai短剧剧本的巴西本土化改编、转译后视频的语言内容把关",
+      "requirements": [],
+      "deadline": "7.1",
+      "comments": "",
+      "contact": "CYJ2538391345",
+      "referralType": "circle",
+      "postedAt": "2026-06-23",
+      "internalOnly": false
+    },
+    {
       "id": "rec27BHUDVacH4",
       "title": "银行金融项目-UX Writer EN",
       "company": "上海艺土界面设计有限公司（ETU Design）",
@@ -2720,8 +2745,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-06-22T21:33:46.685Z",
-    "jobCount": 81,
+    "syncedAt": "2026-06-23T21:06:33.978Z",
+    "jobCount": 82,
     "caseCount": 50
   }
 }
