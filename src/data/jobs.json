@@ -1,6 +1,31 @@
 {
   "jobs": [
     {
+      "id": "rec27LbXzVBsIe",
+      "title": "帮大型外企招聘英语现场翻译兼销售助理",
+      "company": "北京天地方圆翻译公司",
+      "type": [
+        "全职",
+        "外包"
+      ],
+      "location": "",
+      "salary": "10-13K",
+      "salaryNote": "",
+      "salaryRange": "10000-13000元/月",
+      "paymentCycle": "按月结算。",
+      "languagePair": null,
+      "gameType": null,
+      "description": "要求： 1. 最好熟悉石化专业。 2. 能做笔译，也能做会议、谈判口译。 3. 除翻译外，兼任销售助理工作，为团队提供支持。 4. 诚信、踏实、细致、认真，能长期工作。 5. 长居北京者优先。",
+      "fullDescription": "要求：\n\n1. 最好熟悉石化专业。\n\n2. 能做笔译，也能做会议、谈判口译。\n\n3. 除翻译外，兼任销售助理工作，为团队提供支持。\n\n4. 诚信、踏实、细致、认真，能长期工作。\n\n5. 长居北京者优先。",
+      "requirements": [],
+      "deadline": "2026.7.30",
+      "comments": "",
+      "contact": "微信：sunnypan2020",
+      "referralType": "circle",
+      "postedAt": "2026-07-10",
+      "internalOnly": false
+    },
+    {
       "id": "rec27EqxvWZEbi",
       "title": "巴西ai短剧本土化翻译",
       "company": "个人",
@@ -2745,8 +2770,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-07-09T20:52:04.972Z",
-    "jobCount": 82,
+    "syncedAt": "2026-07-10T20:37:25.657Z",
+    "jobCount": 83,
     "caseCount": 50
   }
 }
