@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "rec27MIWjoyLFV",
+      "title": "中韩中泰游戏本地化专家",
+      "company": "上海创凌翻译",
+      "type": [
+        "兼职"
+      ],
+      "location": "远程",
+      "salary": "按原文中文字计费，感兴趣的译员可先联系报价",
+      "salaryNote": "按原文中文字计费，感兴趣的译员可先联系报价",
+      "salaryRange": "按原文中文字计费，感兴趣的译员可先联系报价",
+      "paymentCycle": "月结 银行转账",
+      "languagePair": "简中↔韩",
+      "gameType": null,
+      "description": "领域：二次元开放世界RPG游戏本地化 工具：trados，Phrase等相关翻译辅助软件 工作形式：线上远程合作 要求： 1、韩语泰语母语水平，有游戏翻译经验（需要能提供以往做过的项目案例） 2、熟悉游戏专业词汇，语言表达自然流畅 3、能结合游戏背景准确理解原文，无错译漏译、无基础语法错误 5、建立...",
+      "fullDescription": "领域：二次元开放世界RPG游戏本地化\n工具：trados，Phrase等相关翻译辅助软件\n工作形式：线上远程合作\n\n要求：\n1、韩语泰语母语水平，有游戏翻译经验（需要能提供以往做过的项目案例）\n2、熟悉游戏专业词汇，语言表达自然流畅\n3、能结合游戏背景准确理解原文，无错译漏译、无基础语法错误\n5、建立合作前需先试译，试译稿件400字左右",
+      "requirements": [],
+      "deadline": "2026年底",
+      "comments": "首批项目预计10月初启动，字数约250w",
+      "contact": "邮箱联系:carmen.chen.sh@linguitronics.com",
+      "referralType": "circle",
+      "postedAt": "2026-07-14",
+      "internalOnly": false
+    },
+    {
       "id": "recvpeaQ8lRUVs",
       "title": "Talent Community Supervisor / 资源主管",
       "company": "上海凌科信息技术有限公司（LangLink）",
@@ -2794,8 +2818,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-07-13T20:19:33.458Z",
-    "jobCount": 84,
+    "syncedAt": "2026-07-14T20:18:18.051Z",
+    "jobCount": 85,
     "caseCount": 50
   }
 }
