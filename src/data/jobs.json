@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "rec27PTHAv13eQ",
+      "title": "阿拉伯语和沙特阿拉伯语  语音标注-正式项目",
+      "company": "空谷回响（深圳)信息科技",
+      "type": [
+        "兼职"
+      ],
+      "location": "",
+      "salary": "按照音频时长结算 240元/音频有效小时",
+      "salaryNote": "按照音频时长结算 240元/音频有效小时",
+      "salaryRange": "按照音频时长结算 240元/音频有效小时",
+      "paymentCycle": "1-2个月",
+      "languagePair": null,
+      "gameType": null,
+      "description": "阿拉伯语和沙特阿拉伯语 语音标注-正式项目 1、量级： 阿拉伯语11小时； 沙特阿拉伯语11小时； 2、人员画像：标准阿拉伯语和沙特阿拉伯语（利雅得（Riyadh）内志方言 Najdi）的中国人学习者，必须有阿语标注经验； 3、需要人数： 每个语种1-2人；",
+      "fullDescription": "阿拉伯语和沙特阿拉伯语  语音标注-正式项目\n\n1、量级：\n阿拉伯语11小时；\n沙特阿拉伯语11小时；\n2、人员画像：标准阿拉伯语和沙特阿拉伯语（利雅得（Riyadh）内志方言 Najdi）的中国人学习者，必须有阿语标注经验；\n3、需要人数：\n每个语种1-2人；",
+      "requirements": [],
+      "deadline": "7月末",
+      "comments": "",
+      "contact": "Wechat: 18286125337",
+      "referralType": "circle",
+      "postedAt": "2026-07-22",
+      "internalOnly": false
+    },
+    {
       "id": "rec27OqlHOymLg",
       "title": "英译中本地化译员",
       "company": "社群内部需求",
@@ -2843,8 +2867,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-07-21T20:21:34.414Z",
-    "jobCount": 86,
+    "syncedAt": "2026-07-22T20:16:08.809Z",
+    "jobCount": 87,
     "caseCount": 50
   }
 }
