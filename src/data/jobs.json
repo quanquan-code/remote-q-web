@@ -1,6 +1,31 @@
 {
   "jobs": [
     {
+      "id": "rec27Zu6YI6fPn",
+      "title": "驻场英语翻译-英语口译",
+      "company": "社群内部需求",
+      "type": [
+        "兼职",
+        "内部"
+      ],
+      "location": "北京",
+      "salary": "",
+      "salaryNote": "面议",
+      "salaryRange": "面议",
+      "paymentCycle": "面议",
+      "languagePair": null,
+      "gameType": null,
+      "description": "1.时间：8月24日至8月30日上午8点半至18点（7天）； 2.作为外方与中方的实时转译； 3.专业领域：创意设计、工程设计",
+      "fullDescription": "1.时间：8月24日至8月30日上午8点半至18点（7天）；\n2.作为外方与中方的实时转译；\n3.专业领域：创意设计、工程设计",
+      "requirements": [],
+      "deadline": "2026年7月21日",
+      "comments": "需要7天全职英语翻译，需要每天准时公司【梦客豪思(北京)环境景观工程有限公司】\n公司所在位置：北京市通州区侨商中心中心2号楼204",
+      "contact": "感兴趣的老师，请联系梦客-段总（段康），电话13260470353",
+      "referralType": "circle",
+      "postedAt": "2026-08-15",
+      "internalOnly": true
+    },
+    {
       "id": "rec27SKIEeGWmF",
       "title": "展会翻译合作伙伴-海外商务拓展",
       "company": "杭州摩天实验科技咨询有限公司",
@@ -2916,8 +2941,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-08-14T19:50:46.926Z",
-    "jobCount": 89,
+    "syncedAt": "2026-08-15T19:26:52.661Z",
+    "jobCount": 90,
     "caseCount": 50
   }
 }
