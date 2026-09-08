@@ -1,6 +1,30 @@
 {
   "jobs": [
     {
+      "id": "rec288ZvWW2mjI",
+      "title": "兼职英日翻译招募｜金融方向",
+      "company": "个人",
+      "type": [
+        "兼职"
+      ],
+      "location": "",
+      "salary": "",
+      "salaryNote": "薪资面议，将根据经验及翻译质量沟通",
+      "salaryRange": "薪资面议，将根据经验及翻译质量沟通",
+      "paymentCycle": "月结",
+      "languagePair": "英↔日",
+      "gameType": null,
+      "description": "有金融领域英译日翻译经验 英日双语能力优秀，日语表达自然、准确 熟悉金融、交易相关内容者优先 Base 日本者优先 工作认真负责，能够按时交付并保持稳定的翻译质量",
+      "fullDescription": "有金融领域英译日翻译经验\n英日双语能力优秀，日语表达自然、准确\n熟悉金融、交易相关内容者优先\nBase 日本者优先\n工作认真负责，能够按时交付并保持稳定的翻译质量",
+      "requirements": [],
+      "deadline": "远程兼职，长期合作，具体工作量根据项目需求安排",
+      "comments": "工作内容以金融产品相关文案为主，包括产品/UI文案、帮助中心内容及其他相关材料。希望译员对金融产品有一定理解，不仅保证翻译准确，也能确保日语表达符合实际产品场景。",
+      "contact": "有兴趣的话，请将个人简介/CV、相关翻译经验及期望报价发送至：\n\nleightontransvision@gmail.com",
+      "referralType": "circle",
+      "postedAt": "2026-09-08",
+      "internalOnly": false
+    },
+    {
       "id": "rec27Zu6YI6fPn",
       "title": "驻场英语翻译-英语口译",
       "company": "社群内部需求",
@@ -2941,8 +2965,8 @@
     }
   ],
   "_meta": {
-    "syncedAt": "2026-09-07T21:56:45.916Z",
-    "jobCount": 90,
+    "syncedAt": "2026-09-08T21:45:00.305Z",
+    "jobCount": 91,
     "caseCount": 50
   }
 }
